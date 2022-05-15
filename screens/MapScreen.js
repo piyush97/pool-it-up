@@ -1,11 +1,11 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { SafeAreaView, Text } from "react-native";
 
 const MapScreen = () => {
   return (
-    <View>
+    <SafeAreaView>
       <Text>MapScreen</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 

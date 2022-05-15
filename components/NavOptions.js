@@ -1,9 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import { Icon } from "@rneui/base";
 import React from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import tw from "twrnc";
 import { menuData } from "../constants/menuOptions";
 const NavOptions = () => {
+  const navigation = useNavigation();
+
   return (
     <FlatList
       style={tw`px-2`}
@@ -12,7 +15,10 @@ const NavOptions = () => {
       scrollEnabled={false}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <TouchableOpacity style={tw`p-1 pl-6 pb-8 pt-4 m-2 w-40 `}>
+        <TouchableOpacity
+          style={tw`p-1 pl-6 pb-8 pt-4 m-2 w-40 `}
+          onPress={() => navigation.navigate(item.screen)}
+        >
           <View style={{ backgroundColor: "#a49774", borderRadius: "10" }}>
             <Image
               source={{ uri: item.image }}

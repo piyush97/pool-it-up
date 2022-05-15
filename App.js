@@ -20,7 +20,7 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="MapScreen"
+              name="GetARide"
               component={MapScreen}
               options={{ headerShown: false }}
             />
