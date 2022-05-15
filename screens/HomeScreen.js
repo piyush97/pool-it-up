@@ -1,10 +1,10 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
-
+import tw from "twrnc";
 const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>HomeScreen</Text>
+      <Text style={tw`text-red-800`}>HomeScreen</Text>
     </SafeAreaView>
   );
 };
