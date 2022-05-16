@@ -39,11 +39,19 @@ const Map = () => {
           strokeColor="black"
         />
       )}
-      {destination?.location && (
+      {origin?.location && (
         <Marker
           coordinate={{
             latitude: origin.location.latitude,
             longitude: origin.location.longitude,
+          }}
+        />
+      )}
+      {destination?.location && (
+        <Marker
+          coordinate={{
+            latitude: destination.location.lat,
+            longitude: destination.location.lng,
           }}
         />
       )}
