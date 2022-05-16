@@ -1,5 +1,5 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { useSelector } from "react-redux";
@@ -17,10 +17,17 @@ const Map = () => {
     latitude: destination.location.lat,
     longitude: destination.location.lng,
   };
-  console.log("DESTINATION:", destination);
-  console.log("ORIGIN:", origin);
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    if (!origin || !destination) return;
+    mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
+      edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
+    });
+  }, [origin, destination]); //whenever origin or destination changes, this function will run
   return (
     <MapView
+      ref={mapRef}
       style={tw`flex-1`}
       initialRegion={{
         latitude: origin.location.latitude,
@@ -41,6 +48,8 @@ const Map = () => {
       )}
       {origin?.location && (
         <Marker
+          title="Origin"
+          identifier="origin"
           coordinate={{
             latitude: origin.location.latitude,
             longitude: origin.location.longitude,
@@ -49,6 +58,8 @@ const Map = () => {
       )}
       {destination?.location && (
         <Marker
+          title="Destination"
+          identifier="destination"
           coordinate={{
             latitude: destination.location.lat,
             longitude: destination.location.lng,
