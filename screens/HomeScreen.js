@@ -5,7 +5,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import NavOptions from "../components/NavOptions";
-import { setDestination, setOrigin } from "../slices/navSlice";
+import { setOrigin } from "../slices/navSlice";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ const HomeScreen = () => {
           minLength={2}
           onFail={(err) => console.log(err)}
           fetchDetails={true}
+          keyboardShouldPersistTaps="handled"
           enablePoweredByContainer={false}
           onPress={(data, details = null) => {
             dispatch(
@@ -32,7 +33,7 @@ const HomeScreen = () => {
                 description: data.description,
               })
             );
-            dispatch(setDestination(null));
+            // dispatch(setDestination(null));
           }}
           styles={{
             container: {
