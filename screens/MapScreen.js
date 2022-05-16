@@ -1,11 +1,14 @@
 import React from "react";
-import { SafeAreaView, Text } from "react-native";
+import { Text, View } from "react-native";
+import tw from "twrnc";
 
 const MapScreen = () => {
   return (
-    <SafeAreaView>
+    <View>
       <Text>MapScreen</Text>
-    </SafeAreaView>
+      <View style={tw`h-1/2`}></View>
+      <View style={tw`h-1/2`}></View>
+    </View>
   );
 };
 

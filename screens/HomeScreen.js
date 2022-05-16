@@ -1,11 +1,11 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import React from "react";
-import { Image, SafeAreaView, View, ScrollView } from "react-native";
+import { Image, SafeAreaView } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import tw from "twrnc";
+import NavOptions from "../components/NavOptions";
 import { setDestination, setOrigin } from "../slices/navSlice";
 
-import NavOptions from "../components/NavOptions";
 const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#E9E7E4" }}>
@@ -16,7 +16,6 @@ const HomeScreen = () => {
             uri: "https://i.ibb.co/9YC9DQp/Screen-Shot-2022-05-15-at-3-43-11-PM.png",
           }}
         />
-        <NavOptions />
         <GooglePlacesAutocomplete
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
@@ -50,6 +49,7 @@ const HomeScreen = () => {
           }}
           placeholder="Where from?"
         />
+        <NavOptions />
       </SafeAreaView>
     </SafeAreaView>
   );
