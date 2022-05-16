@@ -1,14 +1,32 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
-import React from "react";
+import * as Location from "expo-location";
+import React, { useEffect } from "react";
 import { Image, SafeAreaView } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import NavOptions from "../components/NavOptions";
-import { setOrigin } from "../slices/navSlice";
+import { setDestination, setOrigin } from "../slices/navSlice";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      dispatch(
+        setOrigin({
+          location: location.coords,
+        })
+      );
+    })();
+  }, []);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#E9E7E4" }}>
       <SafeAreaView style={(tw`p-5`, { backgroundColor: "#E9E7E4" })}>
@@ -21,14 +39,17 @@ const HomeScreen = () => {
         <GooglePlacesAutocomplete
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
+          currentLocation={true}
           minLength={2}
           onFail={(err) => console.log(err)}
           fetchDetails={true}
+          enableHighAccuracyLocation={true}
+          currentLocationLabel="Current Location"
           keyboardShouldPersistTaps="handled"
           enablePoweredByContainer={false}
           onPress={(data, details = null) => {
             dispatch(
-              setOrigin({
+              setDestination({
                 location: details.geometry.location,
                 description: data.description,
               })
@@ -47,7 +68,7 @@ const HomeScreen = () => {
             key: GOOGLE_MAPS_APIKEY,
             language: "en",
           }}
-          placeholder="Where from?"
+          placeholder="Where to?"
         />
         <NavOptions />
       </SafeAreaView>
