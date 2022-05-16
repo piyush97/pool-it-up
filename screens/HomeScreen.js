@@ -2,11 +2,13 @@ import { GOOGLE_MAPS_APIKEY } from "@env";
 import React from "react";
 import { Image, SafeAreaView } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import NavOptions from "../components/NavOptions";
 import { setDestination, setOrigin } from "../slices/navSlice";
 
 const HomeScreen = () => {
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#E9E7E4" }}>
       <SafeAreaView style={(tw`p-5`, { backgroundColor: "#E9E7E4" })}>
@@ -21,6 +23,7 @@ const HomeScreen = () => {
           debounce={400}
           minLength={2}
           onFail={(err) => console.log(err)}
+          fetchDetails={true}
           enablePoweredByContainer={false}
           onPress={(data, details = null) => {
             dispatch(
@@ -38,10 +41,6 @@ const HomeScreen = () => {
             textInput: {
               fontSize: 18,
             },
-          }}
-          onPress={(data, details = null) => {
-            // 'details' is provided when fetchDetails = true
-            console.log(data, details);
           }}
           query={{
             key: GOOGLE_MAPS_APIKEY,

@@ -1,12 +1,22 @@
 import React from "react";
-import { Text, View } from "react-native";
-import tw from "tailwind-react-native-classnames";
+import MapView from "react-native-maps";
+import { useSelector } from "react-redux";
+import tw from "twrnc";
+import { selectOrigin } from "../slices/navSlice";
 const Map = () => {
+  const origin = useSelector(selectOrigin);
+
   return (
-    <View>
-      <Text style={tw`h-1/2`}> </Text>
-      <Text style={tw`h-1/2`}> </Text>
-    </View>
+    <MapView
+      style={tw`flex-1`}
+      initialRegion={{
+        latitude: origin.location.lat,
+        longitude: origin.location.lng,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }}
+      mapType="mutedStandard"
+    />
   );
 };
 
