@@ -41,7 +41,7 @@ const RideOptionsCard = () => {
     <SafeAreaView
       style={tw`bg-white flex-1 border-t border-gray-200 flex-shrink`}
     >
-      <Text style={tw`text-center py-5 text-xl`}>
+      <Text style={tw`text-center py-2 text-xl`}>
         {new Date().getHours() < 12
           ? "Good Morning"
           : new Date().getHours() > 12 && new Date().getHours() < 18
@@ -98,18 +98,23 @@ const RideOptionsCard = () => {
           >
             <View style={tw`flex-row bg-white border-b border-gray-200 p-3`}>
               <View style={tw`flex-1`}>
-                <Text style={tw`text-xl`}>{title}</Text>
-                <Text style={tw`text-gray-600`}>{carType}</Text>
-                <Text style={tw`text-gray-600 `}>{carModel}</Text>
-                <Text style={tw`text-gray-600 font-semibold`}>
+                <Image source={image} style={tw`h-22 w-25`} />
+              </View>
+              <View style={tw`flex-1`}>
+                <Text style={tw`text-xl text-right`}>${price}</Text>
+
+                <Text style={tw`text-md text-right`}>{title}</Text>
+                <Text style={tw`text-sm text-gray-600 text-right`}>
+                  {carType}
+                </Text>
+                <Text style={tw`text-sm text-gray-600 text-right`}>
+                  {carModel}
+                </Text>
+                <Text
+                  style={tw`text-sm text-gray-600 font-semibold text-right`}
+                >
                   {availableSeats} seats
                 </Text>
-              </View>
-              <View style={tw`flex-1`}>
-                <Text style={tw`text-xl`}>${price}</Text>
-              </View>
-              <View style={tw`flex-1`}>
-                <Image source={image} style={tw`h-32 w-35`} />
               </View>
             </View>
           </TouchableOpacity>
