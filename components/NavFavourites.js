@@ -22,7 +22,7 @@ const NavFavourites = () => {
   return (
     <FlatList
       data={data}
-      keyExtractor={(item) => item.id.toString}
+      keyExtractor={(item) => item.id.toString()}
       ItemSeparatorComponent={() => (
         <View style={{ backgroundColor: "gray", height: 0.25 }} />
       )}
