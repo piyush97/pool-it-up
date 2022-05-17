@@ -2,11 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Icon } from "@rneui/base";
 import React from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
 import tw from "twrnc";
 import { menuData } from "../constants/menuOptions";
+import { selectDestination } from "../slices/navSlice";
 const NavOptions = () => {
   const navigation = useNavigation();
-
+  const destination = useSelector(selectDestination);
   return (
     <FlatList
       style={tw`px-2`}
@@ -16,14 +18,19 @@ const NavOptions = () => {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <TouchableOpacity
+          disabled={!destination}
           style={tw`p-1 pl-6 pb-8 pt-4 m-2 w-42 `}
           onPress={() => navigation.navigate(item.screen)}
         >
           <View
-            style={{
-              backgroundColor: "#a49774",
-              borderRadius: "10",
-            }}
+            style={
+              !destination
+                ? { backgroundColor: "gray", borderRadius: "10", opacity: 0.4 }
+                : {
+                    backgroundColor: "#a49774",
+                    borderRadius: "10",
+                  }
+            }
           >
             <Image
               source={{ uri: item.image }}
