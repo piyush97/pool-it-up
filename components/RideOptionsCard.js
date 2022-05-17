@@ -44,9 +44,8 @@ const RideOptionsCard = () => {
           container: {
             flex: 0,
           },
-          textInput: {
-            fontSize: 18,
-          },
+          textInput: tw`bg-gray-100 border-b border-gray-200 p-3 text-black`,
+          placeholder: tw`text-black`,
         }}
         query={{
           key: GOOGLE_MAPS_APIKEY,

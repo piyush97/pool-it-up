@@ -18,7 +18,7 @@ const NavOptions = () => {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <TouchableOpacity
-          disabled={!destination}
+          // disabled={!destination} //TODO: uncomment this when we are done with dev
           style={tw`p-1 pl-6 pb-8 pt-4 m-2 w-42 `}
           onPress={() => navigation.navigate(item.screen)}
         >

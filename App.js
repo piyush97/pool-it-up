@@ -5,6 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import HomeScreen from "./screens/HomeScreen";
 import MapScreen from "./screens/MapScreen";
+import PoolScreen from "./screens/PoolScreen";
 import { store } from "./store";
 
 export default function App() {
@@ -27,6 +28,11 @@ export default function App() {
               <Stack.Screen
                 name="GetARide"
                 component={MapScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PoolMyRide"
+                component={PoolScreen}
                 options={{ headerShown: false }}
               />
             </Stack.Navigator>
