@@ -16,6 +16,7 @@ import NavFavourites from "./NavFavourites";
 
 const RideOptionsCard = () => {
   const dispatch = useDispatch();
+  const [selected, setSelected] = React.useState(null);
   const data = [
     {
       id: "1",
@@ -94,8 +95,16 @@ const RideOptionsCard = () => {
               image,
               carModel,
             },
+            item,
           }) => (
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => {
+                setSelected(item);
+              }}
+              // style={tw`flex-row justify-between items-center ${
+              //   id === selected?.id && "bg-gray-900"
+              // }`}
+            >
               <View style={tw`flex-row bg-white border-b border-gray-200 p-3`}>
                 <View style={tw`flex-1`}>
                   <Text style={tw`text-xl`}>{title}</Text>
