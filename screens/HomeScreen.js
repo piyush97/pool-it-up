@@ -5,6 +5,7 @@ import { Image, SafeAreaView } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
+import NavFavourites from "../components/NavFavourites";
 import NavOptions from "../components/NavOptions";
 import { setDestination, setOrigin } from "../slices/navSlice";
 
@@ -39,7 +40,6 @@ const HomeScreen = () => {
         <GooglePlacesAutocomplete
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
-          currentLocation={true}
           minLength={2}
           onFail={(err) => console.log(err)}
           fetchDetails={true}
@@ -71,6 +71,7 @@ const HomeScreen = () => {
           placeholder="Where to?"
         />
         <NavOptions />
+        <NavFavourites />
       </SafeAreaView>
     </SafeAreaView>
   );
