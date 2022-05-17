@@ -81,49 +81,51 @@ const RideOptionsCard = () => {
         placeholder="Where to?"
       />
       <NavFavourites />
-      <View>
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={({
-            item: {
-              id,
-              title,
-              carType,
-              price,
-              availableSeats,
-              image,
-              carModel,
-            },
-            item,
-          }) => (
-            <TouchableOpacity
-              onPress={() => {
-                setSelected(item);
-              }}
-              // style={tw`flex-row justify-between items-center ${
-              //   id === selected?.id && "bg-gray-900"
-              // }`}
-            >
-              <View style={tw`flex-row bg-white border-b border-gray-200 p-3`}>
-                <View style={tw`flex-1`}>
-                  <Text style={tw`text-xl`}>{title}</Text>
-                  <Text style={tw`text-gray-600`}>{carType}</Text>
-                  <Text style={tw`text-gray-600 `}>{carModel}</Text>
-                  <Text style={tw`text-gray-600 font-semibold`}>
-                    {availableSeats} seats
-                  </Text>
-                </View>
-                <View style={tw`flex-1`}>
-                  <Text style={tw`text-xl`}>${price}</Text>
-                </View>
-                <View style={tw`flex-1`}>
-                  <Image source={image} style={tw`h-32 w-35`} />
-                </View>
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={({
+          item: { title, carType, price, availableSeats, image, carModel },
+          item,
+        }) => (
+          <TouchableOpacity
+            onPress={() => {
+              setSelected(item);
+            }}
+            // style={tw`flex-row justify-between items-center ${
+            //   id === selected?.id && "bg-gray-900"
+            // }`}
+          >
+            <View style={tw`flex-row bg-white border-b border-gray-200 p-3`}>
+              <View style={tw`flex-1`}>
+                <Text style={tw`text-xl`}>{title}</Text>
+                <Text style={tw`text-gray-600`}>{carType}</Text>
+                <Text style={tw`text-gray-600 `}>{carModel}</Text>
+                <Text style={tw`text-gray-600 font-semibold`}>
+                  {availableSeats} seats
+                </Text>
               </View>
-            </TouchableOpacity>
-          )}
-        />
+              <View style={tw`flex-1`}>
+                <Text style={tw`text-xl`}>${price}</Text>
+              </View>
+              <View style={tw`flex-1`}>
+                <Image source={image} style={tw`h-32 w-35`} />
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+      <View>
+        <TouchableOpacity
+          style={tw`bg-black py-3 m-3 ${!selected && "bg-gray-300"}`}
+          disabled={!selected}
+        >
+          <Text style={tw`text-center text-white text-xl`}>
+            {!selected
+              ? "Select a Ride"
+              : selected?.id && "You selected " + selected.title}
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
