@@ -4,7 +4,12 @@ import { SafeAreaView, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import tw from "twrnc";
 import { supabase } from "../lib/supabase";
-import { selectSignUp, setSignUp } from "../slices/authSlice";
+import {
+  selectSignUp,
+  selectUserToken,
+  setSignUp,
+  setUserToken,
+} from "../slices/authSlice";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -16,13 +21,15 @@ export default function Auth() {
   const [dob, setDob] = useState(new Date());
   const dispatch = useDispatch();
   const signUp = useSelector(selectSignUp);
-  console.log(signUp);
+  const userId = useSelector(selectUserToken);
+
   async function signUpWithEmail() {
     // checkForm(email, firstName, lastName, phone, password, dob);
     setLoading(true);
     const { error } = await supabase.auth
       .signUp({ email, password })
       .then((res) => {
+        dispatch(setUserToken(res.user.id));
         if (res.error) {
           Alert.alert(error.message);
           return;
@@ -38,7 +45,6 @@ export default function Auth() {
         );
         setLoading(false);
       });
-
     //  await supabase
     //    .from("Users")
     //    .insert([
