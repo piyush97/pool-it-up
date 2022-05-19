@@ -1,8 +1,10 @@
 import { Button, Input } from "@rneui/base";
 import React, { useState } from "react";
-import { Alert, SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import tw from "twrnc";
 import { supabase } from "../lib/supabase";
+import { selectSignUp, setSignUp } from "../slices/authSlice";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -12,27 +14,31 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [dob, setDob] = useState(new Date());
-
+  const dispatch = useDispatch();
+  const signUp = useSelector(selectSignUp);
+  console.log(signUp);
   async function signUpWithEmail() {
     // checkForm(email, firstName, lastName, phone, password, dob);
     setLoading(true);
-
     const { error } = await supabase.auth
-      .signUp({
-        email,
-        password,
-      })
+      .signUp({ email, password })
       .then((res) => {
         if (res.error) {
-          Alert.alert(res.error.message);
-          setLoading(false);
+          Alert.alert(error.message);
           return;
         }
-      })
-      .catch((err) => {
-        Alert.alert(err.message);
+        dispatch(
+          setSignUp({
+            email,
+            firstName,
+            lastName,
+            phone,
+            dob: dob.toString(),
+          })
+        );
         setLoading(false);
       });
+
     //  await supabase
     //    .from("Users")
     //    .insert([
@@ -56,7 +62,6 @@ export default function Auth() {
     //      setLoading(false);
     //    });
     //  if (errorWithTable) Alert.alert(errorWithTable.message);
-    if (error) Alert.alert(error.message);
     setLoading(false);
   }
 
