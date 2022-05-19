@@ -1,17 +1,8 @@
 import { Alert } from "react-native";
-
-export const checkForm = (email, firstName, lastName, phone, password, dob) => {
-  if (!email || !firstName || !lastName || !phone || !password || !dob) {
+import validator from "validator";
+export const checkOnboardingForm = ({ firstName, lastName, phone, dob }) => {
+  if (!firstName || !lastName || !phone || !dob) {
     Alert.alert("Please fill out all fields");
-    return false;
-  }
-
-  if (!email.includes("@")) {
-    Alert.alert("Please enter a valid email");
-    return false;
-  }
-  if (password.length < 8) {
-    Alert.alert("Password must be at least 8 characters");
     return false;
   }
 
@@ -30,6 +21,23 @@ export const checkForm = (email, firstName, lastName, phone, password, dob) => {
 
   if (phone.length < 10) {
     Alert.alert("Please enter a valid phone number");
+    return false;
+  }
+  return true;
+};
+
+export const checkSignUpForm = ({ email, password }) => {
+  if (!email || !password) {
+    Alert.alert("Please fill out all fields");
+    return false;
+  }
+
+  if (!validator.isEmail(email)) {
+    Alert.alert("Please enter a valid email");
+    return false;
+  }
+  if (password.length < 8) {
+    Alert.alert("Password must be at least 8 characters");
     return false;
   }
   return true;

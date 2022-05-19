@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { Button, Input } from "@rneui/base";
 import React, { useState } from "react";
 import { SafeAreaView, Text, View } from "react-native";
@@ -7,11 +8,13 @@ import { supabase } from "../lib/supabase";
 import {
   selectSignUp,
   selectUserToken,
+  setIsLoggedIn,
   setSignUp,
   setUserToken,
 } from "../slices/authSlice";
+import { checkSignUpForm } from "../utils/checkForm";
 
-export default function Auth() {
+export default function SignUpScreen() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,14 +25,16 @@ export default function Auth() {
   const dispatch = useDispatch();
   const signUp = useSelector(selectSignUp);
   const userId = useSelector(selectUserToken);
+  const navigation = useNavigation();
 
   async function signUpWithEmail() {
-    // checkForm(email, firstName, lastName, phone, password, dob);
-    setLoading(true);
+    checkSignUpForm({ email, password }) && setLoading(true);
+
     const { error } = await supabase.auth
       .signUp({ email, password })
       .then((res) => {
-        dispatch(setUserToken(res.user.id));
+        console.log(res.user);
+        dispatch(setUserToken(res?.user?.id));
         if (res.error) {
           Alert.alert(error.message);
           return;
@@ -37,14 +42,12 @@ export default function Auth() {
         dispatch(
           setSignUp({
             email,
-            firstName,
-            lastName,
-            phone,
-            dob: dob.toString(),
           })
         );
+        dispatch(setIsLoggedIn(true));
         setLoading(false);
-      });
+      })
+      .then(() => navigation.navigate("Onboarding"));
     //  await supabase
     //    .from("Users")
     //    .insert([
