@@ -144,6 +144,17 @@ export default function SignUpScreen() {
       /> */}
 
       <View style={tw`p-3`}>
+        <View style={tw`flex-row `}>
+          <Text style={tw` pb-2 text-gray-500`}>
+            Already have an account?{" "}
+            <Text
+              style={tw` text-blue-800`}
+              onPress={() => navigation.navigate("SignIn")}
+            >
+              Sign In
+            </Text>
+          </Text>
+        </View>
         <Button
           title="Sign up"
           disabled={loading}

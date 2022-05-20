@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { useSelector } from "react-redux";
 import OnboardingScreen from "../screens/OnboardingScreen";
+import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import { selectIsLoggedIn } from "../slices/authSlice";
 
@@ -39,14 +40,21 @@ const Router = () => {
         <>
           <Stack.Screen
             name="SignIn"
-            component={SignUpScreen}
+            component={SignInScreen}
             options={{
               headerShown: false,
               title: "Sign in",
               animationTypeForReplace: isSignout ? "pop" : "push",
             }}
           />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
+
+          <Stack.Screen
+            name="SignUp"
+            options={{
+              headerShown: false,
+            }}
+            component={SignUpScreen}
+          />
         </>
       )}
     </Stack.Navigator>

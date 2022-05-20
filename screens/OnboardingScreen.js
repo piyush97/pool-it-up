@@ -18,8 +18,8 @@ const OnboardingScreen = () => {
   const [dob, setDob] = useState(new Date());
 
   const onButtonPress = async () => {
-    const user = supabase.auth.user();
-    if (!user) throw new Error("No user on the session!");
+    // const user = supabase.auth.user(); // TODO: NEED FIX returns the current user
+    // if (!user) throw new Error("No user on the session!"); // TODO: handle this error
 
     await supabase
       .from("Users")
@@ -30,11 +30,11 @@ const OnboardingScreen = () => {
           // lastName,
           // dob: dob.toString(),
           // phone,
-          email: "me@piyushmehta.com",
-          firstName: "Piyush",
-          lastName: "Mehta",
-          dob: "2020-05-05T00:00:00.000Z",
-          phone: "1234567890",
+          email: "me@piyushmehta.com", // TODO: remove this
+          firstName: "Piyush", // TODO: remove this
+          lastName: "Mehta", // TODO: remove this
+          dob: "2020-05-05T00:00:00.000Z", // TODO: remove this
+          phone: "1234567890", // TODO: remove this
         },
       ])
       .then((res) => {
