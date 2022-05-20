@@ -87,7 +87,7 @@ function SignInScreen() {
         <Text
           style={{
             fontWeight: '700',
-            color: theme.colors.grey1,
+            color: theme.colors.grey0,
             flex: 0,
             textAlign: 'center',
           }}
@@ -126,8 +126,8 @@ function SignInScreen() {
       </View>
       <Text
         style={{
-          fontWeight: '700',
-          top: 150,
+          fontWeight: '500',
+          top: 120,
           textAlign: 'center',
           color: theme.colors.grey1,
         }}
@@ -138,7 +138,7 @@ function SignInScreen() {
           style={{
             fontWeight: '700',
             textAlign: 'center',
-            color: theme.colors.grey1,
+            color: theme.colors.grey0,
           }}
         >
           Register
