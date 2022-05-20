@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   origin: null,
@@ -10,7 +11,7 @@ const initialState = {
 };
 
 export const navSlice = createSlice({
-  name: "nav",
+  name: 'nav',
   initialState,
   reducers: {
     setOrigin: (state, action) => {
@@ -25,14 +26,12 @@ export const navSlice = createSlice({
   },
 });
 
-export const { setOrigin, setDestination, setTravelTimeInformation } =
-  navSlice.actions;
+export const { setOrigin, setDestination, setTravelTimeInformation } = navSlice.actions;
 
 //   Selectors
 export const selectOrigin = (state) => state.nav.origin;
 export const selectDestination = (state) => state.nav.destination;
-export const selectTravelTimeInformation = (state) =>
-  state.nav.travelTimeInformation;
+export const selectTravelTimeInformation = (state) => state.nav.travelTimeInformation;
 export const selectDate = (state) => state.nav.date;
 export const selectTime = (state) => state.nav.time;
 export const selectPassengers = (state) => state.nav.passengers;

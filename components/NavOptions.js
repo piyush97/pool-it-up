@@ -1,12 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
-import { Icon } from "@rneui/base";
-import React from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
-import tw from "twrnc";
-import { menuData } from "../constants/menuOptions";
-import { selectDestination } from "../slices/navSlice";
-const NavOptions = () => {
+import { useNavigation } from '@react-navigation/native';
+import { Icon } from '@rneui/base';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import tw from 'twrnc';
+import menuData from '../constants/menuOptions';
+import { selectDestination } from '../slices/navSlice';
+
+function NavOptions() {
   const navigation = useNavigation();
   const destination = useSelector(selectDestination);
   return (
@@ -25,10 +25,10 @@ const NavOptions = () => {
           <View
             style={
               !destination
-                ? { backgroundColor: "gray", borderRadius: "10", opacity: 0.4 }
+                ? { backgroundColor: 'gray', borderRadius: '10', opacity: 0.4 }
                 : {
-                    backgroundColor: "#a49774",
-                    borderRadius: "10",
+                    backgroundColor: '#a49774',
+                    borderRadius: '10',
                   }
             }
           >
@@ -37,13 +37,11 @@ const NavOptions = () => {
               style={{
                 width: 100,
                 height: 100,
-                resizeMode: "contain",
+                resizeMode: 'contain',
                 marginLeft: 20,
               }}
             />
-            <Text style={tw`mt-2 text-lg font-semibold ml-5`}>
-              {item.title}
-            </Text>
+            <Text style={tw`mt-2 text-lg font-semibold ml-5`}>{item.title}</Text>
             <Icon
               style={tw`p-2 rounded-full w-10 mt-4 bg-black ml-1 mb-1`}
               type="antdesign"
@@ -55,6 +53,6 @@ const NavOptions = () => {
       )}
     />
   );
-};
+}
 
 export default NavOptions;

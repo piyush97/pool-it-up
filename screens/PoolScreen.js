@@ -1,27 +1,29 @@
-import { GOOGLE_MAPS_APIKEY } from "@env";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { useNavigation } from "@react-navigation/native";
-import { Button, Input } from "@rneui/themed";
-import React from "react";
-import { Alert, SafeAreaView, Text } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { useSelector } from "react-redux";
-import tw from "twrnc";
-import { supabase } from "../lib/supabase";
-import { selectUser } from "../slices/authSlice";
+/* eslint-disable no-console */
+// eslint-disable-next-line import/no-unresolved
+import { GOOGLE_MAPS_APIKEY } from '@env';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
+import { Button, Input } from '@rneui/themed';
+import React from 'react';
+import { Alert, SafeAreaView, Text } from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { useSelector } from 'react-redux';
+import tw from 'twrnc';
+import supabase from '../lib/supabase';
+import { selectUser } from '../slices/authSlice';
 
-const PoolScreen = () => {
-  const [carType, setCarType] = React.useState("");
-  const [carName, setCarName] = React.useState("");
-  const [carNumber, setCarNumber] = React.useState("");
-  const [passengers, setPassengers] = React.useState("");
-  const [from, setFrom] = React.useState("");
-  const [to, setTo] = React.useState("");
+function PoolScreen() {
+  const [carType, setCarType] = React.useState('');
+  const [carName, setCarName] = React.useState('');
+  const [carNumber, setCarNumber] = React.useState('');
+  const [passengers, setPassengers] = React.useState('');
+  const [from, setFrom] = React.useState('');
+  const [to, setTo] = React.useState('');
   const [startDateTime, setStartDateTime] = React.useState(new Date());
   const [endDateTime, setEndDateTime] = React.useState(new Date());
-  const [costPerPassenger, setCostPerPassenger] = React.useState("");
-  const [title, setTitle] = React.useState("");
-  const [costPerBag, setCostPerBag] = React.useState("");
+  const [costPerPassenger, setCostPerPassenger] = React.useState('');
+  const [title, setTitle] = React.useState('');
+  const [costPerBag, setCostPerBag] = React.useState('');
   const {
     user: { email, id },
   } = useSelector(selectUser);
@@ -29,7 +31,7 @@ const PoolScreen = () => {
 
   const onHandleSubmit = async () => {
     await supabase
-      .from("Rides")
+      .from('Rides')
       .insert([
         {
           car_type: carType,
@@ -48,18 +50,16 @@ const PoolScreen = () => {
         },
       ])
       .then((res) => {
-        Alert.alert("Done");
+        Alert.alert('Done');
         console.log(res);
-        navigation.navigate("HomeScreen");
+        navigation.navigate('HomeScreen');
         if (res.error) {
           console.log(res);
           Alert.alert(res.error.message);
-          return;
         }
       })
       .catch((err) => {
         Alert.alert(err.message);
-        setLoading(false);
       });
   };
   return (
@@ -103,14 +103,14 @@ const PoolScreen = () => {
         debounce={400}
         minLength={2}
         onFail={(err) => console.log(err)}
-        fetchDetails={true}
-        enableHighAccuracyLocation={true}
+        fetchDetails
+        enableHighAccuracyLocation
         currentLocationLabel="Current Location"
         keyboardShouldPersistTaps="handled"
         enablePoweredByContainer={false}
         textInputProps={{
           InputComp: Input,
-          errorStyle: { color: "red" },
+          errorStyle: { color: 'red' },
         }}
         onPress={(data, details = null) => {
           setFrom({
@@ -123,12 +123,12 @@ const PoolScreen = () => {
             flex: 0,
           },
           textInput: {
-            backgroundColor: "transparent",
+            backgroundColor: 'transparent',
           },
         }}
         query={{
           key: GOOGLE_MAPS_APIKEY,
-          language: "en",
+          language: 'en',
         }}
         placeholder="Where from?"
       />
@@ -137,14 +137,14 @@ const PoolScreen = () => {
         debounce={400}
         minLength={2}
         onFail={(err) => console.log(err)}
-        fetchDetails={true}
-        enableHighAccuracyLocation={true}
+        fetchDetails
+        enableHighAccuracyLocation
         currentLocationLabel="Current Location"
         keyboardShouldPersistTaps="handled"
         enablePoweredByContainer={false}
         textInputProps={{
           InputComp: Input,
-          errorStyle: { color: "red" },
+          errorStyle: { color: 'red' },
         }}
         onPress={(data, details = null) => {
           setTo({
@@ -157,17 +157,17 @@ const PoolScreen = () => {
             flex: 0,
           },
           textInput: {
-            backgroundColor: "transparent",
+            backgroundColor: 'transparent',
           },
         }}
         query={{
           key: GOOGLE_MAPS_APIKEY,
-          language: "en",
+          language: 'en',
         }}
         placeholder="Where to?"
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1 }}>
-        Date and Time of the Journey Starts:{" "}
+        Date and Time of the Journey Starts:{' '}
       </Text>
       <DateTimePicker
         testID="dateTime"
@@ -181,7 +181,7 @@ const PoolScreen = () => {
         }}
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1 }}>
-        Date and Time of the Journey Ends:{" "}
+        Date and Time of the Journey Ends:{' '}
       </Text>
       <DateTimePicker
         testID="dateTime"
@@ -208,13 +208,9 @@ const PoolScreen = () => {
         onChangeText={(text) => setCostPerBag(text)}
         style={tw`p-2`}
       />
-      <Button
-        title="Submit"
-        style={tw`px-3`}
-        onPress={() => onHandleSubmit()}
-      ></Button>
+      <Button title="Submit" style={tw`px-3`} onPress={() => onHandleSubmit()} />
     </SafeAreaView>
   );
-};
+}
 
 export default PoolScreen;

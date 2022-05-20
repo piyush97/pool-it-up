@@ -1,33 +1,29 @@
-import { useNavigation } from "@react-navigation/native";
-import { Button, Input } from "@rneui/base";
-import React, { useState } from "react";
-import { SafeAreaView, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import tw from "twrnc";
-import { supabase } from "../lib/supabase";
-import {
-  selectSignUp,
-  selectUserToken,
-  setIsLoggedIn,
-  setSignUp,
-} from "../slices/authSlice";
-import { checkSignUpForm } from "../utils/checkForm";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
+import { Button, Input } from '@rneui/base';
+import { useState } from 'react';
+import { Alert, SafeAreaView, Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import tw from 'twrnc';
+import supabase from '../lib/supabase';
+import { setIsLoggedIn, setSignUp, setUser } from '../slices/authSlice';
+import { checkSignUpForm } from '../utils/checkForm';
 
 export default function SignUpScreen() {
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [dob, setDob] = useState(new Date());
   const dispatch = useDispatch();
-  const signUp = useSelector(selectSignUp);
-  const userId = useSelector(selectUserToken);
   const navigation = useNavigation();
 
   async function signUpWithEmail() {
-    checkSignUpForm({ email, password }) && setLoading(true);
+    const formValid = checkSignUpForm({ email, password });
+
+    if (formValid) setLoading(true);
 
     const { error } = await supabase.auth
       .signUp({ email, password })
@@ -45,7 +41,7 @@ export default function SignUpScreen() {
         dispatch(setIsLoggedIn(true));
         setLoading(false);
       })
-      .then(() => navigation.navigate("Onboarding"));
+      .then(() => navigation.navigate('Onboarding'));
     //  await supabase
     //    .from("Users")
     //    .insert([
@@ -76,7 +72,7 @@ export default function SignUpScreen() {
     <SafeAreaView>
       <View>
         <Text style={tw`text-10 p-4 pb-8`}>Sign Up</Text>
-        {/* <Input
+        <Input
           label="First Name"
           onChangeText={(text) => setFirstName(text)}
           value={firstName}
@@ -91,10 +87,10 @@ export default function SignUpScreen() {
           placeholder="Doe"
           autoComplete="name"
           autoCapitalize="words"
-        /> */}
+        />
         <Input
           label="Email"
-          leftIcon={{ type: "font-awesome", name: "envelope" }}
+          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={(text) => setEmail(text)}
           value={email}
           keyboardType="email-address"
@@ -105,16 +101,16 @@ export default function SignUpScreen() {
       </View>
       <Input
         label="Password"
-        leftIcon={{ type: "font-awesome", name: "lock" }}
+        leftIcon={{ type: 'font-awesome', name: 'lock' }}
         onChangeText={(text) => setPassword(text)}
         value={password}
-        secureTextEntry={true}
+        secureTextEntry
         placeholder="Password"
-        autoCapitalize={"none"}
+        autoCapitalize="none"
       />
-      {/* <Input
+      <Input
         label="Phone Number"
-        leftIcon={{ type: "font-awesome", name: "phone" }}
+        leftIcon={{ type: 'font-awesome', name: 'phone' }}
         onChangeText={(text) => setPhone(text)}
         value={phone}
         keyboardType="phone-pad"
@@ -139,25 +135,18 @@ export default function SignUpScreen() {
         onChange={(e) => {
           setDob(new Date(e.nativeEvent.timestamp));
         }}
-      /> */}
+      />
 
       <View style={tw`p-3`}>
         <View style={tw`flex-row `}>
           <Text style={tw` pb-2 text-gray-500`}>
-            Already have an account?{" "}
-            <Text
-              style={tw` text-blue-800`}
-              onPress={() => navigation.navigate("SignIn")}
-            >
+            Already have an account?{' '}
+            <Text style={tw` text-blue-800`} onPress={() => navigation.navigate('SignIn')}>
               Sign In
             </Text>
           </Text>
         </View>
-        <Button
-          title="Sign up"
-          disabled={loading}
-          onPress={() => signUpWithEmail()}
-        />
+        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
       </View>
     </SafeAreaView>
   );

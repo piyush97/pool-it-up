@@ -1,31 +1,30 @@
-import { Button, Input, Text, useTheme, useThemeMode } from "@rneui/themed";
-import { useState } from "react";
-import { SafeAreaView } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import tw from "twrnc";
-import { supabase } from "../lib/supabase";
-import { selectUser, setIsLoggedIn, setUser } from "../slices/authSlice";
+/* eslint-disable no-console */
+import { Button, Input, Text, useTheme } from '@rneui/themed';
+import { useState } from 'react';
+import { SafeAreaView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import tw from 'twrnc';
+import supabase from '../lib/supabase';
+import { selectUser, setIsLoggedIn, setUser } from '../slices/authSlice';
 
-const SignInScreen = () => {
+function SignInScreen() {
   const { theme } = useTheme();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const { mode, setMode } = useThemeMode();
 
-  let session;
+  console.log(`USER ${user}`);
 
-  console.log("USER", user);
   const handleSignIn = async () => {
     await supabase.auth
       .signIn({
-        email: email,
-        password: password,
+        email,
+        password,
       })
       .then((data) => {
-        console.log("data", data);
+        console.log('data', data);
         dispatch(setIsLoggedIn(true));
         dispatch(setUser(data));
       })
@@ -39,7 +38,7 @@ const SignInScreen = () => {
       <Text style={tw`text-10 p-4 pb-8`}>Sign In</Text>
       <Input
         label="Email"
-        leftIcon={{ type: "font-awesome", name: "envelope" }}
+        leftIcon={{ type: 'font-awesome', name: 'envelope' }}
         onChangeText={(text) => setEmail(text)}
         value={email}
         keyboardType="email-address"
@@ -49,16 +48,16 @@ const SignInScreen = () => {
       />
       <Input
         label="Password"
-        leftIcon={{ type: "font-awesome", name: "lock" }}
+        leftIcon={{ type: 'font-awesome', name: 'lock' }}
         onChangeText={(text) => setPassword(text)}
         value={password}
-        secureTextEntry={true}
+        secureTextEntry
         placeholder="Password"
-        autoCapitalize={"none"}
+        autoCapitalize="none"
       />
       <Button title="Sign In" style={tw`p-2`} onPress={() => handleSignIn()} />
     </SafeAreaView>
   );
-};
+}
 
 export default SignInScreen;
