@@ -1,15 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import "react-native-url-polyfill/auto";
 import { Provider } from "react-redux";
-import HomeScreen from "./screens/HomeScreen";
-import MapScreen from "./screens/MapScreen";
-import PoolScreen from "./screens/PoolScreen";
 import { store } from "./store";
+import Router from "./utils/router";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -19,23 +17,7 @@ export default function App() {
             style={{ flex: 1 }}
             keyboardVerticalOffset={Platform.OS === "ios" ? -64 : 0}
           >
-            <Stack.Navigator>
-              <Stack.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="GetARide"
-                component={MapScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="PoolMyRide"
-                component={PoolScreen}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator>
+            <Router />
           </KeyboardAvoidingView>
         </SafeAreaProvider>
       </NavigationContainer>
