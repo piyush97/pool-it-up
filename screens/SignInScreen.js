@@ -2,9 +2,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
 import { useEffect, useState } from 'react';
-import { SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
+import socialLoginOptions from '../constants/socialLoginOptions';
 import supabase from '../lib/supabase';
 import { selectUser, setIsLoggedIn, setUser } from '../slices/authSlice';
 
@@ -95,35 +96,27 @@ function SignInScreen() {
           with the rules and Privacy Policy
         </Text>{' '}
       </Text>
-      <View
-        style={{
+      <FlatList
+        contentContainerStyle={{
+          alignItems: 'center',
+          justifyContent: 'center',
           flexDirection: 'row',
           display: 'flex',
-          justifyContent: 'center',
           alignContent: 'center',
-          alignItems: 'center',
           paddingTop: 50,
         }}
-      >
-        <SocialIcon
-          style={{ backgroundColor: theme.colors.grey2, marginHorizontal: 20 }}
-          type="google"
-          onPress={() => {}}
-          iconType="font-awesome"
-        />
-        <SocialIcon
-          style={{ backgroundColor: theme.colors.grey2, marginHorizontal: 20 }}
-          type="facebook"
-          onPress={() => {}}
-          iconType="font-awesome"
-        />
-        <SocialIcon
-          style={{ backgroundColor: theme.colors.grey2, marginHorizontal: 20 }}
-          type="linkedin"
-          onPress={() => {}}
-          iconType="font-awesome"
-        />
-      </View>
+        data={socialLoginOptions}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item: { type, login } }) => (
+          <SocialIcon
+            style={{ backgroundColor: theme.colors.grey2, marginHorizontal: 20 }}
+            type={type}
+            onPress={login}
+            iconType="font-awesome"
+          />
+        )}
+      />
+
       <Text
         style={{
           fontWeight: '500',
