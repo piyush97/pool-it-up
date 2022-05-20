@@ -10,7 +10,6 @@ import {
   selectUserToken,
   setIsLoggedIn,
   setSignUp,
-  setUserToken,
 } from "../slices/authSlice";
 import { checkSignUpForm } from "../utils/checkForm";
 
@@ -33,8 +32,7 @@ export default function SignUpScreen() {
     const { error } = await supabase.auth
       .signUp({ email, password })
       .then((res) => {
-        console.log(res.user);
-        dispatch(setUserToken(res?.user?.id));
+        dispatch(setUser(res?.user));
         if (res.error) {
           Alert.alert(error.message);
           return;

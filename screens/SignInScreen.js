@@ -1,12 +1,16 @@
 import { Button, Input } from "@rneui/base";
 import { useState } from "react";
 import { SafeAreaView, Text } from "react-native";
+import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import { supabase } from "../lib/supabase";
+import { setUser } from "../slices/authSlice";
 
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
   let session;
 
   console.log(session);
@@ -18,7 +22,9 @@ const SignInScreen = () => {
         password: password,
       })
       .then((data) => {
-        console.log(data);
+        console.log("data", data);
+        dispatch(setLoggedIn(true));
+        dispatch(setUser);
       })
       .catch((error) => {
         console.log(error);
@@ -48,27 +54,7 @@ const SignInScreen = () => {
         placeholder="Password"
         autoCapitalize={"none"}
       />
-      <Button
-        title="check"
-        onPress={async () =>
-          console.log(
-            await supabase.from("Users").insert([
-              {
-                // email,
-                // firstName,
-                // lastName,
-                // dob: dob.toString(),
-                // phone,
-                email: "me@piyushmehta.com", // TODO: remove this
-                first_name: "Piyush", // TODO: remove this
-                last_Name: "Mehta", // TODO: remove this
-                dob: "2020-05-05T00:00:00.000Z", // TODO: remove this
-                phone: "1234567890", // TODO: remove this
-              },
-            ])
-          )
-        }
-      />
+
       <Button title="Sign In" style={tw`p-2`} onPress={() => handleSignIn()} />
     </SafeAreaView>
   );

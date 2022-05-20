@@ -8,7 +8,7 @@ const initialState = {
   isLoggedIn: false,
   isLoading: true,
   isSignout: false,
-  userToken: null,
+  user: null,
 };
 
 export const authSlice = createSlice({
@@ -33,8 +33,8 @@ export const authSlice = createSlice({
     setIsSignout: (state, action) => {
       state.isSignout = action.payload;
     },
-    setUserToken: (state, action) => {
-      state.userToken = action.payload;
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
     setIsLoggedIn: (state, action) => {
       state.isLoggedIn = action.payload;
@@ -49,7 +49,7 @@ export const {
   setRestoreToken,
   setIsLoading,
   setIsSignout,
-  setUserToken,
+  setUser,
   setIsLoggedIn,
 } = authSlice.actions;
 
@@ -60,7 +60,7 @@ export const selectSignOut = (state) => state.auth.signOut;
 export const selectRestoreToken = (state) => state.auth.restore_token;
 export const selectIsLoading = (state) => state.auth.isLoading;
 export const selectIsSignout = (state) => state.auth.isSignout;
-export const selectUserToken = (state) => state.auth.userToken;
+export const selectUser = (state) => state.auth.user;
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 
 export default authSlice.reducer;
