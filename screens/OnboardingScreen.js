@@ -1,19 +1,21 @@
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Button, Input } from "@rneui/base";
-import React, { useState } from "react";
-import { SafeAreaView, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import tw from "twrnc";
-import { supabase } from "../lib/supabase";
-import { selectUser, setSignUp } from "../slices/authSlice";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Button, Input } from '@rneui/base';
+import { useState } from 'react';
+import { Alert, SafeAreaView, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import tw from 'twrnc';
+import supabase from '../lib/supabase';
+import { selectUser, setSignUp } from '../slices/authSlice';
 
-const OnboardingScreen = () => {
+function OnboardingScreen() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  console.log("data", user);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
+
+  // eslint-disable-next-line no-console
+  console.log('data', user);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [dob, setDob] = useState(new Date());
@@ -23,7 +25,7 @@ const OnboardingScreen = () => {
     // if (!user) throw new Error("No user on the session!"); // TODO: handle this error
 
     await supabase
-      .from("Users")
+      .from('Users')
       .insert([
         {
           // email,
@@ -31,20 +33,19 @@ const OnboardingScreen = () => {
           // lastName,
           // dob: dob.toString(),
           // phone,
-          email: "me@piyushmehta.com", // TODO: remove this
-          firstName: "Piyush", // TODO: remove this
-          lastName: "Mehta", // TODO: remove this
-          dob: "2020-05-05T00:00:00.000Z", // TODO: remove this
-          phone: "1234567890", // TODO: remove this
+          email: 'me@piyushmehta.com', // TODO: remove this
+          firstName: 'Piyush', // TODO: remove this
+          lastName: 'Mehta', // TODO: remove this
+          dob: '2020-05-05T00:00:00.000Z', // TODO: remove this
+          phone: '1234567890', // TODO: remove this
         },
       ])
       .then((res) => {
-        Alert.alert("Done");
+        Alert.alert('Done');
 
         if (res.error) {
           Alert.alert(res.error.message);
           setLoading(false);
-          return;
         }
       })
       .catch((err) => {
@@ -53,7 +54,8 @@ const OnboardingScreen = () => {
       });
     dispatch(
       setSignUp({
-        email,
+        // eslint-disable-next-line no-undef
+        email, // TODO: retreive from database
         firstName,
         lastName,
         phone,
@@ -83,7 +85,7 @@ const OnboardingScreen = () => {
       />
       <Input
         label="Phone Number"
-        leftIcon={{ type: "font-awesome", name: "phone" }}
+        leftIcon={{ type: 'font-awesome', name: 'phone' }}
         onChangeText={(text) => setPhone(text)}
         value={phone}
         keyboardType="phone-pad"
@@ -110,14 +112,10 @@ const OnboardingScreen = () => {
         }}
       />
       <View style={tw`p-3`}>
-        <Button
-          title="Sign up"
-          disabled={loading}
-          onPress={() => onButtonPress()}
-        />
+        <Button title="Sign up" disabled={loading} onPress={() => onButtonPress()} />
       </View>
     </SafeAreaView>
   );
-};
+}
 
 export default OnboardingScreen;

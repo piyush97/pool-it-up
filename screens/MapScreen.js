@@ -1,11 +1,10 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
-import { View } from "react-native";
-import tw from "twrnc";
-import Map from "../components/Map";
-import RideOptionsCard from "../components/RideOptionsCard";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View } from 'react-native';
+import tw from 'twrnc';
+import Map from '../components/Map';
+import RideOptionsCard from '../components/RideOptionsCard';
 
-const MapScreen = () => {
+function MapScreen() {
   const Stack = createNativeStackNavigator();
   return (
     <View>
@@ -25,6 +24,6 @@ const MapScreen = () => {
       </View>
     </View>
   );
-};
+}
 
 export default MapScreen;

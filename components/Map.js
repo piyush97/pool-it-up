@@ -1,12 +1,13 @@
-import { GOOGLE_MAPS_APIKEY } from "@env";
-import React, { useEffect, useRef } from "react";
-import MapView, { Marker } from "react-native-maps";
-import MapViewDirections from "react-native-maps-directions";
-import { useSelector } from "react-redux";
-import tw from "twrnc";
-import { selectDestination, selectOrigin } from "../slices/navSlice";
+/* eslint-disable import/no-unresolved */
+import { GOOGLE_MAPS_APIKEY } from '@env';
+import { useEffect, useRef } from 'react';
+import MapView, { Marker } from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
+import { useSelector } from 'react-redux';
+import tw from 'twrnc';
+import { selectDestination, selectOrigin } from '../slices/navSlice';
 
-const Map = () => {
+function Map() {
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
   const originDetails = {
@@ -21,10 +22,15 @@ const Map = () => {
 
   useEffect(() => {
     if (!origin || !destination) return;
-    mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
-      edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
+    mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
+      edgePadding: {
+        top: 100,
+        right: 100,
+        bottom: 100,
+        left: 100,
+      },
     });
-  }, [origin, destination]); //whenever origin or destination changes, this function will run
+  }, [origin, destination]); // whenever origin or destination changes, this function will run
   return (
     <MapView
       ref={mapRef}
@@ -68,6 +74,6 @@ const Map = () => {
       )}
     </MapView>
   );
-};
+}
 
 export default Map;

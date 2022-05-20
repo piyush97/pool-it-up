@@ -1,14 +1,15 @@
-import { GOOGLE_MAPS_APIKEY } from "@env";
-import { Input } from "@rneui/themed";
-import React from "react";
-import { Image, SafeAreaView } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { useDispatch } from "react-redux";
-import tw from "twrnc";
-import NavFavourites from "../components/NavFavourites";
-import NavOptions from "../components/NavOptions";
-import { setDestination, setOrigin } from "../slices/navSlice";
-const HomeScreen = () => {
+// eslint-disable-next-line import/no-unresolved
+import { GOOGLE_MAPS_APIKEY } from '@env';
+import { Input } from '@rneui/themed';
+import { Image, SafeAreaView } from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { useDispatch } from 'react-redux';
+import tw from 'twrnc';
+import NavFavourites from '../components/NavFavourites';
+import NavOptions from '../components/NavOptions';
+import { setDestination, setOrigin } from '../slices/navSlice';
+
+function HomeScreen() {
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -28,27 +29,28 @@ const HomeScreen = () => {
   //   })();
   // }, []);
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#E9E7E4" }}>
-      <SafeAreaView style={(tw`p-5`, { backgroundColor: "#E9E7E4" })}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#E9E7E4' }}>
+      <SafeAreaView style={(tw`p-5`, { backgroundColor: '#E9E7E4' })}>
         <Image
-          style={{ height: 100, resizeMode: "contain" }}
+          style={{ height: 100, resizeMode: 'contain' }}
           source={{
-            uri: "https://i.ibb.co/9YC9DQp/Screen-Shot-2022-05-15-at-3-43-11-PM.png",
+            uri: 'https://i.ibb.co/9YC9DQp/Screen-Shot-2022-05-15-at-3-43-11-PM.png',
           }}
         />
         <GooglePlacesAutocomplete
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
           minLength={2}
+          // eslint-disable-next-line no-console
           onFail={(err) => console.log(err)}
-          fetchDetails={true}
-          enableHighAccuracyLocation={true}
+          fetchDetails
+          enableHighAccuracyLocation
           currentLocationLabel="Current Location"
           keyboardShouldPersistTaps="handled"
           enablePoweredByContainer={false}
           textInputProps={{
             InputComp: Input,
-            errorStyle: { color: "red" },
+            errorStyle: { color: 'red' },
           }}
           onPress={(data, details = null) => {
             dispatch(
@@ -64,12 +66,12 @@ const HomeScreen = () => {
             },
             textInput: {
               fontSize: 18,
-              backgroundColor: "transparent",
+              backgroundColor: 'transparent',
             },
           }}
           query={{
             key: GOOGLE_MAPS_APIKEY,
-            language: "en",
+            language: 'en',
           }}
           placeholder="Where From?"
         />
@@ -77,15 +79,16 @@ const HomeScreen = () => {
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
           minLength={2}
+          // eslint-disable-next-line no-console
           onFail={(err) => console.log(err)}
-          fetchDetails={true}
-          enableHighAccuracyLocation={true}
+          fetchDetails
+          enableHighAccuracyLocation
           currentLocationLabel="Current Location"
           keyboardShouldPersistTaps="handled"
           enablePoweredByContainer={false}
           textInputProps={{
             InputComp: Input,
-            errorStyle: { color: "red" },
+            errorStyle: { color: 'red' },
           }}
           onPress={(data, details = null) => {
             dispatch(
@@ -100,13 +103,13 @@ const HomeScreen = () => {
               flex: 0,
             },
             textInput: {
-              backgroundColor: "transparent",
+              backgroundColor: 'transparent',
               fontSize: 18,
             },
           }}
           query={{
             key: GOOGLE_MAPS_APIKEY,
-            language: "en",
+            language: 'en',
           }}
           placeholder="Where to?"
         />
@@ -115,6 +118,6 @@ const HomeScreen = () => {
       </SafeAreaView>
     </SafeAreaView>
   );
-};
+}
 
 export default HomeScreen;
