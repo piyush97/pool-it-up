@@ -1,8 +1,10 @@
 import { Icon } from "@rneui/base";
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import tw from "twrnc";
+import { supabase } from "../lib/supabase";
 const NavFavourites = () => {
+  const [favData, setFavData] = React.useState([]);
   const data = [
     {
       id: 1,
@@ -19,6 +21,18 @@ const NavFavourites = () => {
       destination: "112, Sunset Ave, Windsor, ON, N9B 3P4", // hardcoded for now
     },
   ];
+
+  useEffect(() => {
+    async () => {
+      await supabase
+        .from("Favourites")
+        .select("*")
+        .then((res) => {
+          console.log("res", res);
+          setFavData(res);
+        });
+    };
+  }, [favData]);
   return (
     <FlatList
       data={data}

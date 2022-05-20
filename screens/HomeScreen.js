@@ -1,4 +1,5 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
+import { Input } from "@rneui/themed";
 import React from "react";
 import { Image, SafeAreaView } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -7,7 +8,6 @@ import tw from "twrnc";
 import NavFavourites from "../components/NavFavourites";
 import NavOptions from "../components/NavOptions";
 import { setDestination, setOrigin } from "../slices/navSlice";
-
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
@@ -46,6 +46,10 @@ const HomeScreen = () => {
           currentLocationLabel="Current Location"
           keyboardShouldPersistTaps="handled"
           enablePoweredByContainer={false}
+          textInputProps={{
+            InputComp: Input,
+            errorStyle: { color: "red" },
+          }}
           onPress={(data, details = null) => {
             dispatch(
               setOrigin({
@@ -60,6 +64,7 @@ const HomeScreen = () => {
             },
             textInput: {
               fontSize: 18,
+              backgroundColor: "transparent",
             },
           }}
           query={{
@@ -78,6 +83,10 @@ const HomeScreen = () => {
           currentLocationLabel="Current Location"
           keyboardShouldPersistTaps="handled"
           enablePoweredByContainer={false}
+          textInputProps={{
+            InputComp: Input,
+            errorStyle: { color: "red" },
+          }}
           onPress={(data, details = null) => {
             dispatch(
               setDestination({
@@ -91,6 +100,7 @@ const HomeScreen = () => {
               flex: 0,
             },
             textInput: {
+              backgroundColor: "transparent",
               fontSize: 18,
             },
           }}

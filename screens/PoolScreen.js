@@ -108,6 +108,10 @@ const PoolScreen = () => {
         currentLocationLabel="Current Location"
         keyboardShouldPersistTaps="handled"
         enablePoweredByContainer={false}
+        textInputProps={{
+          InputComp: Input,
+          errorStyle: { color: "red" },
+        }}
         onPress={(data, details = null) => {
           setFrom({
             location: details.geometry.location,
@@ -117,18 +121,9 @@ const PoolScreen = () => {
         styles={{
           container: {
             flex: 0,
-            paddingHorizontal: 10,
           },
-
           textInput: {
-            fontSize: 20,
-            fontWeight: "400",
-            color: "#000",
             backgroundColor: "transparent",
-            height: 40,
-            borderBottomWidth: 0.45,
-            borderBottomColor: "#222",
-            flex: 1,
           },
         }}
         query={{
@@ -147,6 +142,10 @@ const PoolScreen = () => {
         currentLocationLabel="Current Location"
         keyboardShouldPersistTaps="handled"
         enablePoweredByContainer={false}
+        textInputProps={{
+          InputComp: Input,
+          errorStyle: { color: "red" },
+        }}
         onPress={(data, details = null) => {
           setTo({
             location: details.geometry.location,
@@ -156,19 +155,9 @@ const PoolScreen = () => {
         styles={{
           container: {
             flex: 0,
-            paddingHorizontal: 10,
-            paddingVertical: 20,
           },
-
           textInput: {
-            fontSize: 20,
-            fontWeight: "semi-bold",
-            color: "#000",
             backgroundColor: "transparent",
-            height: 40,
-            borderBottomWidth: 0.45,
-            borderBottomColor: "#222",
-            flex: 1,
           },
         }}
         query={{

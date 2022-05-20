@@ -1,4 +1,5 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
+import { Input } from "@rneui/themed";
 import React, { useEffect } from "react";
 import {
   FlatList,
@@ -25,29 +26,7 @@ const RideOptionsCard = () => {
   const origin = useSelector(selectOrigin);
 
   const [selected, setSelected] = React.useState(null);
-  const data = [
-    {
-      id: "1",
-      title: "Ride from Piyush",
-      price: 45,
-      carType: "Sedan",
-      image: require("../assets/SEDAN.webp"),
-      carModel: "Honda Civic",
-      availableSeats: 4,
-    },
-    {
-      id: "2",
-      title: "Ride from John",
-      price: 55,
-      carType: "SUV",
-      image: require("../assets/SUV.webp"),
-      carModel: "Honda CRV",
-      availableSeats: 3,
-    },
-  ]; // TODO: get data from API
 
-  console.log("ORIGINNNN", origin);
-  console.log("DESTINATIONTTT", destination);
   const [rides, setRides] = React.useState([]);
   useEffect(() => {
     const fetchRides = async () => {
@@ -85,6 +64,10 @@ const RideOptionsCard = () => {
         currentLocationLabel="Current Location"
         keyboardShouldPersistTaps="handled"
         enablePoweredByContainer={false}
+        textInputProps={{
+          InputComp: Input,
+          errorStyle: { color: "red" },
+        }}
         onPress={(data, details = null) => {
           dispatch(
             setDestination({
@@ -97,7 +80,9 @@ const RideOptionsCard = () => {
           container: {
             flex: 0,
           },
-          textInput: tw`bg-gray-100 border-b border-gray-200 p-3 text-black`,
+          textInput: {
+            backgroundColor: "transparent",
+          },
           placeholder: tw`text-black`,
         }}
         query={{
