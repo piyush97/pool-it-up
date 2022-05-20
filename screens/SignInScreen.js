@@ -50,8 +50,23 @@ const SignInScreen = () => {
       />
       <Button
         title="check"
-        onPress={() =>
-          console.log("session", supabase.auth.session().access_token)
+        onPress={async () =>
+          console.log(
+            await supabase.from("Users").insert([
+              {
+                // email,
+                // firstName,
+                // lastName,
+                // dob: dob.toString(),
+                // phone,
+                email: "me@piyushmehta.com", // TODO: remove this
+                first_name: "Piyush", // TODO: remove this
+                last_Name: "Mehta", // TODO: remove this
+                dob: "2020-05-05T00:00:00.000Z", // TODO: remove this
+                phone: "1234567890", // TODO: remove this
+              },
+            ])
+          )
         }
       />
       <Button title="Sign In" style={tw`p-2`} onPress={() => handleSignIn()} />

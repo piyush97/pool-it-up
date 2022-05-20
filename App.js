@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import "react-native-url-polyfill/auto";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import Router from "./utils/router";
