@@ -1,7 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { useSelector } from "react-redux";
+import HomeScreen from "../screens/HomeScreen";
+import MapScreen from "../screens/MapScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
+import PoolScreen from "../screens/PoolScreen";
 import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import { selectIsLoggedIn } from "../slices/authSlice";
@@ -15,7 +18,7 @@ const Router = () => {
     <Stack.Navigator>
       {isLoggedIn ? (
         <>
-          {/* <Stack.Screen
+          <Stack.Screen
             name="HomeScreen"
             component={HomeScreen}
             options={{ headerShown: false }}
@@ -29,7 +32,7 @@ const Router = () => {
             name="PoolMyRide"
             component={PoolScreen}
             options={{ headerShown: false }}
-          /> */}
+          />
           <Stack.Screen
             name="Onboarding"
             component={OnboardingScreen}

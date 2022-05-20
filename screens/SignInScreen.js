@@ -1,20 +1,20 @@
 import { Button, Input } from "@rneui/base";
 import { useState } from "react";
 import { SafeAreaView, Text } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import tw from "twrnc";
 import { supabase } from "../lib/supabase";
-import { setUser } from "../slices/authSlice";
+import { selectUser, setIsLoggedIn, setUser } from "../slices/authSlice";
 
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   let session;
 
-  console.log(session);
-
+  console.log("USER", user);
   const handleSignIn = async () => {
     await supabase.auth
       .signIn({
@@ -23,8 +23,8 @@ const SignInScreen = () => {
       })
       .then((data) => {
         console.log("data", data);
-        dispatch(setLoggedIn(true));
-        dispatch(setUser);
+        dispatch(setIsLoggedIn(true));
+        dispatch(setUser(data));
       })
       .catch((error) => {
         console.log(error);

@@ -1,49 +1,112 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Button, Input } from "@rneui/base";
 import React from "react";
-import { Button, SafeAreaView, Text, TextInput } from "react-native";
+import { Alert, SafeAreaView, Text } from "react-native";
+import { useSelector } from "react-redux";
+import tw from "twrnc";
+import { supabase } from "../lib/supabase";
+import { selectUser } from "../slices/authSlice";
 
 const PoolScreen = () => {
+  const [carType, setCarType] = React.useState("");
+  const [carName, setCarName] = React.useState("");
+  const [carNumber, setCarNumber] = React.useState("");
+  const [passengers, setPassengers] = React.useState("");
+  const [from, setFrom] = React.useState("");
+  const [to, setTo] = React.useState("");
   const [startDateTime, setStartDateTime] = React.useState(new Date());
   const [endDateTime, setEndDateTime] = React.useState(new Date());
+  const [costPerPassenger, setCostPerPassenger] = React.useState("");
+  const [costPerBag, setCostPerBag] = React.useState("");
+  const {
+    user: { email, id },
+  } = useSelector(selectUser);
+
+  const onHandleSubmit = async () => {
+    await supabase
+      .from("Rides")
+      .insert([
+        {
+          car_type: carType,
+          car_name: carName,
+          car_number: carNumber,
+          seats_available: passengers,
+          from,
+          host_id: id,
+          host_email: email,
+          datetime_start: startDateTime.toISOString(),
+          todatetime_end: endDateTime.toISOString(),
+          cost_passenger: costPerPassenger,
+          cost_bag: costPerBag,
+        },
+      ])
+      .then((res) => {
+        Alert.alert("Done");
+        console.log(res);
+        if (res.error) {
+          console.log(res);
+          Alert.alert(res.error.message);
+          return;
+        }
+      })
+      .catch((err) => {
+        Alert.alert(err.message);
+        setLoading(false);
+      });
+  };
   return (
     <SafeAreaView>
-      <TextInput
+      <Text style={tw`text-8`}>Add Details</Text>
+      <Input
         placeholder="Car Type"
-        style={{ height: 40, margin: 12, borderWidth: 0.2, padding: 10 }}
+        value={carType}
+        onChangeText={(text) => setCarType(text)}
+        style={tw`p-2 mt-2 `}
       />
-      <TextInput
+
+      <Input
+        placeholder="Car Number"
+        value={carNumber}
+        onChangeText={(text) => setCarNumber(text)}
+        style={tw`p-2`}
+      />
+      <Input
         placeholder="Car Name"
-        style={{ height: 40, margin: 12, borderWidth: 0.2, padding: 10 }}
+        value={carName}
+        onChangeText={(text) => setCarName(text)}
+        style={tw`p-2`}
       />
-      <TextInput
+      <Input
         placeholder="Passengers required"
+        value={passengers}
+        onChangeText={(text) => setPassengers(text)}
+        style={tw`p-2`}
         keyboardType="number-pad"
-        style={{ height: 40, margin: 12, borderWidth: 0.2, padding: 10 }}
       />
-      <TextInput
+      <Input
         placeholder="From"
-        style={{ height: 40, margin: 12, borderWidth: 0.2, padding: 10 }}
+        value={from}
+        onChangeText={(text) => setFrom(text)}
+        style={tw`p-2`}
       />
-      <TextInput
+      <Input
         placeholder="To"
-        style={{ height: 40, margin: 12, borderWidth: 0.2, padding: 10 }}
+        value={to}
+        onChangeText={(text) => setTo(text)}
+        style={tw`p-2`}
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1 }}>
         Date and Time of the Journey Starts:{" "}
       </Text>
       <DateTimePicker
         testID="dateTime"
-        value={new Date()}
+        value={startDateTime}
         mode="datetime"
         is24Hour={false}
         display="default"
-        style={{
-          height: 29,
-          padding: 20,
-          marginRight: 12,
-        }}
+        style={tw`p-2 mr-4`}
         onChange={(e) => {
-          setStartDate(new Date(e.nativeEvent.timestamp));
+          setStartDateTime(new Date(e.nativeEvent.timestamp));
         }}
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1 }}>
@@ -51,31 +114,35 @@ const PoolScreen = () => {
       </Text>
       <DateTimePicker
         testID="dateTime"
-        value={new Date()}
+        value={endDateTime}
         mode="datetime"
         is24Hour={false}
         display="default"
-        style={{
-          height: 29,
-          padding: 20,
-          marginRight: 12,
-        }}
+        style={tw`p-2 mr-4`}
         onChange={(e) => {
-          setEndDate(new Date(e.nativeEvent.timestamp));
+          setEndDateTime(new Date(e.nativeEvent.timestamp));
         }}
       />
 
-      <TextInput
+      <Input
         placeholder="Cost per Passenger in CAD$"
         keyboardType="decimal-pad"
-        style={{ height: 40, margin: 12, borderWidth: 0.2, padding: 10 }}
+        value={costPerPassenger}
+        onChangeText={(text) => setCostPerPassenger(text)}
+        style={tw`p-2`}
       />
-      <TextInput
+      <Input
         placeholder="Cost per checkin bag in CAD$"
         keyboardType="number-pad"
-        style={{ height: 40, margin: 12, borderWidth: 0.2, padding: 10 }}
+        value={costPerBag}
+        onChangeText={(text) => setCostPerBag(text)}
+        style={tw`p-2`}
       />
-      <Button title="Submit"></Button>
+      <Button
+        title="Submit"
+        style={tw`px-3`}
+        onPress={() => onHandleSubmit()}
+      ></Button>
     </SafeAreaView>
   );
 };

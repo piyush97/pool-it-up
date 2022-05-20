@@ -5,11 +5,12 @@ import { SafeAreaView, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import tw from "twrnc";
 import { supabase } from "../lib/supabase";
-import { selectSignUp, setSignUp } from "../slices/authSlice";
+import { selectUser, setSignUp } from "../slices/authSlice";
 
 const OnboardingScreen = () => {
   const dispatch = useDispatch();
-  const { email } = useSelector(selectSignUp);
+  const user = useSelector(selectUser);
+  console.log("data", user);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -64,7 +65,6 @@ const OnboardingScreen = () => {
   return (
     <SafeAreaView>
       <Text style={tw`text-8 p-4 pb-8`}>Promise, this is the last step...</Text>
-
       <Input
         label="First Name"
         onChangeText={(text) => setFirstName(text)}
