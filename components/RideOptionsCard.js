@@ -1,5 +1,5 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FlatList,
   Image,
@@ -9,13 +9,21 @@ import {
   View,
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import tw from "twrnc";
-import { setDestination } from "../slices/navSlice";
+import { supabase } from "../lib/supabase";
+import {
+  selectDestination,
+  selectOrigin,
+  setDestination,
+} from "../slices/navSlice";
 import NavFavourites from "./NavFavourites";
 
 const RideOptionsCard = () => {
   const dispatch = useDispatch();
+  const destination = useSelector(selectDestination);
+  const origin = useSelector(selectOrigin);
+
   const [selected, setSelected] = React.useState(null);
   const data = [
     {
@@ -37,6 +45,25 @@ const RideOptionsCard = () => {
       availableSeats: 3,
     },
   ]; // TODO: get data from API
+
+  console.log("ORIGINNNN", origin);
+  console.log("DESTINATIONTTT", destination);
+  const [rides, setRides] = React.useState([]);
+  useEffect(() => {
+    const fetchRides = async () => {
+      let { data: Rides, error } = await supabase
+        .from("Rides")
+        .select("*")
+        .eq("from", JSON.stringify(origin))
+        .eq("to", JSON.stringify(destination));
+
+      setRides(Rides);
+      if (error) {
+        console.log(error);
+      }
+    };
+    fetchRides();
+  }, [origin, destination]);
   return (
     <SafeAreaView
       style={tw`bg-white flex-1 border-t border-gray-200 flex-shrink`}
@@ -65,7 +92,6 @@ const RideOptionsCard = () => {
               description: data.description,
             })
           );
-          // dispatch(setDestination(null));
         }}
         styles={{
           container: {
@@ -81,11 +107,20 @@ const RideOptionsCard = () => {
         placeholder="Where to?"
       />
       <NavFavourites />
+      {/* <Text>{JSON.stringify(rides, null, 4)}</Text> */}
       <FlatList
-        data={data}
+        data={rides}
         keyExtractor={(item) => item.id}
         renderItem={({
-          item: { title, carType, price, availableSeats, image, carModel },
+          item: {
+            car_type: carType,
+            cost_passenger: price,
+            seats_available: availableSeats,
+            cost_bag,
+            car_number,
+            title,
+            car_name: carModel,
+          },
           item,
         }) => (
           <TouchableOpacity
@@ -98,17 +133,30 @@ const RideOptionsCard = () => {
           >
             <View style={tw`flex-row bg-white border-b border-gray-200 p-3`}>
               <View style={tw`flex-1`}>
-                <Image source={image} style={tw`h-22 w-25`} />
+                <Text style={tw`text-xl`}>{title}</Text>
+                <Image
+                  source={
+                    carType.toLowerCase() === "sedan"
+                      ? require("../assets/SEDAN.webp")
+                      : require("../assets/SUV.webp")
+                  }
+                  style={tw`h-22 w-25`}
+                />
               </View>
               <View style={tw`flex-1`}>
                 <Text style={tw`text-xl text-right`}>${price}</Text>
 
-                <Text style={tw`text-md text-right`}>{title}</Text>
                 <Text style={tw`text-sm text-gray-600 text-right`}>
                   {carType}
                 </Text>
                 <Text style={tw`text-sm text-gray-600 text-right`}>
                   {carModel}
+                </Text>
+                <Text style={tw`text-sm text-gray-600 text-right`}>
+                  {cost_bag}
+                </Text>
+                <Text style={tw`text-sm text-gray-600 text-right`}>
+                  {car_number}
                 </Text>
                 <Text
                   style={tw`text-sm text-gray-600 font-semibold text-right`}

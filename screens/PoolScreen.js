@@ -20,6 +20,7 @@ const PoolScreen = () => {
   const [startDateTime, setStartDateTime] = React.useState(new Date());
   const [endDateTime, setEndDateTime] = React.useState(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState("");
+  const [title, setTitle] = React.useState("");
   const [costPerBag, setCostPerBag] = React.useState("");
   const {
     user: { email, id },
@@ -38,6 +39,7 @@ const PoolScreen = () => {
           from,
           to,
           host_id: id,
+          title,
           host_email: email,
           datetime_start: startDateTime.toISOString(),
           todatetime_end: endDateTime.toISOString(),
@@ -63,6 +65,13 @@ const PoolScreen = () => {
   return (
     <SafeAreaView>
       <Text style={tw`text-8 p-2`}>Add Details</Text>
+      <Input
+        placeholder="Name your ride"
+        value={title}
+        onChangeText={(text) => setTitle(text)}
+        style={tw`p-2 mt-2 `}
+        autoCorrect={false}
+      />
       <Input
         placeholder="Car Type"
         value={carType}

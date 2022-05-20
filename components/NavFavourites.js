@@ -8,14 +8,14 @@ const NavFavourites = () => {
       id: 1,
       title: "Home",
       icon: "home",
-      location: "Home",
+      type: "Home",
       destination: "401, Sunset Ave, Windsor, ON, N9B 3P4", // hardcoded for now
     },
     {
       id: 2,
       title: "Work",
       icon: "briefcase",
-      location: "Work",
+      type: "Work",
       destination: "112, Sunset Ave, Windsor, ON, N9B 3P4", // hardcoded for now
     },
   ];
@@ -26,7 +26,7 @@ const NavFavourites = () => {
       ItemSeparatorComponent={() => (
         <View style={{ backgroundColor: "gray", height: 0.25 }} />
       )}
-      renderItem={({ item: { location, destination, icon } }) => (
+      renderItem={({ item: { type, destination, icon } }) => (
         <TouchableOpacity style={tw`flex-row items-center p-5`}>
           <Icon
             style={tw`mr-4 rounded-full bg-gray-300 p-3`}
@@ -36,7 +36,7 @@ const NavFavourites = () => {
             size={18}
           />
           <View>
-            <Text style={tw`font-semibold text-lg`}>{location}</Text>
+            <Text style={tw`font-semibold text-lg`}>{type}</Text>
             <Text style={tw`text-gray-500`}>{destination}</Text>
           </View>
         </TouchableOpacity>

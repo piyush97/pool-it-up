@@ -10,12 +10,12 @@ const Map = () => {
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
   const originDetails = {
-    latitude: origin.location.latitude,
-    longitude: origin.location.longitude,
+    latitude: origin?.location.lat,
+    longitude: origin?.location.lng,
   };
   const destinationDetails = {
-    latitude: destination.location.lat,
-    longitude: destination.location.lng,
+    latitude: destination?.location.lat,
+    longitude: destination?.location.lng,
   };
   const mapRef = useRef(null);
 
@@ -30,8 +30,8 @@ const Map = () => {
       ref={mapRef}
       style={tw`flex-1`}
       initialRegion={{
-        latitude: origin.location.latitude,
-        longitude: origin.location.longitude,
+        latitude: origin?.location?.lat,
+        longitude: origin?.location?.lng,
         latitudeDelta: 0.005,
         longitudeDelta: 0.005,
       }}
@@ -51,8 +51,8 @@ const Map = () => {
           title="Origin"
           identifier="origin"
           coordinate={{
-            latitude: origin.location.latitude,
-            longitude: origin.location.longitude,
+            latitude: origin?.location.lat,
+            longitude: origin?.location.lng,
           }}
         />
       )}
@@ -61,8 +61,8 @@ const Map = () => {
           title="Destination"
           identifier="destination"
           coordinate={{
-            latitude: destination.location.lat,
-            longitude: destination.location.lng,
+            latitude: destination?.location.lat,
+            longitude: destination?.location.lng,
           }}
         />
       )}

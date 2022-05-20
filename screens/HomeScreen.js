@@ -1,6 +1,5 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
-import * as Location from "expo-location";
-import React, { useEffect } from "react";
+import React from "react";
 import { Image, SafeAreaView } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useDispatch } from "react-redux";
@@ -12,22 +11,22 @@ import { setDestination, setOrigin } from "../slices/navSlice";
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       setErrorMsg("Permission to access location was denied");
+  //       return;
+  //     }
 
-      let location = await Location.getCurrentPositionAsync({});
-      dispatch(
-        setOrigin({
-          location: location.coords,
-        })
-      );
-    })();
-  }, []);
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     dispatch(
+  //       setOrigin({
+  //         location: location.coords,
+  //       })
+  //     );
+  //   })();
+  // }, []);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#E9E7E4" }}>
       <SafeAreaView style={(tw`p-5`, { backgroundColor: "#E9E7E4" })}>
@@ -49,12 +48,43 @@ const HomeScreen = () => {
           enablePoweredByContainer={false}
           onPress={(data, details = null) => {
             dispatch(
+              setOrigin({
+                location: details.geometry.location,
+                description: data.description,
+              })
+            );
+          }}
+          styles={{
+            container: {
+              flex: 0,
+            },
+            textInput: {
+              fontSize: 18,
+            },
+          }}
+          query={{
+            key: GOOGLE_MAPS_APIKEY,
+            language: "en",
+          }}
+          placeholder="Where From?"
+        />
+        <GooglePlacesAutocomplete
+          nearbyPlacesAPI="GooglePlacesSearch"
+          debounce={400}
+          minLength={2}
+          onFail={(err) => console.log(err)}
+          fetchDetails={true}
+          enableHighAccuracyLocation={true}
+          currentLocationLabel="Current Location"
+          keyboardShouldPersistTaps="handled"
+          enablePoweredByContainer={false}
+          onPress={(data, details = null) => {
+            dispatch(
               setDestination({
                 location: details.geometry.location,
                 description: data.description,
               })
             );
-            // dispatch(setDestination(null));
           }}
           styles={{
             container: {
