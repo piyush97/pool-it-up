@@ -1,7 +1,7 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Input } from "@rneui/base";
+import { Button, Input } from "@rneui/themed";
 import React from "react";
 import { Alert, SafeAreaView, Text } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -36,6 +36,7 @@ const PoolScreen = () => {
           car_number: carNumber,
           seats_available: passengers,
           from,
+          to,
           host_id: id,
           host_email: email,
           datetime_start: startDateTime.toISOString(),
