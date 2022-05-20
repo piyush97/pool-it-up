@@ -1,20 +1,23 @@
-import { Button, Input } from "@rneui/base";
+import { Button, Input, Text, useTheme, useThemeMode } from "@rneui/themed";
 import { useState } from "react";
-import { SafeAreaView, Text } from "react-native";
-import { useDispatch } from "react-redux";
+import { SafeAreaView } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import tw from "twrnc";
 import { supabase } from "../lib/supabase";
-import { setUser } from "../slices/authSlice";
+import { selectUser, setIsLoggedIn, setUser } from "../slices/authSlice";
 
 const SignInScreen = () => {
+  const { theme } = useTheme();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const { mode, setMode } = useThemeMode();
 
   let session;
 
-  console.log(session);
-
+  console.log("USER", user);
   const handleSignIn = async () => {
     await supabase.auth
       .signIn({
@@ -23,8 +26,8 @@ const SignInScreen = () => {
       })
       .then((data) => {
         console.log("data", data);
-        dispatch(setLoggedIn(true));
-        dispatch(setUser);
+        dispatch(setIsLoggedIn(true));
+        dispatch(setUser(data));
       })
       .catch((error) => {
         console.log(error);
@@ -32,9 +35,8 @@ const SignInScreen = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ background: theme.colors.primary }}>
       <Text style={tw`text-10 p-4 pb-8`}>Sign In</Text>
-
       <Input
         label="Email"
         leftIcon={{ type: "font-awesome", name: "envelope" }}
@@ -54,7 +56,6 @@ const SignInScreen = () => {
         placeholder="Password"
         autoCapitalize={"none"}
       />
-
       <Button title="Sign In" style={tw`p-2`} onPress={() => handleSignIn()} />
     </SafeAreaView>
   );
