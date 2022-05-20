@@ -84,6 +84,7 @@ const PoolScreen = () => {
         style={tw`p-2`}
         keyboardType="number-pad"
       />
+
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
@@ -99,8 +100,6 @@ const PoolScreen = () => {
             location: details.geometry.location,
             description: data.description,
           });
-
-          // dispatch(setDestination(null));
         }}
         styles={{
           container: {
@@ -114,10 +113,8 @@ const PoolScreen = () => {
             color: "#000",
             backgroundColor: "transparent",
             height: 33,
-
             borderBottomWidth: 0.45,
             borderBottomColor: "#222",
-
             flex: 1,
           },
         }}
@@ -127,6 +124,7 @@ const PoolScreen = () => {
         }}
         placeholder="Where from?"
       />
+      <Input InputComponent={""} />
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
@@ -142,15 +140,22 @@ const PoolScreen = () => {
             location: details.geometry.location,
             description: data.description,
           });
-
-          // dispatch(setDestination(null));
         }}
         styles={{
           container: {
             flex: 0,
+            paddingHorizontal: 10,
           },
+
           textInput: {
-            fontSize: 18,
+            fontSize: 20,
+            fontWeight: "semi-bold",
+            color: "#000",
+            backgroundColor: "transparent",
+            height: 33,
+            borderBottomWidth: 0.45,
+            borderBottomColor: "#222",
+            flex: 1,
           },
         }}
         query={{

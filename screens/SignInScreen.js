@@ -1,4 +1,4 @@
-import { Button, Input } from "@rneui/base";
+import { Button, Input } from "@rneui/themed";
 import { useState } from "react";
 import { SafeAreaView, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";

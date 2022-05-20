@@ -12,6 +12,7 @@ import { selectIsLoggedIn } from "../slices/authSlice";
 const Router = () => {
   const Stack = createNativeStackNavigator();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+
   let isSignout = false;
 
   return (
