@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createTheme, ThemeProvider } from "@rneui/themed";
+import { createTheme, lightColors, ThemeProvider } from "@rneui/themed";
 import React from "react";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -10,8 +10,11 @@ import Router from "./utils/router";
 
 export default function App() {
   const theme = createTheme({
-    Button: {
-      raised: false,
+    lightColors: {
+      ...Platform.select({
+        default: lightColors.platform.android,
+        ios: lightColors.platform.ios,
+      }),
     },
   });
 

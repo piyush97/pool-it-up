@@ -1,5 +1,6 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
 import { Button, Input } from "@rneui/base";
 import React from "react";
 import { Alert, SafeAreaView, Text } from "react-native";
@@ -23,6 +24,7 @@ const PoolScreen = () => {
   const {
     user: { email, id },
   } = useSelector(selectUser);
+  const navigation = useNavigation();
 
   const onHandleSubmit = async () => {
     await supabase
@@ -45,6 +47,7 @@ const PoolScreen = () => {
       .then((res) => {
         Alert.alert("Done");
         console.log(res);
+        navigation.navigate("HomeScreen");
         if (res.error) {
           console.log(res);
           Alert.alert(res.error.message);
@@ -58,7 +61,7 @@ const PoolScreen = () => {
   };
   return (
     <SafeAreaView>
-      <Text style={tw`text-8`}>Add Details</Text>
+      <Text style={tw`text-8 p-2`}>Add Details</Text>
       <Input
         placeholder="Car Type"
         value={carType}
@@ -109,10 +112,10 @@ const PoolScreen = () => {
 
           textInput: {
             fontSize: 20,
-            fontWeight: "semi-bold",
+            fontWeight: "400",
             color: "#000",
             backgroundColor: "transparent",
-            height: 33,
+            height: 40,
             borderBottomWidth: 0.45,
             borderBottomColor: "#222",
             flex: 1,
@@ -124,7 +127,6 @@ const PoolScreen = () => {
         }}
         placeholder="Where from?"
       />
-      <Input InputComponent={""} />
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
@@ -145,6 +147,7 @@ const PoolScreen = () => {
           container: {
             flex: 0,
             paddingHorizontal: 10,
+            paddingVertical: 20,
           },
 
           textInput: {
@@ -152,7 +155,7 @@ const PoolScreen = () => {
             fontWeight: "semi-bold",
             color: "#000",
             backgroundColor: "transparent",
-            height: 33,
+            height: 40,
             borderBottomWidth: 0.45,
             borderBottomColor: "#222",
             flex: 1,
