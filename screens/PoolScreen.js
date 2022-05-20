@@ -1,7 +1,9 @@
+import { GOOGLE_MAPS_APIKEY } from "@env";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Button, Input } from "@rneui/base";
 import React from "react";
 import { Alert, SafeAreaView, Text } from "react-native";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useSelector } from "react-redux";
 import tw from "twrnc";
 import { supabase } from "../lib/supabase";
@@ -63,7 +65,6 @@ const PoolScreen = () => {
         onChangeText={(text) => setCarType(text)}
         style={tw`p-2 mt-2 `}
       />
-
       <Input
         placeholder="Car Number"
         value={carNumber}
@@ -83,17 +84,80 @@ const PoolScreen = () => {
         style={tw`p-2`}
         keyboardType="number-pad"
       />
-      <Input
-        placeholder="From"
-        value={from}
-        onChangeText={(text) => setFrom(text)}
-        style={tw`p-2`}
+      <GooglePlacesAutocomplete
+        nearbyPlacesAPI="GooglePlacesSearch"
+        debounce={400}
+        minLength={2}
+        onFail={(err) => console.log(err)}
+        fetchDetails={true}
+        enableHighAccuracyLocation={true}
+        currentLocationLabel="Current Location"
+        keyboardShouldPersistTaps="handled"
+        enablePoweredByContainer={false}
+        onPress={(data, details = null) => {
+          setFrom({
+            location: details.geometry.location,
+            description: data.description,
+          });
+
+          // dispatch(setDestination(null));
+        }}
+        styles={{
+          container: {
+            flex: 0,
+            paddingHorizontal: 10,
+          },
+
+          textInput: {
+            fontSize: 20,
+            fontWeight: "semi-bold",
+            color: "#000",
+            backgroundColor: "transparent",
+            height: 33,
+
+            borderBottomWidth: 0.45,
+            borderBottomColor: "#222",
+
+            flex: 1,
+          },
+        }}
+        query={{
+          key: GOOGLE_MAPS_APIKEY,
+          language: "en",
+        }}
+        placeholder="Where from?"
       />
-      <Input
-        placeholder="To"
-        value={to}
-        onChangeText={(text) => setTo(text)}
-        style={tw`p-2`}
+      <GooglePlacesAutocomplete
+        nearbyPlacesAPI="GooglePlacesSearch"
+        debounce={400}
+        minLength={2}
+        onFail={(err) => console.log(err)}
+        fetchDetails={true}
+        enableHighAccuracyLocation={true}
+        currentLocationLabel="Current Location"
+        keyboardShouldPersistTaps="handled"
+        enablePoweredByContainer={false}
+        onPress={(data, details = null) => {
+          setTo({
+            location: details.geometry.location,
+            description: data.description,
+          });
+
+          // dispatch(setDestination(null));
+        }}
+        styles={{
+          container: {
+            flex: 0,
+          },
+          textInput: {
+            fontSize: 18,
+          },
+        }}
+        query={{
+          key: GOOGLE_MAPS_APIKEY,
+          language: "en",
+        }}
+        placeholder="Where to?"
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1 }}>
         Date and Time of the Journey Starts:{" "}
@@ -123,7 +187,6 @@ const PoolScreen = () => {
           setEndDateTime(new Date(e.nativeEvent.timestamp));
         }}
       />
-
       <Input
         placeholder="Cost per Passenger in CAD$"
         keyboardType="decimal-pad"
