@@ -17,12 +17,18 @@ function OnboardingScreenGenerator({ flowType }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const { title, bottomNavigationLink, bottomNavigationText, buttonText, onButtonPress } =
-    fetchDetails({
-      flowType,
-      email,
-      password,
-    });
+  const {
+    title,
+    bottomNavigationLink,
+    bottomNavigationText,
+    buttonText,
+    onButtonPress,
+    nextScreen,
+  } = fetchDetails({
+    flowType,
+    email,
+    password,
+  });
 
   const { setMode } = useThemeMode();
   useEffect(() => {
@@ -37,6 +43,7 @@ function OnboardingScreenGenerator({ flowType }) {
       dispatch(setUser(user));
       dispatch(setIsLoggedIn(true));
       dispatch(setSignUp({ email }));
+      navigation.navigate(nextScreen);
     }
   };
 

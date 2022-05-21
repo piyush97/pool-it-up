@@ -12,6 +12,7 @@ const fetchDetails = ({ flowType, email, password }) => {
           email,
           password,
         }),
+      nextScreen: 'HomeScreen',
     };
   }
   return {
@@ -24,6 +25,7 @@ const fetchDetails = ({ flowType, email, password }) => {
         email,
         password,
       }),
+    nextScreen: 'Onboarding',
   };
 };
 export default fetchDetails;
