@@ -1,7 +1,8 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Button, Input } from '@rneui/base';
+import { Button, Input, Text } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import { useState } from 'react';
-import { Alert, SafeAreaView, Text, View } from 'react-native';
+import { Alert, SafeAreaView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import supabase from '../lib/supabase';
@@ -9,6 +10,8 @@ import { selectUser, setSignUp } from '../slices/authSlice';
 
 function OnboardingScreen() {
   const dispatch = useDispatch();
+  const { theme } = useTheme();
+
   const user = useSelector(selectUser);
 
   // eslint-disable-next-line no-console
@@ -65,7 +68,7 @@ function OnboardingScreen() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
       <Text style={tw`text-8 p-4 pb-8`}>Promise, this is the last step...</Text>
       <Input
         label="First Name"
