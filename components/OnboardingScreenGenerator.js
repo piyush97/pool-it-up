@@ -11,6 +11,16 @@ import fetchDetails from '../constants/fetchDetails';
 import socialLoginOptions from '../constants/socialLoginOptions';
 import { setIsLoggedIn, setSignUp, setUser } from '../slices/authSlice';
 
+/**
+ * @author Piyush Mehta <me@piyushmehta.com> (https://piyushmehta.com)
+ * @name OnboardingScreenGenerator
+ * @param {number} flowType
+ * @returns {JSX.Element}
+ * @author Piyush97
+ * @version 1.0.0
+ * @description This function is used to generate OnboardingScreen based on flowType passed as props to it.
+ * @example <OnboardingScreenGenerator flowType={1} />
+ */
 function OnboardingScreenGenerator({ flowType }) {
   const { theme } = useTheme();
   const navigation = useNavigation();
