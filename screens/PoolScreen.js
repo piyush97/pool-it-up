@@ -28,7 +28,7 @@ function PoolScreen() {
   const navigation = useNavigation();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
-  console.log(destination, origin);
+
   const onHandleSubmit = async () => {
     await supabase
       .from('Rides')
