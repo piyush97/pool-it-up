@@ -1,6 +1,5 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Button, Input, Text } from '@rneui/base';
-import { useTheme } from '@rneui/themed';
+import { Button, Input, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
 import { Alert, SafeAreaView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
