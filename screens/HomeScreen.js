@@ -14,6 +14,7 @@ function HomeScreen() {
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation();
   const { theme } = useTheme();
+  const [isDestination, setIsDestination] = useState(false);
 
   // useEffect(() => {
   //   (async () => {
@@ -97,6 +98,7 @@ function HomeScreen() {
               description: data.description,
             })
           );
+          setIsDestination(true);
         }}
         styles={{
           container: {
@@ -129,9 +131,11 @@ function HomeScreen() {
       </SafeAreaView>
       <Button
         style={tw`p-2 pt-12`}
+        disabled={!isDestination}
         onPress={() =>
-          checked ? navigation.navigate('PoolMyRide') : navigation.navigate('GetARide')
+          checked ? navigation?.navigate('PoolMyRide') : navigation.navigate('GetARide')
         }
+        disabledStyle={{ backgroundColor: theme.colors.disabled }}
       >
         <Text style={{ color: theme.colors.black }}>
           {checked ? 'Pool my Ride' : 'Book a Ride'}
