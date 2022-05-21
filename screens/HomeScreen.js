@@ -137,7 +137,6 @@ function HomeScreen() {
           {checked ? 'Pool my Ride' : 'Book a Ride'}
         </Text>
       </Button>
-      {/* <NavOptions /> */}
     </SafeAreaView>
   );
 }
