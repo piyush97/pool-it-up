@@ -1,7 +1,8 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Button, Input } from '@rneui/base';
+import { useNavigation } from '@react-navigation/native';
+import { Button, Input, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
-import { Alert, SafeAreaView, Text, View } from 'react-native';
+import { Alert, SafeAreaView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import supabase from '../lib/supabase';
@@ -9,6 +10,8 @@ import { selectUser, setSignUp } from '../slices/authSlice';
 
 function OnboardingScreen() {
   const dispatch = useDispatch();
+  const { theme } = useTheme();
+
   const user = useSelector(selectUser);
 
   // eslint-disable-next-line no-console
@@ -19,7 +22,8 @@ function OnboardingScreen() {
 
   const [loading, setLoading] = useState(false);
   const [dob, setDob] = useState(new Date());
-
+  const { email } = user;
+  const navigation = useNavigation();
   const onButtonPress = async () => {
     // const user = supabase.auth.user(); // TODO: NEED FIX returns the current user
     // if (!user) throw new Error("No user on the session!"); // TODO: handle this error
@@ -28,20 +32,16 @@ function OnboardingScreen() {
       .from('Users')
       .insert([
         {
-          // email,
-          // firstName,
-          // lastName,
-          // dob: dob.toString(),
-          // phone,
-          email: 'me@piyushmehta.com', // TODO: remove this
-          firstName: 'Piyush', // TODO: remove this
-          lastName: 'Mehta', // TODO: remove this
-          dob: '2020-05-05T00:00:00.000Z', // TODO: remove this
-          phone: '1234567890', // TODO: remove this
+          email,
+          first_name: firstName,
+          last_name: lastName,
+          dob: dob.toISOString(),
+          phone,
         },
       ])
       .then((res) => {
         Alert.alert('Done');
+        navigation.navigate('HomeScreen');
 
         if (res.error) {
           Alert.alert(res.error.message);
@@ -65,31 +65,27 @@ function OnboardingScreen() {
   };
 
   return (
-    <SafeAreaView>
-      <Text style={tw`text-8 p-4 pb-8`}>Promise, this is the last step...</Text>
+    <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
+      <Text style={tw`text-10 p-4 pb-8 pt-50`}>User Details</Text>
       <Input
-        label="First Name"
         onChangeText={(text) => setFirstName(text)}
         value={firstName}
-        placeholder="John"
+        placeholder="First Name"
         autoComplete="name"
         autoCapitalize="words"
       />
       <Input
-        label="Last Name"
+        placeholder="Last Name"
         onChangeText={(text) => setLastName(text)}
         value={lastName}
-        placeholder="Doe"
         autoComplete="name"
         autoCapitalize="words"
       />
       <Input
-        label="Phone Number"
-        leftIcon={{ type: 'font-awesome', name: 'phone' }}
         onChangeText={(text) => setPhone(text)}
         value={phone}
         keyboardType="phone-pad"
-        placeholder="(123) 456-7890"
+        placeholder="Phone Number"
         autoComplete="tel"
         autoCapitalize="none"
       />
@@ -102,10 +98,12 @@ function OnboardingScreen() {
         mode="date"
         is24Hour={false}
         display="default"
+        themeVariant="dark"
         style={{
           padding: 20,
           marginRight: 12,
-          flex: 1,
+
+          flex: 0,
         }}
         onChange={(e) => {
           setDob(new Date(e.nativeEvent.timestamp));
