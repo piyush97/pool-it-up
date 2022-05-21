@@ -1,6 +1,7 @@
 import { createTheme } from '@rneui/themed';
 
 const theme = createTheme({
+  mode: 'dark',
   lightColors: {},
   darkColors: {
     primary: '#0A84FF',

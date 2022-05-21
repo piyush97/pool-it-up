@@ -39,7 +39,7 @@ function OnboardingScreenGenerator({ flowType }) {
     const { error = null, user } = await onButtonPress();
     if (error) {
       Alert.alert(error?.message);
-    } else {
+    } else if (user) {
       dispatch(setUser(user));
       dispatch(setIsLoggedIn(true));
       dispatch(setSignUp({ email }));
@@ -49,7 +49,7 @@ function OnboardingScreenGenerator({ flowType }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      <TouchableOpacity style={{ flex: 0 }}>
+      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate('HomeScreen')}>
         <Text style={{ color: theme.colors.grey1, flex: 0, textAlign: 'right', paddingRight: 20 }}>
           Skip
         </Text>
