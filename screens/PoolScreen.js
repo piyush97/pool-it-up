@@ -3,9 +3,9 @@
 import { GOOGLE_MAPS_APIKEY } from '@env';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Input } from '@rneui/themed';
+import { Button, Input, Text, useTheme } from '@rneui/themed';
 import React from 'react';
-import { Alert, SafeAreaView, Text } from 'react-native';
+import { Alert, SafeAreaView } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useSelector } from 'react-redux';
 import tw from 'twrnc';
@@ -13,6 +13,8 @@ import supabase from '../lib/supabase';
 import { selectUser } from '../slices/authSlice';
 
 function PoolScreen() {
+  const { theme } = useTheme();
+
   const [carType, setCarType] = React.useState('');
   const [carName, setCarName] = React.useState('');
   const [carNumber, setCarNumber] = React.useState('');
@@ -22,11 +24,8 @@ function PoolScreen() {
   const [startDateTime, setStartDateTime] = React.useState(new Date());
   const [endDateTime, setEndDateTime] = React.useState(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
-  const [title, setTitle] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
-  const {
-    user: { email, id },
-  } = useSelector(selectUser);
+  const { email, id } = useSelector(selectUser);
   const navigation = useNavigation();
 
   const onHandleSubmit = async () => {
@@ -41,7 +40,7 @@ function PoolScreen() {
           from,
           to,
           host_id: id,
-          title,
+          title: `Ride with ${carName}`,
           host_email: email,
           datetime_start: startDateTime.toISOString(),
           todatetime_end: endDateTime.toISOString(),
@@ -63,15 +62,9 @@ function PoolScreen() {
       });
   };
   return (
-    <SafeAreaView>
-      <Text style={tw`text-8 p-2`}>Add Details</Text>
-      <Input
-        placeholder="Name your ride"
-        value={title}
-        onChangeText={(text) => setTitle(text)}
-        style={tw`p-2 mt-2 `}
-        autoCorrect={false}
-      />
+    <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
+      <Text style={tw`text-10 p-4 pb-8 pt-5`}>Ride Details</Text>
+
       <Input
         placeholder="Car Type"
         value={carType}

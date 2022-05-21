@@ -30,7 +30,7 @@ function HomeScreen() {
   // }, []);
   return (
     <SafeAreaView style={{ height: '100%', backgroundColor: theme.colors.background }}>
-      <Text style={tw`text-10 p-4 pb-8 pt-50`}>User Details</Text>
+      <Text style={tw`text-10 p-4 pb-8 pt-50`}>Home</Text>
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}

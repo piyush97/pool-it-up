@@ -39,7 +39,7 @@ function OnboardingScreenGenerator({ flowType }) {
     const { error = null, user } = await onButtonPress();
     if (error) {
       Alert.alert(error?.message);
-    } else {
+    } else if (user) {
       dispatch(setUser(user));
       dispatch(setIsLoggedIn(true));
       dispatch(setSignUp({ email }));
