@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
 import { GOOGLE_MAPS_APIKEY } from '@env';
-import { Input } from '@rneui/themed';
+import { Input, Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
-import { FlatList, Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, TouchableOpacity, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
@@ -11,13 +11,12 @@ import SUV from '../assets/SUV.webp';
 import supabase from '../lib/supabase';
 import { selectDestination, selectOrigin, setDestination } from '../slices/navSlice';
 import Greeter from '../utils/greeting';
-import NavFavourites from './NavFavourites';
 
 function RideOptionsCard() {
   const dispatch = useDispatch();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
-
+  const { theme } = useTheme();
   const [selected, setSelected] = React.useState(null);
 
   const [rides, setRides] = React.useState([]);
@@ -38,7 +37,14 @@ function RideOptionsCard() {
     fetchRides();
   }, [origin, destination]);
   return (
-    <SafeAreaView style={tw`bg-white flex-1 border-t border-gray-200 flex-shrink`}>
+    <View
+      style={
+        {
+          backgroundColor: theme.colors.background,
+        }
+        // tw` flex-1 border-t border-gray-200 flex-shrink`)
+      }
+    >
       <Text style={tw`text-center py-2 text-xl`}>{Greeter()}</Text>
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
@@ -70,7 +76,7 @@ function RideOptionsCard() {
           textInput: {
             backgroundColor: 'transparent',
           },
-          placeholder: tw`text-black`,
+          placeholder: theme.colors.black,
         }}
         query={{
           key: GOOGLE_MAPS_APIKEY,
@@ -78,8 +84,9 @@ function RideOptionsCard() {
         }}
         placeholder="Where to?"
       />
-      <NavFavourites />
-      {/* <Text>{JSON.stringify(rides, null, 4)}</Text> */}
+      {/* TODO: Write logic for Db */}
+      {/* <NavFavourites /> */}
+
       <FlatList
         data={rides}
         keyExtractor={(item) => item.id}
@@ -99,11 +106,8 @@ function RideOptionsCard() {
             onPress={() => {
               setSelected(item);
             }}
-            // style={tw`flex-row justify-between items-center ${
-            //   id === selected?.id && "bg-gray-900"
-            // }`}
           >
-            <View style={tw`flex-row bg-white border-b border-gray-200 p-3`}>
+            <View style={tw`flex-row  border-b border-gray-200 p-3`}>
               <View style={tw`flex-1`}>
                 <Text style={tw`text-xl`}>{title}</Text>
                 <Image
@@ -114,29 +118,24 @@ function RideOptionsCard() {
               <View style={tw`flex-1`}>
                 <Text style={tw`text-xl text-right`}>${price}</Text>
 
-                <Text style={tw`text-sm text-gray-600 text-right`}>{carType}</Text>
-                <Text style={tw`text-sm text-gray-600 text-right`}>{carModel}</Text>
-                <Text style={tw`text-sm text-gray-600 text-right`}>{costPerBag}</Text>
-                <Text style={tw`text-sm text-gray-600 text-right`}>{carNumber}</Text>
-                <Text style={tw`text-sm text-gray-600 font-semibold text-right`}>
-                  {availableSeats} seats
-                </Text>
+                <Text style={tw`text-sm text-right`}>{carType}</Text>
+                <Text style={tw`text-sm text-right`}>{carModel}</Text>
+                <Text style={tw`text-sm text-right`}>{costPerBag}</Text>
+                <Text style={tw`text-sm text-right`}>{carNumber}</Text>
+                <Text style={tw`text-sm font-semibold text-right`}>{availableSeats} seats</Text>
               </View>
             </View>
           </TouchableOpacity>
         )}
       />
       <View>
-        <TouchableOpacity
-          style={tw`bg-black py-3 m-3 ${!selected && 'bg-gray-300'}`}
-          disabled={!selected}
-        >
+        <TouchableOpacity style={tw` py-3 m-3 ${!selected && 'bg-gray-300'}`} disabled={!selected}>
           <Text style={tw`text-center text-white text-xl`}>
             {!selected ? 'Select a Ride' : selected?.id && `You selected ${selected.title}`}
           </Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -57,8 +57,8 @@ function Map() {
           title="Origin"
           identifier="origin"
           coordinate={{
-            latitude: origin?.location.lat,
-            longitude: origin?.location.lng,
+            latitude: origin?.location?.lat,
+            longitude: origin?.location?.lng,
           }}
         />
       )}
@@ -67,8 +67,8 @@ function Map() {
           title="Destination"
           identifier="destination"
           coordinate={{
-            latitude: destination?.location.lat,
-            longitude: destination?.location.lng,
+            latitude: destination?.location?.lat,
+            longitude: destination?.location?.lng,
           }}
         />
       )}

@@ -7,11 +7,11 @@ import RideOptionsCard from '../components/RideOptionsCard';
 function MapScreen() {
   const Stack = createNativeStackNavigator();
   return (
-    <View>
-      <View style={tw`h-1/3`}>
+    <View style={{ height: '100%' }}>
+      <View style={tw`h-1/2`}>
         <Map />
       </View>
-      <View style={tw`h-2/3`}>
+      <View style={tw`h-1/2`}>
         <Stack.Navigator>
           <Stack.Screen
             name="RideOptionsCard"
