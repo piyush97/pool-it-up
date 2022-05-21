@@ -1,18 +1,17 @@
 /* eslint-disable no-console */
 // eslint-disable-next-line import/no-unresolved
-import { GOOGLE_MAPS_APIKEY } from '@env';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Text, useTheme } from '@rneui/themed';
 import React from 'react';
 import { Alert, SafeAreaView } from 'react-native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useSelector } from 'react-redux';
 import tw from 'twrnc';
 import rideTypes from '../constants/ride';
 import supabase from '../lib/supabase';
 import { selectUser } from '../slices/authSlice';
+import { selectDestination, selectOrigin } from '../slices/navSlice';
 
 function PoolScreen() {
   const { theme } = useTheme();
@@ -21,15 +20,15 @@ function PoolScreen() {
   const [carName, setCarName] = React.useState('');
   const [carNumber, setCarNumber] = React.useState('');
   const [passengers, setPassengers] = React.useState('');
-  const [from, setFrom] = React.useState('');
-  const [to, setTo] = React.useState('');
   const [startDateTime, setStartDateTime] = React.useState(new Date());
   const [endDateTime, setEndDateTime] = React.useState(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
   const { email, id: userId } = useSelector(selectUser);
   const navigation = useNavigation();
-
+  const destination = useSelector(selectDestination);
+  const origin = useSelector(selectOrigin);
+  console.log(destination, origin);
   const onHandleSubmit = async () => {
     await supabase
       .from('Rides')
@@ -39,8 +38,8 @@ function PoolScreen() {
           car_name: carName,
           car_number: carNumber,
           seats_available: passengers,
-          from,
-          to,
+          from: origin,
+          to: destination,
           host_id: userId,
           title: `Ride with ${carName}`,
           host_email: email,
@@ -86,7 +85,7 @@ function PoolScreen() {
         keyboardType="number-pad"
       />
 
-      <GooglePlacesAutocomplete
+      {/* <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
         minLength={2}
@@ -155,7 +154,7 @@ function PoolScreen() {
           language: 'en',
         }}
         placeholder="Where to?"
-      />
+      /> */}
       <Picker
         selectedValue={carType}
         itemStyle={{
