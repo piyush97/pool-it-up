@@ -1,22 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createTheme, lightColors, ThemeProvider } from '@rneui/themed';
+import { ThemeProvider } from '@rneui/themed';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import 'react-native-url-polyfill/auto';
 import { Provider } from 'react-redux';
+import theme from './constants/themeDetails';
 import store from './store';
 import Router from './utils/router';
 
 export default function App() {
-  const theme = createTheme({
-    lightColors: {
-      ...Platform.select({
-        default: lightColors.platform.android,
-        ios: lightColors.platform.ios,
-      }),
-    },
-  });
-
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
