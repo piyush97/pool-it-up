@@ -3,19 +3,41 @@ import { GOOGLE_MAPS_APIKEY } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Input, Switch, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import { Alert, SafeAreaView } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
-import { setDestination, setOrigin } from '../slices/navSlice';
+import { selectIsLoggedIn } from '../slices/authSlice';
+import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 
 function HomeScreen() {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
+  const loggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
   const { theme } = useTheme();
-  const [isDestination, setIsDestination] = useState(false);
+  const destination = useSelector(selectDestination);
+  const origin = useSelector(selectOrigin);
 
+  const onHandlePress = () => {
+    if (loggedIn) {
+      if (checked && destination && origin) {
+        navigation?.navigate('PoolMyRide');
+      } else if (!checked && destination && origin) {
+        navigation?.navigate('GetARide');
+      } else {
+        Alert.alert('Please enter your destination and origin before proceeding');
+      }
+    } else {
+      navigation?.navigate('SignIn');
+    }
+  };
+  const buttonTextGenerator = () => {
+    if (checked) {
+      return 'Pool My Ride';
+    }
+    return 'Get A Ride';
+  };
   // useEffect(() => {
   //   (async () => {
   //     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -98,7 +120,6 @@ function HomeScreen() {
               description: data.description,
             })
           );
-          setIsDestination(true);
         }}
         styles={{
           container: {
@@ -129,17 +150,13 @@ function HomeScreen() {
           onValueChange={(value) => setChecked(value)}
         />
       </SafeAreaView>
+
       <Button
         style={tw`p-2 pt-12`}
-        disabled={!isDestination}
-        onPress={() =>
-          checked ? navigation?.navigate('PoolMyRide') : navigation.navigate('GetARide')
-        }
-        disabledStyle={{ backgroundColor: theme.colors.disabled }}
+        onPress={() => onHandlePress()}
+        disabledStyle={{ backgroundColor: theme.colors.grey5, opacity: 0.5 }}
       >
-        <Text style={{ color: theme.colors.black }}>
-          {checked ? 'Pool my Ride' : 'Book a Ride'}
-        </Text>
+        <Text style={{ color: theme.colors.black }}>{buttonTextGenerator()}</Text>
       </Button>
     </SafeAreaView>
   );
