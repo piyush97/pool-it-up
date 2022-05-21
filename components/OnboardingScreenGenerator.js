@@ -70,19 +70,21 @@ function OnboardingScreenGenerator({ flowType }) {
         placeholder="Password"
         autoCapitalize="none"
       />
-      <TouchableOpacity style={{ flex: 0 }}>
-        <Text
-          style={{
-            fontWeight: '500',
-            color: theme.colors.grey1,
-            flex: 0,
-            textAlign: 'right',
-            paddingRight: 20,
-          }}
-        >
-          Forgot password?
-        </Text>
-      </TouchableOpacity>
+      {flowType === 0 && (
+        <TouchableOpacity style={{ flex: 0 }}>
+          <Text
+            style={{
+              fontWeight: '500',
+              color: theme.colors.grey1,
+              flex: 0,
+              textAlign: 'right',
+              paddingRight: 20,
+            }}
+          >
+            Forgot password?
+          </Text>
+        </TouchableOpacity>
+      )}
       <Button title={title} style={tw`p-2 pt-12 `} onPress={() => onBoardingFlow()} />
       <Text
         style={{
