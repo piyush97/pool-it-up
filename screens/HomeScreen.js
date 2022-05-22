@@ -3,7 +3,7 @@ import { GOOGLE_MAPS_APIKEY } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Input, Switch, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
-import { Alert, SafeAreaView } from 'react-native';
+import { Alert, SafeAreaView, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
@@ -55,7 +55,7 @@ function HomeScreen() {
   //   })();
   // }, []);
   return (
-    <SafeAreaView style={{ height: '100%', backgroundColor: theme.colors.background }}>
+    <View style={{ height: '100%', backgroundColor: theme.colors.background }}>
       <Text style={tw`text-10 py-4 pl-2 pb-8 pt-50`}>
         {' '}
         {checked ? 'Pool my Ride' : 'Book a Ride'}
@@ -158,7 +158,7 @@ function HomeScreen() {
       >
         <Text style={{ color: theme.colors.black }}>{buttonTextGenerator()}</Text>
       </Button>
-    </SafeAreaView>
+    </View>
   );
 }
 
