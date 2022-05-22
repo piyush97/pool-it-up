@@ -113,6 +113,11 @@ function Router() {
         component={SignUpScreen}
       />
       <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Onboarding"
+        component={OnboardingScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }

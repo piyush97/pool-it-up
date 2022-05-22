@@ -57,7 +57,6 @@ function HomeScreen() {
   return (
     <View style={{ height: '100%', backgroundColor: theme.colors.background }}>
       <Text style={tw`text-10 py-4 pl-2 pb-8 pt-50`}>
-        {' '}
         {checked ? 'Pool my Ride' : 'Book a Ride'}
       </Text>
       <GooglePlacesAutocomplete

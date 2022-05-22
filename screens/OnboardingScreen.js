@@ -6,7 +6,7 @@ import { Alert, SafeAreaView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import supabase from '../lib/supabase';
-import { selectUser, setSignUp } from '../slices/authSlice';
+import { selectUser, setIsLoggedIn, setSignUp } from '../slices/authSlice';
 
 function OnboardingScreen() {
   const dispatch = useDispatch();
@@ -15,23 +15,23 @@ function OnboardingScreen() {
   const user = useSelector(selectUser);
 
   // eslint-disable-next-line no-console
-  console.log('data', user);
+  // console.log('data', user);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [dob, setDob] = useState(new Date());
-  const { email } = user;
+  const { email, id } = user;
   const navigation = useNavigation();
   const onButtonPress = async () => {
-    // const user = supabase.auth.user(); // TODO: NEED FIX returns the current user
-    // if (!user) throw new Error("No user on the session!"); // TODO: handle this error
-
+    // const user = await supabase.auth.user(); // get the current user
+    // if (!user) throw new Error('No user on the session!'); // TODO: handle this error
     await supabase
       .from('Users')
       .insert([
         {
+          id,
           email,
           first_name: firstName,
           last_name: lastName,
@@ -42,6 +42,7 @@ function OnboardingScreen() {
       .then((res) => {
         Alert.alert('Done');
         navigation.navigate('HomeScreen');
+        dispatch(setIsLoggedIn(true));
 
         if (res.error) {
           Alert.alert(res.error.message);
