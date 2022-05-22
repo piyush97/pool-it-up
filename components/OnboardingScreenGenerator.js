@@ -41,7 +41,7 @@ function OnboardingScreenGenerator({ flowType }) {
       Alert.alert(error?.message);
     } else if (user) {
       dispatch(setUser(user));
-      dispatch(setIsLoggedIn(true));
+      if (flowType === 0) dispatch(setIsLoggedIn(true));
       dispatch(setSignUp({ email }));
       navigation.navigate(nextScreen);
     }
