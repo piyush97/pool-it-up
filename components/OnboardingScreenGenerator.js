@@ -1,17 +1,19 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 import { useNavigation } from '@react-navigation/native';
-import { Button, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
+import { Button, Icon, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
 import { PropTypes } from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Alert, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
+import { Alert, FlatList, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
 import socialLoginOptions from '../constants/socialLoginOptions';
+import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
 import { setIsLoggedIn, setSignUp, setUser } from '../slices/authSlice';
 
 function OnboardingScreenGenerator({ flowType }) {
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { theme } = useTheme();
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
@@ -61,16 +63,25 @@ function OnboardingScreenGenerator({ flowType }) {
         keyboardType="email-address"
         placeholder="Email"
         autoCapitalize="none"
+        enablesReturnKeyAutomatically
+        autoCorrect={false}
         autoComplete="email"
       />
       <Input
+        rightIcon={
+          <Pressable onPress={handlePasswordVisibility}>
+            <Icon type="font-awesome" name={rightIcon} size={22} />
+          </Pressable>
+        }
         onChangeText={(text) => setPassword(text)}
         value={password}
-        secureTextEntry
+        autoCorrect={false}
+        secureTextEntry={passwordVisibility}
+        enablesReturnKeyAutomatically
         placeholder="Password"
         autoCapitalize="none"
       />
-      <TouchableOpacity style={{ flex: 0 }}>
+      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate('ForgotPassword')}>
         <Text
           style={{
             fontWeight: '500',

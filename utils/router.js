@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Icon, useTheme } from '@rneui/themed';
 import { useSelector } from 'react-redux';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
@@ -104,7 +105,13 @@ function Router() {
           animationTypeForReplace: isSignout ? 'pop' : 'push',
         }}
       />
-
+      <Stack.Screen
+        name="ForgotPassword"
+        options={{
+          headerShown: false,
+        }}
+        component={ForgotPasswordScreen}
+      />
       <Stack.Screen
         name="SignUp"
         options={{

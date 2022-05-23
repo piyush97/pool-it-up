@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { ThemeProvider } from '@rneui/themed';
+import { Text, ThemeProvider } from '@rneui/themed';
+import * as Linking from 'expo-linking';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import 'react-native-url-polyfill/auto';
@@ -9,10 +10,19 @@ import store from './store';
 import Router from './utils/router';
 
 export default function App() {
+  const linking = {
+    prefixes: [Linking.createURL('/')],
+    config: {
+      screens: {
+        Register: 'SignIn',
+        SignUp: 'Signup',
+      },
+    },
+  };
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <NavigationContainer>
+        <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
           <SafeAreaProvider>
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
