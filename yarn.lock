@@ -3801,7 +3801,7 @@ expo-blur@~11.1.0:
   resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-11.1.0.tgz#21f9f0d28da1c326646c459813c9343b6da5e20f"
   integrity sha512-7ClB+fIYoFXaTyY4jAMBmJmgs3Dz0EWNbpgFCC4v/sSxldg5jSbMUXLXUttnRhKRmIzPB2gufcgoOWfNwA3q7g==
 
-expo-constants@~13.1.1:
+expo-constants@~13.1.0, expo-constants@~13.1.1:
   version "13.1.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-13.1.1.tgz#78c26c760cc63cd5608bc4b51bd159d7339d8054"
   integrity sha512-QRVHrrMCLenBzWZ8M+EvCXM+jjdQzFMW27YQHRac3SGGoND1hWr81scOmGwlFo2wLZrYXm8HcYt1E6ry3IIwrA==
@@ -3833,6 +3833,16 @@ expo-keep-awake@~10.1.1:
   version "10.1.1"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-10.1.1.tgz#03023c130f7e3824b738e3fdd5353b8a2c0c1980"
   integrity sha512-9zC0sdhQljUeMr2yQ7o4kzEZXVAy82fFOAZE1+TwPL7qR0b0sphe7OJ5T1GX1qLcwuVaJ8YewaPoLSHRk79+Rg==
+
+expo-linking@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/expo-linking/-/expo-linking-3.1.0.tgz#ac16aa976531c6a3e165333670b0e12975b4dfa4"
+  integrity sha512-fZAUjQJThOtBDAdy/wB0bpqCjnGhiEJ+AkWqOQMCrNsd8kVowdA0xNnD1EBk7nESw6/NCg/Iy1lt5smaA21+rA==
+  dependencies:
+    expo-constants "~13.1.0"
+    invariant "^2.2.4"
+    qs "^6.9.1"
+    url-parse "^1.5.9"
 
 expo-location@~14.2.2:
   version "14.2.2"
@@ -6563,6 +6573,13 @@ qs@6.7.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
+qs@^6.9.1:
+  version "6.10.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.3.tgz#d6cde1b2ffca87b5aa57889816c5f81535e22e8e"
+  integrity sha512-wr7M2E0OFRfIfJZjKGieI8lBKb7fRCH4Fv5KNPEs7gJ8jadvotdsS08PzOKR7opXhZ/Xkjtt3WF9g38drmyRqQ==
+  dependencies:
+    side-channel "^1.0.4"
+
 qs@~6.9.1:
   version "6.9.7"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.7.tgz#4610846871485e1e048f44ae3b94033f0e675afe"
@@ -6694,12 +6711,13 @@ react-native-maps-directions@^1.8.0:
     lodash.isequal "^4.5.0"
     prop-types "^15.6.0"
 
-react-native-maps@0.30.1:
-  version "0.30.1"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.30.1.tgz#b227f3cbf68947bbd22fcf2b7470a7ab3a4f3fbb"
-  integrity sha512-VDgGygFcXwKLFNmdGb5DVy3DJhjP3qCe3txzDfeO6kQyNELj875ZbZMTYW84XsLUBFNpAWXKffWvMKHMQKv2Gg==
+react-native-maps@0.30.2:
+  version "0.30.2"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.30.2.tgz#2f1cf4ab79892a43060774bda8786ce6ab8e3616"
+  integrity sha512-WVv5e7aWdnNJugqNSG/87U+12Pg4RFWU7x/UigTPG1FEUZx2TbYKChL6xZCMGPOv5m5b4Z7bMeKJnZosg+yPyQ==
   dependencies:
     "@types/geojson" "^7946.0.7"
+    deprecated-react-native-prop-types "^2.3.0"
 
 react-native-ratings@^8.1.0:
   version "8.1.0"
