@@ -1,7 +1,9 @@
 /* eslint-disable react/no-unstable-nested-components */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Icon, useTheme } from '@rneui/themed';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -11,17 +13,36 @@ import PoolScreen from '../screens/PoolScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import { selectIsLoggedIn } from '../slices/authSlice';
+// import { selectIsLoggedIn } from '../slices/authSlice';
 import { selectDestination } from '../slices/navSlice';
 
 function Router() {
   const Stack = createNativeStackNavigator();
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+  // const isLoggedIn = useSelector(selectIsLoggedIn);
   const Tab = createBottomTabNavigator();
   const { theme } = useTheme();
   const isSignout = false;
   const destination = useSelector(selectDestination);
-  if (isLoggedIn) {
+  const [isLoggedIn, setIsLoggedIn] = useState('false');
+  useEffect(() => {
+    const getLoginStatus = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@isLoggedIn');
+        console.log('value', value);
+        setIsLoggedIn(value);
+        if (value !== null) {
+          // value previously stored
+          console.log('value was', value);
+        }
+      } catch (e) {
+        // error reading value
+        console.error(e);
+      }
+    };
+    getLoginStatus();
+  }, []);
+
+  if (isLoggedIn.valueOf() === 'true') {
     return (
       <>
         <Tab.Navigator

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Input, Text, useTheme } from '@rneui/themed';
@@ -39,10 +40,11 @@ function OnboardingScreen() {
           phone,
         },
       ])
-      .then((res) => {
+      .then(async (res) => {
         Alert.alert('Done');
         navigation.navigate('HomeScreen');
         dispatch(setIsLoggedIn(true));
+        await AsyncStorage.setItem('@isLoggedIn', 'true');
 
         if (res.error) {
           Alert.alert(res.error.message);

@@ -1,12 +1,13 @@
 // eslint-disable-next-line import/no-unresolved
 import { GOOGLE_MAPS_APIKEY } from '@env';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Input, Switch, Text, useTheme } from '@rneui/themed';
+import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
-import { Alert, SafeAreaView, View } from 'react-native';
+import { Alert, Pressable, SafeAreaView, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
+import useSwapper from '../hooks/useSwapper';
 import { selectIsLoggedIn } from '../slices/authSlice';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 
@@ -18,6 +19,7 @@ function HomeScreen() {
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
+  const { data: swapData, from, to } = useSwapper();
 
   const onHandlePress = () => {
     if (loggedIn) {
@@ -38,6 +40,7 @@ function HomeScreen() {
     }
     return 'Get A Ride';
   };
+
   // useEffect(() => {
   //   (async () => {
   //     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -110,6 +113,18 @@ function HomeScreen() {
         enablePoweredByContainer={false}
         textInputProps={{
           InputComp: Input,
+          rightIcon: (
+            <Pressable
+              onPress={() => {
+                Alert.alert('WIP');
+              }}
+              style={{ paddingRight: 10 }}
+            >
+              <Icon name="arrow-up" type="font-awesome" size={18} />
+              <Icon name="arrow-down" type="font-awesome" size={18} />
+            </Pressable>
+          ),
+
           errorStyle: { color: 'red' },
         }}
         onPress={(data, details = null) => {

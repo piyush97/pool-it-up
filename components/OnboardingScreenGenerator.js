@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
 import { PropTypes } from 'prop-types';
@@ -43,7 +44,11 @@ function OnboardingScreenGenerator({ flowType }) {
       Alert.alert(error?.message);
     } else if (user) {
       dispatch(setUser(user));
-      if (flowType === 0) dispatch(setIsLoggedIn(true));
+
+      if (flowType === 0) {
+        await AsyncStorage.setItem('@isLoggedIn', 'true');
+        dispatch(setIsLoggedIn(true));
+      }
       dispatch(setSignUp({ email }));
       navigation.navigate(nextScreen);
     }

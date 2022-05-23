@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Card, Text, useTheme } from '@rneui/themed';
 import React from 'react';
@@ -8,7 +9,7 @@ import { profileDetails } from '../constants/fetchDetails';
 import { selectUser, setIsLoggedIn } from '../slices/authSlice';
 
 function ProfileScreen() {
-  const { id: user_id } = useSelector(selectUser);
+  const { id: userId } = useSelector(selectUser);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -25,7 +26,6 @@ function ProfileScreen() {
         containerStyle={{
           borderWidth: 0,
           backgroundColor: theme.colors.background,
-
           display: 'flex',
         }}
       >
@@ -33,9 +33,11 @@ function ProfileScreen() {
           <React.Fragment key={item.id}>
             <TouchableOpacity
               onPress={async () => {
-                item.function(user_id).then(() => {
+                item.function(userId).then(async () => {
                   if (item.id === 5) {
                     dispatch(setIsLoggedIn(false));
+                    await AsyncStorage.setItem('@isLoggedIn', 'false');
+
                     navigation.navigate('SignIn');
                   }
                 });
