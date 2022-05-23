@@ -61,7 +61,7 @@ export const selectSignOut = (state) => state.auth.signOut;
 export const selectRestoreToken = (state) => state.auth.restore_token;
 export const selectIsLoading = (state) => state.auth.isLoading;
 export const selectIsSignout = (state) => state.auth.isSignout;
-export const selectUser = (state) => state.auth.user;
+export const selectUser = (state) => state?.auth?.user;
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 
 export default authSlice.reducer;

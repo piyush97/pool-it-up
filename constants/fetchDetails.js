@@ -40,6 +40,9 @@ export const profileDetails = [
         .eq('id', id)
         .then((res) => {
           console.log('data', res);
+        })
+        .catch((err) => {
+          console.log('err', err);
         });
     },
   },

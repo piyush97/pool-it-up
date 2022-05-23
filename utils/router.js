@@ -13,6 +13,7 @@ import PoolScreen from '../screens/PoolScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import { selectIsLoggedIn } from '../slices/authSlice';
 // import { selectIsLoggedIn } from '../slices/authSlice';
 import { selectDestination } from '../slices/navSlice';
 
@@ -24,15 +25,14 @@ function Router() {
   const isSignout = false;
   const destination = useSelector(selectDestination);
   const [isLoggedIn, setIsLoggedIn] = useState('false');
+  const isLoggedInState = useSelector(selectIsLoggedIn);
   useEffect(() => {
     const getLoginStatus = async () => {
       try {
         const value = await AsyncStorage.getItem('@isLoggedIn');
-        console.log('value', value);
         setIsLoggedIn(value);
         if (value !== null) {
-          // value previously stored
-          console.log('value was', value);
+          setIsLoggedIn(value);
         }
       } catch (e) {
         // error reading value
@@ -40,9 +40,12 @@ function Router() {
       }
     };
     getLoginStatus();
-  }, []);
+    return () => {
+      setIsLoggedIn('false');
+    };
+  }, [setIsLoggedIn]);
 
-  if (isLoggedIn.valueOf() === 'true') {
+  if (isLoggedInState || isLoggedIn.valueOf() === 'true') {
     return (
       <>
         <Tab.Navigator
@@ -115,6 +118,7 @@ function Router() {
       </>
     );
   }
+
   return (
     <Stack.Navigator>
       <Stack.Screen

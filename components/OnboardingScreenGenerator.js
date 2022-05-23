@@ -46,8 +46,8 @@ function OnboardingScreenGenerator({ flowType }) {
       dispatch(setUser(user));
 
       if (flowType === 0) {
-        await AsyncStorage.setItem('@isLoggedIn', 'true');
         dispatch(setIsLoggedIn(true));
+        await AsyncStorage.setItem('@isLoggedIn', 'true');
       }
       dispatch(setSignUp({ email }));
       navigation.navigate(nextScreen);
