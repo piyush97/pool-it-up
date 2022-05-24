@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 // eslint-disable-next-line import/no-unresolved
 import { GOOGLE_MAPS_APIKEY } from '@env';
 import { useNavigation } from '@react-navigation/native';

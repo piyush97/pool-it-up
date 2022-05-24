@@ -24,7 +24,7 @@ function PoolScreen() {
   const [endDateTime, setEndDateTime] = React.useState(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
-  const { email, id: userId } = useSelector(selectUser);
+  const { email = '', id: userId = '' } = useSelector(selectUser) || {};
   const navigation = useNavigation();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
@@ -42,7 +42,7 @@ function PoolScreen() {
           to: destination,
           host_id: userId,
           title: `Ride with ${carName}`,
-          host_email: email,
+          host_email: email || '',
           datetime_start: startDateTime.toISOString(),
           todatetime_end: endDateTime.toISOString(),
           cost_passenger: costPerPassenger,
