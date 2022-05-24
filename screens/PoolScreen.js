@@ -9,6 +9,7 @@ import { Alert, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import tw from 'twrnc';
 import rideTypes from '../constants/ride';
+import { HOME } from '../constants/routesConstants';
 import supabase from '../lib/supabase';
 import { selectUser } from '../slices/authSlice';
 import { selectDestination, selectOrigin } from '../slices/navSlice';
@@ -52,7 +53,7 @@ function PoolScreen() {
       .then((res) => {
         Alert.alert('Done');
         console.log(res);
-        navigation.navigate('HomeScreen');
+        navigation.navigate(HOME);
         if (res.error) {
           console.log(res);
           Alert.alert(res.error.message);

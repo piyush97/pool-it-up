@@ -1,4 +1,5 @@
 import supabase from '../lib/supabase';
+import { ONBOARDING, ROOT_SCREEN, SIGN_IN } from './routesConstants';
 
 const fetchDetails = ({ flowType, email, password }) => {
   if (flowType === 0) {
@@ -12,20 +13,20 @@ const fetchDetails = ({ flowType, email, password }) => {
           email,
           password,
         }),
-      nextScreen: 'HomeScreen',
+      nextScreen: ROOT_SCREEN,
     };
   }
   return {
     title: 'Register',
     bottomNavigationText: 'Already have an account?',
-    bottomNavigationLink: 'SignIn',
+    bottomNavigationLink: SIGN_IN,
     buttonText: 'Login',
     onButtonPress: async () =>
       supabase.auth.signUp({
         email,
         password,
       }),
-    nextScreen: 'Onboarding',
+    nextScreen: ONBOARDING,
   };
 };
 

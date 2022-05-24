@@ -1,4 +1,5 @@
-/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-undef */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -6,25 +7,16 @@ import { Text, useTheme } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
-import {
-  HOME,
-  SIGN_IN,
-  StackProtectedRoutes,
-  StackUnProtectedRoutes,
-} from '../constants/routesConstants';
+import { HOME, TabRoutes } from '../constants/routesConstants';
 import { selectIsLoggedIn } from '../slices/authSlice';
-// import { selectIsLoggedIn } from '../slices/authSlice';
-import { selectDestination } from '../slices/navSlice';
+import HomeScreen from './HomeScreen';
 
-function Router() {
-  const Stack = createNativeStackNavigator();
-  // const isLoggedIn = useSelector(selectIsLoggedIn);
+function RootScreen() {
   const Tab = createBottomTabNavigator();
   const { theme } = useTheme();
-  const isSignout = false;
-  const destination = useSelector(selectDestination);
-  const [isLoggedIn, setIsLoggedIn] = useState('false');
-  const isLoggedInState = useSelector(selectIsLoggedIn);
+  const Stack = createNativeStackNavigator();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const [isLoggedInState, setIsLoggedIn] = useState(isLoggedIn);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getLoginStatus = async () => {
@@ -46,6 +38,7 @@ function Router() {
       setIsLoggedIn('false');
     };
   }, [setIsLoggedIn, setLoading]);
+  console.log('ISLOGGEDIN STATE', isLoggedInState);
   if (loading) {
     return (
       <SafeAreaView
@@ -59,34 +52,29 @@ function Router() {
     );
   }
   return isLoggedInState === 'true' ? (
-    <Stack.Navigator
-      defaultScreenOptions={{
-        headerShown: false,
-      }}
+    <Tab.Navigator
       initialRouteName={HOME}
       screenOptions={{
         headerShown: false,
+        tabBarStyle: {
+          height: 90,
+          paddingHorizontal: 5,
+          paddingTop: 0,
+          backgroundColor: theme.colors.background,
+          position: 'absolute',
+          borderTopWidth: 0,
+        },
       }}
     >
-      {StackProtectedRoutes.map(({ id, component, name }) => (
-        <Stack.Screen key={id} name={name} component={component} />
+      {TabRoutes.map(({ id, name, component, options }) => (
+        <Tab.Screen key={id} name={name} component={component} options={options} />
       ))}
-    </Stack.Navigator>
+    </Tab.Navigator>
   ) : (
-    <Stack.Navigator
-      initialRouteName={SIGN_IN}
-      defaultScreenOptions={{
-        headerShown: false,
-      }}
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      {StackUnProtectedRoutes.map(({ id, component, name }) => (
-        <Stack.Screen key={id} name={name} component={component} />
-      ))}
+    <Stack.Navigator>
+      <Stack.Screen name={HOME} component={HomeScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
 
-export default Router;
+export default RootScreen;

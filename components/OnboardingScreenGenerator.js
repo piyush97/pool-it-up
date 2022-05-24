@@ -9,6 +9,7 @@ import { Alert, FlatList, Pressable, SafeAreaView, TouchableOpacity } from 'reac
 import { useDispatch } from 'react-redux';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
+import { FORGOT_PASSWORD, ROOT_SCREEN } from '../constants/routesConstants';
 import socialLoginOptions from '../constants/socialLoginOptions';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
 import { setIsLoggedIn, setSignUp, setUser } from '../slices/authSlice';
@@ -56,7 +57,7 @@ function OnboardingScreenGenerator({ flowType }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate('HomeScreen')}>
+      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate(ROOT_SCREEN)}>
         <Text style={{ color: theme.colors.grey1, flex: 0, textAlign: 'right', paddingRight: 20 }}>
           Skip
         </Text>
@@ -86,7 +87,7 @@ function OnboardingScreenGenerator({ flowType }) {
         placeholder="Password"
         autoCapitalize="none"
       />
-      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate('ForgotPassword')}>
+      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate(FORGOT_PASSWORD)}>
         <Text
           style={{
             fontWeight: '500',

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Alert, SafeAreaView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
+import { ROOT_SCREEN } from '../constants/routesConstants';
 import supabase from '../lib/supabase';
 import { selectUser, setIsLoggedIn, setSignUp } from '../slices/authSlice';
 
@@ -42,7 +43,7 @@ function OnboardingScreen() {
       ])
       .then(async (res) => {
         Alert.alert('Done');
-        navigation.navigate('HomeScreen');
+        navigation.navigate(ROOT_SCREEN);
         dispatch(setIsLoggedIn(true));
         await AsyncStorage.setItem('@isLoggedIn', 'true');
 

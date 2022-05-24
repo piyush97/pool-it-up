@@ -6,6 +6,7 @@ import { Alert, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { profileDetails } from '../constants/fetchDetails';
+import { SIGN_IN } from '../constants/routesConstants';
 import { selectUser, setIsLoggedIn } from '../slices/authSlice';
 
 function ProfileScreen() {
@@ -39,7 +40,7 @@ function ProfileScreen() {
                     if (item.id === 5) {
                       dispatch(setIsLoggedIn(false));
                       await AsyncStorage.setItem('@isLoggedIn', 'false');
-                      await navigation.navigate('SignIn');
+                      await navigation.navigate(SIGN_IN);
                     }
                   })
                   .catch((err) => {
