@@ -69,33 +69,19 @@ export const TabRoutes = [
 export const StackProtectedRoutes = [
   {
     id: 1,
-    component: HomeScreen,
-    name: HOME,
-  },
-  {
-    id: 2,
     component: RootScreen,
     name: ROOT_SCREEN,
   },
   {
+    id: 2,
+    component: HomeScreen,
+    name: HOME,
+  },
+
+  {
     id: 3,
-    component: SignInScreen,
-    name: SIGN_IN,
-  },
-  {
-    id: 4,
-    component: SignUpScreen,
-    name: SIGN_UP,
-  },
-  {
-    id: 5,
     component: OnboardingScreen,
     name: ONBOARDING,
-  },
-  {
-    id: 6,
-    component: ForgotPasswordScreen,
-    name: FORGOT_PASSWORD,
   },
 ];
 

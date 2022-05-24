@@ -1,30 +1,21 @@
 /* eslint-disable react/no-unstable-nested-components */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, useTheme } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
-import { useSelector } from 'react-redux';
 import {
   HOME,
   SIGN_IN,
   StackProtectedRoutes,
   StackUnProtectedRoutes,
 } from '../constants/routesConstants';
-import { selectIsLoggedIn } from '../slices/authSlice';
-// import { selectIsLoggedIn } from '../slices/authSlice';
-import { selectDestination } from '../slices/navSlice';
 
 function Router() {
   const Stack = createNativeStackNavigator();
-  // const isLoggedIn = useSelector(selectIsLoggedIn);
-  const Tab = createBottomTabNavigator();
   const { theme } = useTheme();
-  const isSignout = false;
-  const destination = useSelector(selectDestination);
+
   const [isLoggedIn, setIsLoggedIn] = useState('false');
-  const isLoggedInState = useSelector(selectIsLoggedIn);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getLoginStatus = async () => {
@@ -58,7 +49,8 @@ function Router() {
       </SafeAreaView>
     );
   }
-  return isLoggedInState === 'true' ? (
+  console.log('IsLOGGEDIN', isLoggedIn);
+  return isLoggedIn === 'true' ? (
     <Stack.Navigator
       defaultScreenOptions={{
         headerShown: false,
