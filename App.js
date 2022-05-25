@@ -6,12 +6,11 @@ import { Provider } from 'react-redux';
 import theme from './constants/themeDetails';
 import { AuthProvider } from './context/AuthContext';
 import store from './store';
-import Router from './utils/router';
+import Router from './utils/routes/router';
 
 /**
  * @description - Root component of the application
  * @author - Piyush Mehta <me@piyushmehta.com>
- *
  * @export - Root component of the application
  * @return {React.ReactElement} - Root component of the application
  */
