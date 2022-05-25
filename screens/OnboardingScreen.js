@@ -5,7 +5,6 @@ import { Button, Input, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
 import { Alert, SafeAreaView, View } from 'react-native';
 import tw from 'twrnc';
-import { ROOT_SCREEN } from '../constants/routesConstants';
 import supabase from '../lib/supabase';
 
 function OnboardingScreen() {

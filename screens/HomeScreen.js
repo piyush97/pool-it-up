@@ -9,7 +9,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
-import useSwapper from '../hooks/useSwapper';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 
 function HomeScreen() {
@@ -19,7 +18,7 @@ function HomeScreen() {
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
-  const { data: swapData, from, to } = useSwapper();
+  // const { data: swapData, from, to } = useSwapper();
 
   const onHandlePress = () => {
     if (checked && destination && origin) {
@@ -37,22 +36,6 @@ function HomeScreen() {
     return 'Get A Ride';
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       setErrorMsg("Permission to access location was denied");
-  //       return;
-  //     }
-
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     dispatch(
-  //       setOrigin({
-  //         location: location.coords,
-  //       })
-  //     );
-  //   })();
-  // }, []);
   return (
     <View style={{ height: '100%', backgroundColor: theme.colors.background }}>
       <Text style={tw`text-10 py-4 pl-2 pb-8 pt-50`}>

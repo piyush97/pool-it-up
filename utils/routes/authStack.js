@@ -1,5 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StackRoutes } from '../../constants/routesConstants';
+import { FORGOT_PASSWORD, ONBOARDING, SIGN_IN, SIGN_UP } from '../../constants/routesConstants';
+import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen';
+import OnboardingScreen from '../../screens/OnboardingScreen';
+import SignInScreen from '../../screens/SignInScreen';
+import SignUpScreen from '../../screens/SignUpScreen';
 
 /**
  * @description - Auth Routes for the application
@@ -15,9 +19,10 @@ function AuthStack() {
         headerShown: false,
       }}
     >
-      {StackRoutes.map(({ id, component, name }) => (
-        <Stack.Screen name={name} component={component} key={id} />
-      ))}
+      <Stack.Screen name={SIGN_IN} component={SignInScreen} />
+      <Stack.Screen name={SIGN_UP} component={SignUpScreen} />
+      <Stack.Screen name={ONBOARDING} component={OnboardingScreen} />
+      <Stack.Screen name={FORGOT_PASSWORD} component={ForgotPasswordScreen} />
     </Stack.Navigator>
   );
 }

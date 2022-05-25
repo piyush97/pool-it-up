@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Button, Input, Text, useTheme, useThemeMode } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { Alert, SafeAreaView } from 'react-native';
-import { useDispatch } from 'react-redux';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
 import supabase from '../lib/supabase';
@@ -13,11 +12,9 @@ function ForgotPasswordScreen() {
   const { theme } = useTheme();
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
   const { bottomNavigationLink } = fetchDetails({
     email,
-    password,
+    // password, //TODO: Use Context
   });
 
   const { setMode } = useThemeMode();
