@@ -5,6 +5,7 @@ import { Button, Input, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
 import { Alert, SafeAreaView, View } from 'react-native';
 import tw from 'twrnc';
+import { HOME } from '../constants/routesConstants';
 import supabase from '../lib/supabase';
 
 function OnboardingScreen() {
@@ -37,7 +38,7 @@ function OnboardingScreen() {
       ])
       .then(async (res) => {
         Alert.alert('Done');
-        navigation.navigate(ROOT_SCREEN);
+        navigation.navigate(HOME);
         // TODO: handle this from context
         await AsyncStorage.setItem('@isLoggedIn', 'true');
 
