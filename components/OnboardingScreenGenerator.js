@@ -1,35 +1,38 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
 import { PropTypes } from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Alert, FlatList, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { FlatList, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
+import { FORGOT_PASSWORD } from '../constants/routesConstants';
 import socialLoginOptions from '../constants/socialLoginOptions';
+import { useAuth } from '../context/AuthContext';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
-import { setIsLoggedIn, setSignUp, setUser } from '../slices/authSlice';
 
+/**
+ * @description - Onboarding Screen for the application to onboard the user to the application
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @param {number} flowType - Type of flow to be shown on the screen
+ * @return {React.ReactElement} - Onboarding Screen for the application to onboard the user to the application
+ */
 function OnboardingScreenGenerator({ flowType }) {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { theme } = useTheme();
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
-  const {
-    title,
-    bottomNavigationLink,
-    bottomNavigationText,
-    buttonText,
-    onButtonPress,
-    nextScreen,
-  } = fetchDetails({
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [dob, setDob] = useState(new Date());
+
+  const { title, bottomNavigationLink, bottomNavigationText, buttonText } = fetchDetails({
     flowType,
-    email,
-    password,
   });
 
   const { setMode } = useThemeMode();
@@ -37,26 +40,19 @@ function OnboardingScreenGenerator({ flowType }) {
     setMode('dark');
   }, [setMode]);
 
+  const { signIn, signUp } = useAuth();
   const onBoardingFlow = async () => {
-    const { error = null, user } = await onButtonPress();
-    if (error) {
-      Alert.alert(error?.message);
-    } else if (user) {
-      dispatch(setUser(user));
-      if (flowType === 0) dispatch(setIsLoggedIn(true));
-      dispatch(setSignUp({ email }));
-      navigation.navigate(nextScreen);
+    if (flowType === 0) {
+      await signIn(email, password);
+    }
+    if (flowType === 1) {
+      await signUp(email, password, firstName, lastName, dob.toLocaleDateString(), phone);
     }
   };
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate('HomeScreen')}>
-        <Text style={{ color: theme.colors.grey1, flex: 0, textAlign: 'right', paddingRight: 20 }}>
-          Skip
-        </Text>
-      </TouchableOpacity>
-      <Text style={tw`text-10 p-4 pb-8 pt-50`}>{title}</Text>
+      <Text style={tw`text-10 p-4 pb-8 ${flowType === 1 ? 'pt-2' : 'pt-50'} `}>{title}</Text>
       <Input
         onChangeText={(text) => setEmail(text)}
         value={email}
@@ -81,20 +77,76 @@ function OnboardingScreenGenerator({ flowType }) {
         placeholder="Password"
         autoCapitalize="none"
       />
-      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate('ForgotPassword')}>
-        <Text
-          style={{
-            fontWeight: '500',
-            color: theme.colors.grey1,
-            flex: 0,
-            textAlign: 'right',
-            paddingRight: 20,
-          }}
-        >
-          Forgot password?
-        </Text>
-      </TouchableOpacity>
-      <Button title={title} style={tw`p-2 pt-12 `} onPress={() => onBoardingFlow()} />
+      {flowType === 1 && (
+        <>
+          <Input
+            onChangeText={(text) => setConfirmPassword(text)}
+            value={confirmPassword}
+            autoCorrect={false}
+            secureTextEntry={passwordVisibility}
+            enablesReturnKeyAutomatically
+            placeholder="Confirm Password"
+            autoCapitalize="none"
+          />
+          <Input
+            onChangeText={(text) => setFirstName(text)}
+            value={firstName}
+            placeholder="First Name"
+            autoComplete="name"
+            autoCapitalize="words"
+          />
+          <Input
+            placeholder="Last Name"
+            onChangeText={(text) => setLastName(text)}
+            value={lastName}
+            autoComplete="name"
+            autoCapitalize="words"
+          />
+          <Input
+            onChangeText={(text) => setPhone(text)}
+            value={phone}
+            keyboardType="phone-pad"
+            placeholder="Phone Number"
+            autoComplete="tel"
+            autoCapitalize="none"
+          />
+          <Text style={tw`text-right pr-3 pb-2`}>Date of Birth</Text>
+          <DateTimePicker
+            testID="dateOfBirth"
+            accessibilityLabel="dateOfBirth"
+            value={dob}
+            mode="date"
+            is24Hour={false}
+            display="default"
+            themeVariant="dark"
+            style={{
+              padding: 0,
+              marginRight: 12,
+              flex: 0,
+            }}
+            onChange={(e) => {
+              setDob(new Date(e.nativeEvent.timestamp));
+            }}
+          />
+        </>
+      )}
+
+      {flowType === 0 && (
+        <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate(FORGOT_PASSWORD)}>
+          <Text
+            style={{
+              fontWeight: '500',
+              color: theme.colors.grey1,
+              flex: 0,
+              textAlign: 'right',
+              paddingRight: 20,
+            }}
+          >
+            Forgot password?
+          </Text>
+        </TouchableOpacity>
+      )}
+      <Button style={tw`p-2 pt-12 `} title={title} onPress={onBoardingFlow} />
       <Text
         style={{
           color: theme.colors.grey1,

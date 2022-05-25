@@ -129,7 +129,11 @@ function RideOptionsCard() {
         )}
       />
       <View>
-        <TouchableOpacity style={tw` py-3 m-3 ${!selected && 'bg-gray-300'}`} disabled={!selected}>
+        <TouchableOpacity
+          style={tw` py-3 m-3 ${!selected && 'bg-gray-300'}`}
+          disabled={!selected}
+          onPress={() => {}}
+        >
           <Text style={tw`text-center text-white text-xl`}>
             {!selected ? 'Select a Ride' : selected?.id && `You selected ${selected.title}`}
           </Text>

@@ -1,35 +1,36 @@
+/* eslint-disable react/no-unstable-nested-components */
 // eslint-disable-next-line import/no-unresolved
 import { GOOGLE_MAPS_APIKEY } from '@env';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Input, Switch, Text, useTheme } from '@rneui/themed';
+import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
-import { Alert, SafeAreaView, View } from 'react-native';
+import { Alert, Pressable, SafeAreaView, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
-import { selectIsLoggedIn } from '../slices/authSlice';
+import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
-
+/**
+ * @description - Home Screen for the application
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @return {React.ReactElement} - Home Screen for the application
+ */
 function HomeScreen() {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const loggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
+  // const { data: swapData, from, to } = useSwapper();
 
   const onHandlePress = () => {
-    if (loggedIn) {
-      if (checked && destination && origin) {
-        navigation?.navigate('PoolMyRide');
-      } else if (!checked && destination && origin) {
-        navigation?.navigate('GetARide');
-      } else {
-        Alert.alert('Please enter your destination and origin before proceeding');
-      }
+    if (checked && destination && origin) {
+      navigation?.navigate(POOL_MY_RIDE);
+    } else if (!checked && destination && origin) {
+      navigation?.navigate(GET_A_RIDE);
     } else {
-      navigation?.navigate('SignIn');
+      Alert.alert('Please enter your destination and origin before proceeding');
     }
   };
   const buttonTextGenerator = () => {
@@ -38,27 +39,13 @@ function HomeScreen() {
     }
     return 'Get A Ride';
   };
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       setErrorMsg("Permission to access location was denied");
-  //       return;
-  //     }
 
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     dispatch(
-  //       setOrigin({
-  //         location: location.coords,
-  //       })
-  //     );
-  //   })();
-  // }, []);
   return (
     <View style={{ height: '100%', backgroundColor: theme.colors.background }}>
       <Text style={tw`text-10 py-4 pl-2 pb-8 pt-50`}>
         {checked ? 'Pool my Ride' : 'Book a Ride'}
       </Text>
+
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
@@ -110,6 +97,18 @@ function HomeScreen() {
         enablePoweredByContainer={false}
         textInputProps={{
           InputComp: Input,
+          rightIcon: (
+            <Pressable
+              onPress={() => {
+                Alert.alert('WIP');
+              }}
+              style={{ paddingRight: 10 }}
+            >
+              <Icon name="arrow-up" type="font-awesome" size={18} />
+              <Icon name="arrow-down" type="font-awesome" size={18} />
+            </Pressable>
+          ),
+
           errorStyle: { color: 'red' },
         }}
         onPress={(data, details = null) => {

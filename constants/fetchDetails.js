@@ -1,31 +1,20 @@
 import supabase from '../lib/supabase';
+import { SIGN_IN, SIGN_UP } from './routesConstants';
 
-const fetchDetails = ({ flowType, email, password }) => {
+const fetchDetails = ({ flowType }) => {
   if (flowType === 0) {
     return {
       title: 'Login',
       bottomNavigationText: 'Dont have an account?',
-      bottomNavigationLink: 'SignUp',
+      bottomNavigationLink: SIGN_UP,
       buttonText: 'Register',
-      onButtonPress: async () =>
-        supabase.auth.signIn({
-          email,
-          password,
-        }),
-      nextScreen: 'HomeScreen',
     };
   }
   return {
     title: 'Register',
     bottomNavigationText: 'Already have an account?',
-    bottomNavigationLink: 'SignIn',
+    bottomNavigationLink: SIGN_IN,
     buttonText: 'Login',
-    onButtonPress: async () =>
-      supabase.auth.signUp({
-        email,
-        password,
-      }),
-    nextScreen: 'Onboarding',
   };
 };
 
@@ -40,6 +29,9 @@ export const profileDetails = [
         .eq('id', id)
         .then((res) => {
           console.log('data', res);
+        })
+        .catch((err) => {
+          console.log('err', err);
         });
     },
   },
