@@ -1,19 +1,81 @@
-const JWTTokenMock =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikx1Y2FzIEdhcmNleiIsImlhdCI6MTUxNjIzOTAyMn0.oK5FZPULfF-nfZmiumDGiufxf10Fe2KiGe9G5Njoa64';
-const signIn = (email, _password) =>
-  // this is a mock of an API call, in a real app
-  // will be need connect with some real API,
-  // send email and password, and if credential is corret
-  // the API will resolve with some token and another datas as the below
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        token: JWTTokenMock,
-        email,
-        name: 'Lucas Garcez',
-      });
-    }, 1000);
-  });
-export const authService = {
-  signIn,
+import supabase from '../lib/supabase';
+
+/**
+ * @description - This function is used to sign in the user
+ * @param {string} email
+ * @param {string} password
+ * @returns {object} - returns the user data
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ */
+const signIn = (email, password) => {
+  supabase.auth
+    .signIn({
+      email,
+      password,
+    })
+    .then(() => {
+      console.log('signed in');
+    })
+    .catch((err) => {
+      console.log('err', err);
+    });
 };
+
+/**
+ * @description - This function is used to sign up the user
+ * @param {string} email
+ * @param {string} password
+ * @returns {object} - returns the user data
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ */
+const signUp = (email, password) => {
+  supabase.auth
+    .signUp({
+      email,
+      password,
+    })
+    .then(() => {
+      console.log('signed up');
+    })
+    .catch((err) => {
+      console.log('err', err);
+    });
+};
+
+/**
+ * @description - This function is used to sign out the user
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ */
+const signOut = () => {
+  supabase.auth
+    .signOut()
+    .then(() => {
+      console.log('Logged out');
+    })
+    .catch((err) => {
+      console.log('err', err);
+    });
+};
+/**
+ * @description - This function is used to get to recover password
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @param {string} email
+ */
+const forgotPassword = (email) => {
+  supabase.auth.api
+    .resetPasswordForEmail(email)
+    .then(() => {
+      console.log('forgot password');
+    })
+    .catch((err) => {
+      console.log('err', err);
+    });
+};
+
+const authService = {
+  signIn,
+  signUp,
+  signOut,
+  forgotPassword,
+};
+export default authService;
