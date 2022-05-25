@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTheme } from '@rneui/themed';
 import { TabRoutes } from '../../constants/routesConstants';
 /**
  * @description - Unprotected Routes for the application
@@ -7,6 +8,7 @@ import { TabRoutes } from '../../constants/routesConstants';
  */
 function AppStack() {
   const Tab = createBottomTabNavigator();
+  const { theme } = useTheme();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -15,6 +17,7 @@ function AppStack() {
           height: 90,
           paddingHorizontal: 5,
           paddingTop: 0,
+          backgroundColor: theme.colors.background,
           position: 'absolute',
           borderTopWidth: 0,
         },

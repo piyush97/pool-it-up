@@ -4,17 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { Button, Input, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
 import { Alert, SafeAreaView, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { ROOT_SCREEN } from '../constants/routesConstants';
 import supabase from '../lib/supabase';
-import { selectUser, setIsLoggedIn, setSignUp } from '../slices/authSlice';
 
 function OnboardingScreen() {
-  const dispatch = useDispatch();
   const { theme } = useTheme();
-
-  const user = useSelector(selectUser);
 
   // eslint-disable-next-line no-console
   // console.log('data', user);
@@ -24,7 +19,7 @@ function OnboardingScreen() {
 
   const [loading, setLoading] = useState(false);
   const [dob, setDob] = useState(new Date());
-  const { email, id } = user;
+  const { email, id } = {}; // TODO: get from context
   const navigation = useNavigation();
   const onButtonPress = async () => {
     // const user = await supabase.auth.user(); // get the current user
@@ -44,7 +39,7 @@ function OnboardingScreen() {
       .then(async (res) => {
         Alert.alert('Done');
         navigation.navigate(ROOT_SCREEN);
-        dispatch(setIsLoggedIn(true));
+        // TODO: handle this from context
         await AsyncStorage.setItem('@isLoggedIn', 'true');
 
         if (res.error) {
@@ -56,16 +51,17 @@ function OnboardingScreen() {
         Alert.alert(err.message);
         setLoading(false);
       });
-    dispatch(
-      setSignUp({
-        // eslint-disable-next-line no-undef
-        email, // TODO: retreive from database
-        firstName,
-        lastName,
-        phone,
-        dob: dob.toString(),
-      })
-    );
+    // dispatch(
+    //   setSignUp({
+    //     // eslint-disable-next-line no-undef
+    //     email, // TODO: do from Context
+    //     firstName,
+    //     lastName,
+    //     phone,
+    //     dob: dob.toString(),
+    //   })
+
+    // );
   };
 
   return (

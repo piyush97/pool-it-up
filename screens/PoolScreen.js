@@ -11,7 +11,6 @@ import tw from 'twrnc';
 import rideTypes from '../constants/ride';
 import { HOME } from '../constants/routesConstants';
 import supabase from '../lib/supabase';
-import { selectUser } from '../slices/authSlice';
 import { selectDestination, selectOrigin } from '../slices/navSlice';
 
 function PoolScreen() {
@@ -25,7 +24,6 @@ function PoolScreen() {
   const [endDateTime, setEndDateTime] = React.useState(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
-  const { email = '', id: userId = '' } = useSelector(selectUser) || {};
   const navigation = useNavigation();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
@@ -41,9 +39,9 @@ function PoolScreen() {
           seats_available: passengers,
           from: origin,
           to: destination,
-          host_id: userId,
+          host_id: '', // TODO: get from context
           title: `Ride with ${carName}`,
-          host_email: email || '',
+          host_email: '', // TODO: get from context
           datetime_start: startDateTime.toISOString(),
           todatetime_end: endDateTime.toISOString(),
           cost_passenger: costPerPassenger,

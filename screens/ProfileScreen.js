@@ -1,18 +1,12 @@
-import { useNavigation } from '@react-navigation/native';
 import { Card, Text, useTheme } from '@rneui/themed';
 import React from 'react';
 import { Alert, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { profileDetails } from '../constants/fetchDetails';
 import { useAuth } from '../context/AuthContext';
-import { selectUser } from '../slices/authSlice';
 
 function ProfileScreen() {
-  const user = useSelector(selectUser);
-  const { id: userId } = user || {};
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const { id: userId } = {};
   const { theme } = useTheme();
   const auth = useAuth();
   const signOut = () => {

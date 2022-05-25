@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import propTypes from 'prop-types';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import authService from '../service/authService';
 
 const AuthContext = createContext({});
@@ -12,15 +14,12 @@ const AuthContext = createContext({});
  */
 function AuthProvider({ children }) {
   const [authData, setAuthData] = useState();
-
   const [loading, setLoading] = useState(true);
 
   async function loadStorageData() {
     try {
-      // Try get the data from Async Storage
       const authDataSerialized = await AsyncStorage.getItem('@AuthData');
       if (authDataSerialized) {
-        // If there are data, it's converted to an Object and the state is updated.
         const authDataParsed = JSON.parse(authDataSerialized);
         setAuthData(authDataParsed);
       }
@@ -36,22 +35,39 @@ function AuthProvider({ children }) {
   }, []);
 
   const signIn = async (email, password) => {
-    const signInData = await authService.signIn(email, password);
-
-    setAuthData(signInData);
-
-    AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
+    try {
+      const { user: signInData = null, error } = await authService.signIn(email, password);
+      if (error) {
+        Alert.alert('Error', error.message);
+        return false;
+      }
+      setAuthData(signInData);
+      await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
+      return true;
+    } catch (error) {
+      Alert.alert(error);
+      return false;
+    }
   };
 
   const signUp = async (email, password) => {
-    const signUpData = await authService.signUp(email, password);
-    setAuthData(signUpData);
-    AsyncStorage.setItem('@AuthData', JSON.stringify(signUpData));
+    try {
+      const { user: signInData = null, error } = await authService.signUp(email, password);
+      if (error) {
+        Alert.alert('Error', error.message);
+        return false;
+      }
+      setAuthData(signInData);
+      await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
+      return true;
+    } catch (error) {
+      Alert.alert(error);
+      return false;
+    }
   };
 
   const signOut = async () => {
     setAuthData(undefined);
-
     await AsyncStorage.removeItem('@AuthData');
   };
 
@@ -65,12 +81,14 @@ function AuthProvider({ children }) {
 
 function useAuth() {
   const context = useContext(AuthContext);
-
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
-
   return context;
 }
+
+AuthProvider.propTypes = {
+  children: propTypes.node.isRequired,
+};
 
 export { AuthContext, AuthProvider, useAuth };

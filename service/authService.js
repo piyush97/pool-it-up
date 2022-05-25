@@ -7,20 +7,11 @@ import supabase from '../lib/supabase';
  * @returns {object} - returns the user data
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const signIn = (email, password) => {
-  supabase.auth
-    .signIn({
-      email,
-      password,
-    })
-    .then(() => {
-      console.log('signed in');
-    })
-    .catch((err) => {
-      console.log('err', err);
-    });
-};
-
+const signIn = (email, password) =>
+  supabase.auth.signIn({
+    email,
+    password,
+  });
 /**
  * @description - This function is used to sign up the user
  * @param {string} email

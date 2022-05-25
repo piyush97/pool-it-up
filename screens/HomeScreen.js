@@ -10,13 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
 import useSwapper from '../hooks/useSwapper';
-import { selectIsLoggedIn } from '../slices/authSlice';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 
 function HomeScreen() {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const loggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);

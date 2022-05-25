@@ -1,19 +1,13 @@
 import supabase from '../lib/supabase';
-import { HOME, ONBOARDING, SIGN_IN } from './routesConstants';
+import { SIGN_IN, SIGN_UP } from './routesConstants';
 
-const fetchDetails = ({ flowType, email, password }) => {
+const fetchDetails = ({ flowType }) => {
   if (flowType === 0) {
     return {
       title: 'Login',
       bottomNavigationText: 'Dont have an account?',
-      bottomNavigationLink: 'SignUp',
+      bottomNavigationLink: SIGN_UP,
       buttonText: 'Register',
-      onButtonPress: async () =>
-        supabase.auth.signIn({
-          email,
-          password,
-        }),
-      nextScreen: HOME,
     };
   }
   return {
@@ -21,12 +15,6 @@ const fetchDetails = ({ flowType, email, password }) => {
     bottomNavigationText: 'Already have an account?',
     bottomNavigationLink: SIGN_IN,
     buttonText: 'Login',
-    onButtonPress: async () =>
-      supabase.auth.signUp({
-        email,
-        password,
-      }),
-    nextScreen: ONBOARDING,
   };
 };
 
