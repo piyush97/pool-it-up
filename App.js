@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@rneui/themed';
-import * as Linking from 'expo-linking';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import 'react-native-url-polyfill/auto';
@@ -9,21 +8,18 @@ import { AuthProvider } from './context/AuthContext';
 import store from './store';
 import Router from './utils/router';
 
+/**
+ * @description - Root component of the application
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ *
+ * @export - Root component of the application
+ * @return {React.ReactElement} - Root component of the application
+ */
 export default function App() {
-  const linking = {
-    prefixes: [Linking.createURL('/')],
-    config: {
-      screens: {
-        Register: 'SignIn',
-        SignUp: 'Signup',
-      },
-    },
-  };
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <AuthProvider>
-          {/* <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}> */}
           <SafeAreaProvider>
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -34,7 +30,6 @@ export default function App() {
             </KeyboardAvoidingView>
           </SafeAreaProvider>
         </AuthProvider>
-        {/* </NavigationContainer> */}
       </Provider>
     </ThemeProvider>
   );
