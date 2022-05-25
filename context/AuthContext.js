@@ -1,16 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { authService } from '../service/authService';
+import authService from '../service/authService';
 
-// Create the Auth Context with the data type specified
-// and a empty object
 const AuthContext = createContext({});
-
+/**
+ * Auth approach by using the AsyncStorage to store the user data
+ *
+ * @param {object} children - The props passed to the component.
+ * @return {React.ReactElement} - Authentication context.
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ */
 function AuthProvider({ children }) {
   const [authData, setAuthData] = useState();
 
-  // the AuthContext start with loading equals true
-  // and stay like this, until the data be load from Async Storage
   const [loading, setLoading] = useState(true);
 
   async function loadStorageData() {
@@ -19,58 +21,48 @@ function AuthProvider({ children }) {
       const authDataSerialized = await AsyncStorage.getItem('@AuthData');
       if (authDataSerialized) {
         // If there are data, it's converted to an Object and the state is updated.
-        const _authData = JSON.parse(authDataSerialized);
-        setAuthData(_authData);
+        const authDataParsed = JSON.parse(authDataSerialized);
+        setAuthData(authDataParsed);
       }
     } catch (error) {
       console.error(error);
     } finally {
-      // loading finished
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    // Every time the App is opened, this provider is rendered
-    // and call de loadStorage function.
     loadStorageData();
   }, []);
 
-  const signIn = async () => {
-    // call the service passing credential (email and password).
-    // In a real App this data will be provided by the user from some InputText components.
-    const _authData = await authService.signIn('lucasgarcez@email.com', '123456');
+  const signIn = async (email, password) => {
+    const signInData = await authService.signIn(email, password);
 
-    // Set the data in the context, so the App can be notified
-    // and send the user to the AuthStack
-    setAuthData(_authData);
+    setAuthData(signInData);
 
-    // Persist the data in the Async Storage
-    // to be recovered in the next user session.
-    AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+    AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
+  };
+
+  const signUp = async (email, password) => {
+    const signUpData = await authService.signUp(email, password);
+    setAuthData(signUpData);
+    AsyncStorage.setItem('@AuthData', JSON.stringify(signUpData));
   };
 
   const signOut = async () => {
-    // Remove data from context, so the App can be notified
-    // and send the user to the AuthStack
     setAuthData(undefined);
 
-    // Remove the data from Async Storage
-    // to NOT be recoverede in next session.
     await AsyncStorage.removeItem('@AuthData');
   };
 
   return (
-    // This component will be used to encapsulate the whole App,
-    // so all components will have access to the Context
-    <AuthContext.Provider value={{ authData, loading, signIn, signOut }}>
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
+    <AuthContext.Provider value={{ authData, loading, signIn, signOut, signUp }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-// A simple hooks to facilitate the access to the AuthContext
-// and permit components to subscribe to AuthContext updates
 function useAuth() {
   const context = useContext(AuthContext);
 

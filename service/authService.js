@@ -28,7 +28,7 @@ const signIn = (email, password) => {
  * @returns {object} - returns the user data
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const signUp = (email, password) => {
+const signUp = (email, password) =>
   supabase.auth
     .signUp({
       email,
@@ -40,13 +40,12 @@ const signUp = (email, password) => {
     .catch((err) => {
       console.log('err', err);
     });
-};
 
 /**
  * @description - This function is used to sign out the user
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const signOut = () => {
+const signOut = () =>
   supabase.auth
     .signOut()
     .then(() => {
@@ -55,13 +54,12 @@ const signOut = () => {
     .catch((err) => {
       console.log('err', err);
     });
-};
 /**
  * @description - This function is used to get to recover password
  * @author - Piyush Mehta <me@piyushmehta.com>
  * @param {string} email
  */
-const forgotPassword = (email) => {
+const forgotPassword = (email) =>
   supabase.auth.api
     .resetPasswordForEmail(email)
     .then(() => {
@@ -70,7 +68,6 @@ const forgotPassword = (email) => {
     .catch((err) => {
       console.log('err', err);
     });
-};
 
 const authService = {
   signIn,
