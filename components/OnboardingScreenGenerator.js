@@ -1,18 +1,23 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
 import { PropTypes } from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Alert, FlatList, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
-import { FORGOT_PASSWORD, ROOT_SCREEN } from '../constants/routesConstants';
+import { FORGOT_PASSWORD } from '../constants/routesConstants';
 import socialLoginOptions from '../constants/socialLoginOptions';
+import { useAuth } from '../context/AuthContext';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
-import { setIsLoggedIn, setSignUp, setUser } from '../slices/authSlice';
 
 function OnboardingScreenGenerator({ flowType }) {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
@@ -38,30 +43,30 @@ function OnboardingScreenGenerator({ flowType }) {
   useEffect(() => {
     setMode('dark');
   }, [setMode]);
+  const [loading, isLoading] = useState(false);
 
+  const auth = useAuth();
   const onBoardingFlow = async () => {
-    const { error = null, user } = await onButtonPress();
-    if (error) {
-      Alert.alert(error?.message);
-    } else if (user) {
-      dispatch(setUser(user));
-
-      if (flowType === 0) {
-        dispatch(setIsLoggedIn(true));
-        await AsyncStorage.setItem('@isLoggedIn', 'true');
-      }
-      dispatch(setSignUp({ email }));
-      navigation.navigate(nextScreen);
-    }
+    isLoading(true);
+    await auth.signIn();
   };
+  // const { error = null, user } = await onButtonPress();
+  // if (error) {
+  //   Alert.alert(error?.message);
+  // } else if (user) {
+  //   dispatch(setUser(user));
+
+  //   if (flowType === 0) {
+  //     await AsyncStorage.setItem('@isLoggedIn', 'true');
+  //     dispatch(setIsLoggedIn(true));
+  //   }
+  //   dispatch(setSignUp({ email }));
+  //   // navigation.navigate(nextScreen);
+  // }
+  // };
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate(ROOT_SCREEN)}>
-        <Text style={{ color: theme.colors.grey1, flex: 0, textAlign: 'right', paddingRight: 20 }}>
-          Skip
-        </Text>
-      </TouchableOpacity>
       <Text style={tw`text-10 p-4 pb-8 pt-50`}>{title}</Text>
       <Input
         onChangeText={(text) => setEmail(text)}
@@ -100,7 +105,12 @@ function OnboardingScreenGenerator({ flowType }) {
           Forgot password?
         </Text>
       </TouchableOpacity>
-      <Button title={title} style={tw`p-2 pt-12 `} onPress={() => onBoardingFlow()} />
+      {/* <Button title={title} style={tw`p-2 pt-12 `} onPress={() => onBoardingFlow()} /> */}
+      {loading ? (
+        <ActivityIndicator color="#000" animating size="small" />
+      ) : (
+        <Button title="Sign In" onPress={onBoardingFlow} />
+      )}
       <Text
         style={{
           color: theme.colors.grey1,

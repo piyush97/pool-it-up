@@ -1,42 +1,18 @@
 /* eslint-disable react/no-unstable-nested-components */
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, useTheme } from '@rneui/themed';
-import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
-import {
-  HOME,
-  SIGN_IN,
-  StackProtectedRoutes,
-  StackUnProtectedRoutes,
-} from '../constants/routesConstants';
+import { StackUnProtectedRoutes, TabRoutes } from '../constants/routesConstants';
+import { useAuth } from '../context/AuthContext';
 
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 function Router() {
-  const Stack = createNativeStackNavigator();
   const { theme } = useTheme();
+  const { authData, loading } = useAuth();
 
-  const [isLoggedIn, setIsLoggedIn] = useState('false');
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const getLoginStatus = async () => {
-      setLoading(true);
-      try {
-        await AsyncStorage.getItem('@isLoggedIn').then((value) => {
-          setIsLoggedIn(value);
-          setLoading(false);
-        });
-      } catch (e) {
-        // error reading value
-        console.error(e);
-        setLoading(false);
-      }
-    };
-
-    getLoginStatus();
-    return () => {
-      setIsLoggedIn('false');
-    };
-  }, [setIsLoggedIn, setLoading]);
   if (loading) {
     return (
       <SafeAreaView
@@ -49,33 +25,40 @@ function Router() {
       </SafeAreaView>
     );
   }
-  console.log('IsLOGGEDIN', isLoggedIn);
-  return isLoggedIn === 'true' ? (
-    <Stack.Navigator
-      defaultScreenOptions={{
-        headerShown: false,
-      }}
-      initialRouteName={HOME}
+  console.log('AuthData', authData);
+  return <NavigationContainer>{authData ? <AppStack /> : <AuthStack />}</NavigationContainer>;
+}
+
+function AppStack() {
+  return (
+    <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarStyle: {
+          height: 90,
+          paddingHorizontal: 5,
+          paddingTop: 0,
+          position: 'absolute',
+          borderTopWidth: 0,
+        },
       }}
     >
-      {StackProtectedRoutes.map(({ id, component, name }) => (
-        <Stack.Screen key={id} name={name} component={component} />
+      {TabRoutes.map(({ id, component, name, options }) => (
+        <Tab.Screen key={id} name={name} component={component} options={options} />
       ))}
-    </Stack.Navigator>
-  ) : (
+    </Tab.Navigator>
+  );
+}
+
+function AuthStack() {
+  return (
     <Stack.Navigator
-      initialRouteName={SIGN_IN}
-      defaultScreenOptions={{
-        headerShown: false,
-      }}
       screenOptions={{
         headerShown: false,
       }}
     >
       {StackUnProtectedRoutes.map(({ id, component, name }) => (
-        <Stack.Screen key={id} name={name} component={component} />
+        <Stack.Screen name={name} component={component} key={id} />
       ))}
     </Stack.Navigator>
   );

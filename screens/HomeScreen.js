@@ -8,6 +8,7 @@ import { Alert, Pressable, SafeAreaView, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
+import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
 import useSwapper from '../hooks/useSwapper';
 import { selectIsLoggedIn } from '../slices/authSlice';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
@@ -23,16 +24,12 @@ function HomeScreen() {
   const { data: swapData, from, to } = useSwapper();
 
   const onHandlePress = () => {
-    if (loggedIn) {
-      if (checked && destination && origin) {
-        navigation?.navigate('PoolMyRide');
-      } else if (!checked && destination && origin) {
-        navigation?.navigate('GetARide');
-      } else {
-        Alert.alert('Please enter your destination and origin before proceeding');
-      }
+    if (checked && destination && origin) {
+      navigation?.navigate(POOL_MY_RIDE);
+    } else if (!checked && destination && origin) {
+      navigation?.navigate(GET_A_RIDE);
     } else {
-      navigation?.navigate('SignIn');
+      Alert.alert('Please enter your destination and origin before proceeding');
     }
   };
   const buttonTextGenerator = () => {

@@ -1,11 +1,11 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { Text, ThemeProvider } from '@rneui/themed';
+import { ThemeProvider } from '@rneui/themed';
 import * as Linking from 'expo-linking';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import 'react-native-url-polyfill/auto';
 import { Provider } from 'react-redux';
 import theme from './constants/themeDetails';
+import { AuthProvider } from './context/AuthContext';
 import store from './store';
 import Router from './utils/router';
 
@@ -22,7 +22,8 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+        <AuthProvider>
+          {/* <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}> */}
           <SafeAreaProvider>
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -32,7 +33,8 @@ export default function App() {
               <Router />
             </KeyboardAvoidingView>
           </SafeAreaProvider>
-        </NavigationContainer>
+        </AuthProvider>
+        {/* </NavigationContainer> */}
       </Provider>
     </ThemeProvider>
   );

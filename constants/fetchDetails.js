@@ -1,5 +1,5 @@
 import supabase from '../lib/supabase';
-import { ONBOARDING, ROOT_SCREEN, SIGN_IN } from './routesConstants';
+import { HOME, ONBOARDING, SIGN_IN } from './routesConstants';
 
 const fetchDetails = ({ flowType, email, password }) => {
   if (flowType === 0) {
@@ -13,7 +13,7 @@ const fetchDetails = ({ flowType, email, password }) => {
           email,
           password,
         }),
-      nextScreen: ROOT_SCREEN,
+      nextScreen: HOME,
     };
   }
   return {

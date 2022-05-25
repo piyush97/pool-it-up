@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Card, Text, useTheme } from '@rneui/themed';
 import React from 'react';
@@ -6,8 +5,8 @@ import { Alert, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { profileDetails } from '../constants/fetchDetails';
-import { SIGN_IN } from '../constants/routesConstants';
-import { selectUser, setIsLoggedIn } from '../slices/authSlice';
+import { useAuth } from '../context/AuthContext';
+import { selectUser } from '../slices/authSlice';
 
 function ProfileScreen() {
   const user = useSelector(selectUser);
@@ -15,6 +14,10 @@ function ProfileScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { theme } = useTheme();
+  const auth = useAuth();
+  const signOut = () => {
+    auth.signOut();
+  };
   return (
     <View
       style={{
@@ -33,14 +36,15 @@ function ProfileScreen() {
         {profileDetails.map((item) => (
           <React.Fragment key={item.id}>
             <TouchableOpacity
-              onPress={async () => {
+              onPress={() => {
                 item
                   .function(userId)
-                  .then(async () => {
+                  .then(() => {
                     if (item.id === 5) {
-                      dispatch(setIsLoggedIn(false));
-                      await AsyncStorage.setItem('@isLoggedIn', 'false');
-                      await navigation.navigate(SIGN_IN);
+                      signOut();
+                      // dispatch(setIsLoggedIn(false));
+                      // await AsyncStorage.setItem('@isLoggedIn', 'false');
+                      // await navigation.navigate(SIGN_IN);
                     }
                   })
                   .catch((err) => {

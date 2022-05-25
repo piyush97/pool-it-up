@@ -5,11 +5,9 @@ import MapScreen from '../screens/MapScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import PoolScreen from '../screens/PoolScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import RootScreen from '../screens/RootScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 
-export const ROOT_SCREEN = 'Root';
 export const HOME = 'Home';
 export const GET_A_RIDE = 'GetARide';
 export const PROFILE = 'Profile';
@@ -66,25 +64,6 @@ export const TabRoutes = [
   },
 ];
 
-export const StackProtectedRoutes = [
-  {
-    id: 1,
-    component: RootScreen,
-    name: ROOT_SCREEN,
-  },
-  {
-    id: 2,
-    component: HomeScreen,
-    name: HOME,
-  },
-
-  {
-    id: 3,
-    component: OnboardingScreen,
-    name: ONBOARDING,
-  },
-];
-
 export const StackUnProtectedRoutes = [
   {
     id: 1,
@@ -105,15 +84,5 @@ export const StackUnProtectedRoutes = [
     id: 4,
     component: ForgotPasswordScreen,
     name: FORGOT_PASSWORD,
-  },
-  {
-    id: 4,
-    component: HomeScreen,
-    name: HOME,
-  },
-  {
-    id: 5,
-    component: RootScreen,
-    name: ROOT_SCREEN,
   },
 ];
