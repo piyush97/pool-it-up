@@ -9,9 +9,12 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
-import { useAuth } from '../context/AuthContext';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
-
+/**
+ * @description - Home Screen for the application
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @return {React.ReactElement} - Home Screen for the application
+ */
 function HomeScreen() {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
@@ -19,7 +22,6 @@ function HomeScreen() {
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
-  const { userDetails } = useAuth();
   // const { data: swapData, from, to } = useSwapper();
 
   const onHandlePress = () => {

@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+
 import supabase from '../lib/supabase';
 
 /**
@@ -6,7 +7,15 @@ import supabase from '../lib/supabase';
  * @author - Piyush Mehta <me@piyushmehta.com>
  * @param {} userData
  */
-const submitUserData = async ({ id, email, first_name, last_name, dob, phone }) =>
-  supabase.from('Users').insert([{ id, email, first_name, last_name, dob, phone }]);
+const submitUserData = async (email, first_name, last_name, dob, phone) =>
+  supabase.from('Users').insert([
+    {
+      first_name,
+      last_name,
+      dob,
+      phone,
+      email,
+    },
+  ]);
 
 export default submitUserData;

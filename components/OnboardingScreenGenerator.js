@@ -12,8 +12,13 @@ import { FORGOT_PASSWORD } from '../constants/routesConstants';
 import socialLoginOptions from '../constants/socialLoginOptions';
 import { useAuth } from '../context/AuthContext';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
-import submitUserData from '../service/DbService';
 
+/**
+ * @description - Onboarding Screen for the application to onboard the user to the application
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @param {number} flowType - Type of flow to be shown on the screen
+ * @return {React.ReactElement} - Onboarding Screen for the application to onboard the user to the application
+ */
 function OnboardingScreenGenerator({ flowType }) {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { theme } = useTheme();
@@ -35,17 +40,13 @@ function OnboardingScreenGenerator({ flowType }) {
     setMode('dark');
   }, [setMode]);
 
-  const { signIn, signUp, userDetails } = useAuth();
+  const { signIn, signUp } = useAuth();
   const onBoardingFlow = async () => {
     if (flowType === 0) {
       await signIn(email, password);
     }
     if (flowType === 1) {
-      await signUp(email, password);
-      const data = await userDetails();
-      console.log('data', data);
-      const submitdata = await submitUserData(data.id, email, firstName, lastName, dob, phone);
-      console.log('submitdata', submitdata);
+      await signUp(email, password, firstName, lastName, dob.toLocaleDateString(), phone);
     }
   };
 

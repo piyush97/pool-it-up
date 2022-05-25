@@ -42,7 +42,7 @@ const forgotPassword = (email) => supabase.auth.api.resetPasswordForEmail(email)
  * @description - This function is used to get user details from the database
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const getUserDetails = () => supabase.auth.getUser();
+const getUserDetails = async () => supabase.auth.user();
 
 const authService = {
   signIn,

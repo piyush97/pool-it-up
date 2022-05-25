@@ -1,10 +1,10 @@
+/* eslint-disable camelcase */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import propTypes from 'prop-types';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
-import { ONBOARDING } from '../constants/routesConstants';
 import authService from '../service/authService';
+import submitUserData from '../service/DbService';
 
 const AuthContext = createContext({});
 /**
@@ -15,7 +15,6 @@ const AuthContext = createContext({});
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
 function AuthProvider({ children }) {
-  const navigation = useNavigation();
   const [authData, setAuthData] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +35,14 @@ function AuthProvider({ children }) {
   useEffect(() => {
     loadStorageData();
   }, []);
-
+  /**
+   * @description - This function is used to sign in the user
+   * @param {string} email - The email of the user
+   * @param {string} password - The password of the user
+   * @return {Promise} - The promise of the request
+   * @author - Piyush Mehta <me@piyushmehta.com>
+   * @return {boolean} - The promise of the request
+   */
   const signIn = async (email, password) => {
     try {
       const { user: signInData = null, error } = await authService.signIn(email, password);
@@ -53,56 +59,58 @@ function AuthProvider({ children }) {
     }
   };
 
-  const signUp = async (email, password) => {
+  /**
+   * @description - This function is used to sign up the user
+   * @author - Piyush Mehta <me@piyushmehta.com>
+   * @param {string} email - The email of the user
+   * @param {string} password - The password of the user
+   * @param {string} first_name
+   * @param {string} last_name
+   * @param {Date} dob
+   * @param {string} phone
+   * @return {Promise} - The promise of the request
+   */
+  const signUp = async (email, password, first_name, last_name, dob, phone) => {
     try {
       const { user: signInData = null, error } = await authService.signUp(email, password);
+
       if (error) {
         Alert.alert('Error', error.message);
-        console.log(error);
         return false;
       }
       setAuthData(signInData);
-      navigation.navigate(ONBOARDING);
-      // await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
+      if (signInData) {
+        await submitUserData(email, first_name, last_name, dob, phone);
+      }
+      await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
       return true;
     } catch (error) {
       Alert.alert(error);
       return false;
     }
   };
-
+  /**
+   * @description - This function is used to sign out the user
+   *
+   */
   const signOut = async () => {
     setAuthData(undefined);
     await AsyncStorage.removeItem('@AuthData');
   };
 
-  const userDetails = async () => {
-    try {
-      const { user = null, error } = await authService.getUserDetails(); // get the current user
-      if (error) {
-        Alert.alert('Error', error.message);
-        return false;
-      }
-      if (!user) {
-        throw new Error('No user on the session!');
-      } // TODO: handle this error
-
-      setAuthData(user);
-      await AsyncStorage.setItem('@AuthData', JSON.stringify(user));
-      return true;
-    } catch (error) {
-      Alert.alert(error);
-      return false;
-    }
-  };
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{ authData, loading, signIn, signOut, signUp, userDetails }}>
+    <AuthContext.Provider value={{ authData, loading, signIn, signOut, signUp }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
+/**
+ * @description - This function is used to get the auth context
+ *
+ * @return {*}
+ */
 function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
