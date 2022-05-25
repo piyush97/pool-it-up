@@ -1,6 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StackRoutes } from '../../constants/routesConstants';
 
+/**
+ * @description - Auth Routes for the application
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @returns {StackNavigator} - Auth Routes for the application
+ */
 function AuthStack() {
   const Stack = createNativeStackNavigator();
 

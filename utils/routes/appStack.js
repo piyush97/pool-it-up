@@ -1,6 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabRoutes } from '../../constants/routesConstants';
-
+/**
+ * @description - Unprotected Routes for the application
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @returns {StackNavigator} - Unprotected Routes for the application
+ */
 function AppStack() {
   const Tab = createBottomTabNavigator();
   return (
