@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { NavigationContainer } from '@react-navigation/native';
 import { useTheme } from '@rneui/themed';
 import { ActivityIndicator, SafeAreaView } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
@@ -28,7 +27,7 @@ function Router() {
       </SafeAreaView>
     );
   }
-  return <NavigationContainer>{authData ? <AppStack /> : <AuthStack />}</NavigationContainer>;
+  return authData ? <AppStack /> : <AuthStack />;
 }
 
 export default Router;

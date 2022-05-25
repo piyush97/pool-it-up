@@ -22,8 +22,6 @@ function OnboardingScreen() {
   const { email, id } = {}; // TODO: get from context
   const navigation = useNavigation();
   const onButtonPress = async () => {
-    // const user = await supabase.auth.user(); // get the current user
-    // if (!user) throw new Error('No user on the session!'); // TODO: handle this error
     await supabase
       .from('Users')
       .insert([

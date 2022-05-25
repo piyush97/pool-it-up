@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import propTypes from 'prop-types';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
+import { ONBOARDING } from '../constants/routesConstants';
 import authService from '../service/authService';
 
 const AuthContext = createContext({});
@@ -13,6 +15,7 @@ const AuthContext = createContext({});
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
 function AuthProvider({ children }) {
+  const navigation = useNavigation();
   const [authData, setAuthData] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -55,10 +58,12 @@ function AuthProvider({ children }) {
       const { user: signInData = null, error } = await authService.signUp(email, password);
       if (error) {
         Alert.alert('Error', error.message);
+        console.log(error);
         return false;
       }
       setAuthData(signInData);
-      await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
+      navigation.navigate(ONBOARDING);
+      // await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
       return true;
     } catch (error) {
       Alert.alert(error);
@@ -71,9 +76,28 @@ function AuthProvider({ children }) {
     await AsyncStorage.removeItem('@AuthData');
   };
 
+  const userDetails = async () => {
+    try {
+      const { user = null, error } = await authService.getUserDetails(); // get the current user
+      if (error) {
+        Alert.alert('Error', error.message);
+        return false;
+      }
+      if (!user) {
+        throw new Error('No user on the session!');
+      } // TODO: handle this error
+
+      setAuthData(user);
+      await AsyncStorage.setItem('@AuthData', JSON.stringify(user));
+      return true;
+    } catch (error) {
+      Alert.alert(error);
+      return false;
+    }
+  };
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{ authData, loading, signIn, signOut, signUp }}>
+    <AuthContext.Provider value={{ authData, loading, signIn, signOut, signUp, userDetails }}>
       {children}
     </AuthContext.Provider>
   );

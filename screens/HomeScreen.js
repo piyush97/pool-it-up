@@ -9,6 +9,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
+import { useAuth } from '../context/AuthContext';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 
 function HomeScreen() {
@@ -18,6 +19,7 @@ function HomeScreen() {
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
+  const { userDetails } = useAuth();
   // const { data: swapData, from, to } = useSwapper();
 
   const onHandlePress = () => {
@@ -41,6 +43,7 @@ function HomeScreen() {
       <Text style={tw`text-10 py-4 pl-2 pb-8 pt-50`}>
         {checked ? 'Pool my Ride' : 'Book a Ride'}
       </Text>
+
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}

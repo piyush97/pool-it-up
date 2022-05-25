@@ -20,50 +20,35 @@ const signIn = (email, password) =>
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
 const signUp = (email, password) =>
-  supabase.auth
-    .signUp({
-      email,
-      password,
-    })
-    .then(() => {
-      console.log('signed up');
-    })
-    .catch((err) => {
-      console.log('err', err);
-    });
+  supabase.auth.signUp({
+    email,
+    password,
+  });
 
 /**
  * @description - This function is used to sign out the user
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const signOut = () =>
-  supabase.auth
-    .signOut()
-    .then(() => {
-      console.log('Logged out');
-    })
-    .catch((err) => {
-      console.log('err', err);
-    });
+const signOut = () => supabase.auth.signOut();
+
 /**
  * @description - This function is used to get to recover password
  * @author - Piyush Mehta <me@piyushmehta.com>
  * @param {string} email
  */
-const forgotPassword = (email) =>
-  supabase.auth.api
-    .resetPasswordForEmail(email)
-    .then(() => {
-      console.log('forgot password');
-    })
-    .catch((err) => {
-      console.log('err', err);
-    });
+const forgotPassword = (email) => supabase.auth.api.resetPasswordForEmail(email);
+
+/**
+ * @description - This function is used to get user details from the database
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ */
+const getUserDetails = () => supabase.auth.getUser();
 
 const authService = {
   signIn,
   signUp,
   signOut,
   forgotPassword,
+  getUserDetails,
 };
 export default authService;
