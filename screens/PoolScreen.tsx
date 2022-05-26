@@ -104,7 +104,6 @@ function PoolScreen() {
         testID="dateTime"
         value={startDateTime}
         mode="datetime"
-        is24Hour={false}
         themeVariant="dark"
         textColor={theme.colors.black}
         display="default"
@@ -123,7 +122,6 @@ function PoolScreen() {
         mode="datetime"
         textColor={theme.colors.black}
         themeVariant="dark"
-        is24Hour={false}
         display="default"
         style={tw`p-2 mt-2 mr-4`}
         onChange={(e) => {

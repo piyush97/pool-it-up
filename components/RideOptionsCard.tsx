@@ -18,7 +18,7 @@ function RideOptionsCard() {
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
   const { theme } = useTheme();
-  const [selected, setSelected] = React.useState(null);
+  const [selected, setSelected] = React.useState<any>(null);
 
   const [rides, setRides] = React.useState<definitions['Rides'][]>();
 
@@ -34,6 +34,7 @@ function RideOptionsCard() {
         // eslint-disable-next-line no-console
         console.log(error);
       }
+      // @ts-ignore - TODO: fix this
       setRides(Rides);
     };
     fetchRides();
@@ -113,7 +114,7 @@ function RideOptionsCard() {
               <View style={tw`flex-1`}>
                 <Text style={tw`text-xl`}>{title}</Text>
                 <Image
-                  source={carType.toLowerCase() === 'sedan' ? SEDAN : SUV}
+                  source={carType?.toLowerCase() === 'sedan' ? SEDAN : SUV}
                   style={tw`h-22 w-25`}
                 />
               </View>
@@ -132,6 +133,7 @@ function RideOptionsCard() {
       />
       <View>
         <TouchableOpacity
+          // @ts-ignore
           style={tw` py-3 m-3 ${!selected && 'bg-gray-300'}`}
           disabled={!selected}
           onPress={() => {}}
