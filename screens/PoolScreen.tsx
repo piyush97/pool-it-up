@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-unresolved
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Text, useTheme } from '@rneui/themed';
 import React from 'react';
 import { Alert, SafeAreaView } from 'react-native';
@@ -24,7 +24,7 @@ function PoolScreen() {
   const [endDateTime, setEndDateTime] = React.useState(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<any>>();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
 
@@ -56,10 +56,6 @@ function PoolScreen() {
           console.log(res);
           Alert.alert(res.error.message);
         }
-      })
-      .catch((err) => {
-        console.error(err);
-        Alert.alert(err.message);
       });
   };
   return (
@@ -150,7 +146,7 @@ function PoolScreen() {
         onChangeText={(text) => setCostPerBag(text)}
         style={tw`p-2`}
       />
-      <Button title="Submit" style={tw`px-3`} onPress={() => onHandleSubmit()} />
+      <Button title="Submit" style={tw`px-3`} onPress={onHandleSubmit} />
     </SafeAreaView>
   );
 }
