@@ -3,15 +3,13 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
-import { useEffect, useState } from 'react';
-import { FlatList, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Modal, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
-import { FORGOT_PASSWORD } from '../constants/routesConstants';
 import socialLoginOptions from '../constants/socialLoginOptions';
 import { useAuth } from '../context/AuthContext';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
-
 /**
  * @description - Onboarding Screen for the application to onboard the user to the application
  * @author - Piyush Mehta <me@piyushmehta.com>
@@ -23,6 +21,7 @@ function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
   const { theme } = useTheme();
   const navigation = useNavigation<NavigationProp<any>>();
   const [email, setEmail] = useState('');
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -131,9 +130,24 @@ function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
           />
         </>
       )}
-
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showForgotPasswordModal}
+        onRequestClose={() => {
+          setShowForgotPasswordModal(false);
+        }}
+        statusBarTranslucent={true}
+      >
+        <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
+          <Text>Forgot password</Text>
+          <Button style={tw`p-4 `} onPress={() => setShowForgotPasswordModal(false)}>
+            Close
+          </Button>
+        </SafeAreaView>
+      </Modal>
       {flowType === 0 && (
-        <TouchableOpacity style={{ flex: 0 }} onPress={() => navigation.navigate(FORGOT_PASSWORD)}>
+        <TouchableOpacity style={{ flex: 0 }} onPress={() => setShowForgotPasswordModal(true)}>
           <Text
             style={{
               fontWeight: '500',

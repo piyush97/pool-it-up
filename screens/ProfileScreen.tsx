@@ -7,10 +7,8 @@ import { useAuth } from '../context/AuthContext';
 
 function ProfileScreen() {
   const { theme } = useTheme();
-  const auth = useAuth();
-  const signOut = async () => {
-    await auth.signOut();
-  };
+  const { signOut } = useAuth();
+
   return (
     <View
       style={{
@@ -18,7 +16,7 @@ function ProfileScreen() {
         backgroundColor: theme.colors.background,
       }}
     >
-      <Text style={tw`text-10 py-4 pl-8 pb-8 pt-50`}>Profile</Text>
+      <Text style={tw`py-4 pb-8 pl-8 text-10 pt-50`}>Profile</Text>
       <Card
         containerStyle={{
           borderWidth: 0,
@@ -28,7 +26,7 @@ function ProfileScreen() {
       >
         {profileDetails.map((item) => (
           <React.Fragment key={item.id}>
-            <TouchableOpacity onPress={signOut} style={{ paddingVertical: 12 }}>
+            <TouchableOpacity onPress={async () => signOut()} style={{ paddingVertical: 12 }}>
               <Text
                 style={{
                   fontWeight: 'normal',
