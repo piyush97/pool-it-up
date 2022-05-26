@@ -110,7 +110,7 @@ const AuthProvider: React.FC = ({ children }) => {
    * @description - This function is used to get user details according to email
    * @param {string} email - The email of the user
    * @author - Piyush Mehta <me@piyushmehta.com>
-   * @return {*}  {(Promise<definitions['Users'] | boolean>)}
+   * @return {(Promise<definitions['Users'] | boolean>)} - The promise of the request
    */
   const userData = async (email: string) => {
     const { data: Users, error } = await dbService.getUserData(email);

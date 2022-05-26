@@ -4,13 +4,8 @@ import { View } from 'react-native';
 import tw from 'twrnc';
 import Map from '../components/Map';
 import RideOptionsCard from '../components/RideOptionsCard';
-type RootStackParamList = {
-  RideOptionsCard: {
-    options: {
-      headerShown: boolean;
-    };
-  };
-};
+import { RootStackParamList } from '../types/env';
+
 function MapScreen() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
   return (

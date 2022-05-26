@@ -21,6 +21,14 @@ type AuthContextData = {
   userData(email: string): Promise<definitions['Users']>;
 };
 
+type RootStackParamList = {
+  RideOptionsCard: {
+    options: {
+      headerShown: boolean;
+    };
+  };
+};
+
 type SignInProps = {
   email: string;
   password: string;

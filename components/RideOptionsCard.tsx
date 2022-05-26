@@ -102,6 +102,7 @@ function RideOptionsCard() {
         keyExtractor={(item) => item.id}
         renderItem={({
           item: {
+            id,
             car_type: carType,
             cost_passenger: price,
             seats_available: availableSeats,
@@ -117,7 +118,16 @@ function RideOptionsCard() {
               setSelected(item);
             }}
           >
-            <View style={tw`flex-row p-3 border-b border-gray-200`}>
+            <View
+              style={
+                selected && selected?.id === id
+                  ? {
+                      backgroundColor: theme.colors.primary,
+                      ...tw`flex-row p-3 border-b border-gray-200`,
+                    }
+                  : tw`flex-row p-3 border-b border-black-200`
+              }
+            >
               <View style={tw`flex-1`}>
                 <Text style={tw`text-xl`}>{title}</Text>
                 <Image
