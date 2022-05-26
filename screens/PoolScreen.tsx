@@ -58,6 +58,7 @@ function PoolScreen() {
         }
       })
       .catch((err) => {
+        console.error(err);
         Alert.alert(err.message);
       });
   };
@@ -84,76 +85,6 @@ function PoolScreen() {
         keyboardType="number-pad"
       />
 
-      {/* <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          InputComp: Input,
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          setFrom({
-            location: details.geometry.location,
-            description: data.description,
-          });
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            fontSize: 18,
-            backgroundColor: 'transparent',
-          },
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-        }}
-        placeholder="Where from?"
-      />
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          InputComp: Input,
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          setTo({
-            location: details.geometry.location,
-            description: data.description,
-          });
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            fontSize: 18,
-            backgroundColor: 'transparent',
-          },
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-        }}
-        placeholder="Where to?"
-      /> */}
       <Picker
         selectedValue={carType}
         itemStyle={{

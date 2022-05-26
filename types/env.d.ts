@@ -23,3 +23,10 @@ type SignInProps = {
   email: string;
   password: string;
 };
+
+type OnboardingProps = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  dob: string;
+};
