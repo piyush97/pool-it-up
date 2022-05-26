@@ -3,7 +3,6 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
-import { PropTypes } from 'prop-types';
 import { useEffect, useState } from 'react';
 import { FlatList, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
@@ -19,7 +18,7 @@ import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibilit
  * @param {number} flowType - Type of flow to be shown on the screen
  * @return {React.ReactElement} - Onboarding Screen for the application to onboard the user to the application
  */
-function OnboardingScreenGenerator({ flowType }) {
+function OnboardingScreenGenerator({ flowType }: { flowType: number }) {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { theme } = useTheme();
   const navigation = useNavigation();
@@ -212,8 +211,5 @@ function OnboardingScreenGenerator({ flowType }) {
     </SafeAreaView>
   );
 }
-OnboardingScreenGenerator.propTypes = {
-  flowType: PropTypes.number.isRequired,
-};
 
 export default OnboardingScreenGenerator;

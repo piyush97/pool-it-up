@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unstable-nested-components */
 // eslint-disable-next-line import/no-unresolved
-import { GOOGLE_MAPS_APIKEY } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
 import { Alert, Pressable, SafeAreaView, View } from 'react-native';
+import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';

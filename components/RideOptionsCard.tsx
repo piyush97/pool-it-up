@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
-import { GOOGLE_MAPS_APIKEY } from '@env';
 import { Input, Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
 import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
