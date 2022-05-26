@@ -4,7 +4,7 @@ import { User } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import authService from '../service/authService';
-import submitUserData from '../service/DbService';
+import dbService from '../service/DbService';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 /**
@@ -87,7 +87,7 @@ const AuthProvider: React.FC = ({ children }) => {
       }
       setAuthData(signInData);
       if (signInData) {
-        await submitUserData(email, first_name, last_name, dob, phone);
+        await dbService.submitUserData(email, first_name, last_name, dob, phone);
       }
       await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
       return true;
@@ -104,6 +104,18 @@ const AuthProvider: React.FC = ({ children }) => {
     setAuthData(undefined);
     await AsyncStorage.removeItem('@AuthData');
   };
+
+  const userData = async (email: string) => {
+    const { data, error } = await dbService.getUserData(email);
+    if (error) {
+      Alert.alert('Error', error.message);
+      return false;
+    }
+    console.log('GET USER DATA', data);
+    return data;
+  };
+
+  userData('me@piyushmehta.coma');
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values

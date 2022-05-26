@@ -28,4 +28,16 @@ const submitUserData = async (
     },
   ]);
 
-export default submitUserData;
+/**
+ * @description - This function is used to get user data
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @returns {User} - returns the user data
+ */
+export const getUserData = async (email: string) =>
+  await supabase.from('Users').select('*').eq('email', email);
+
+const dbService = {
+  getUserData,
+  submitUserData,
+};
+export default dbService;

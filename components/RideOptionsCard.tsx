@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { Input, Text, useTheme } from '@rneui/themed';
+import { Button, Icon, Input, Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
 import { FlatList, Image, TouchableOpacity, View } from 'react-native';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import SEDAN from '../assets/SEDAN.webp';
 import SUV from '../assets/SUV.webp';
+import { useAuth } from '../context/AuthContext';
 import supabase from '../lib/supabase';
 import { selectDestination, selectOrigin, setDestination } from '../slices/navSlice';
 import { definitions } from '../types/supabase';
@@ -19,9 +20,10 @@ function RideOptionsCard() {
   const origin = useSelector(selectOrigin);
   const { theme } = useTheme();
   const [selected, setSelected] = React.useState<any>(null);
+  const { authData } = useAuth();
 
   const [rides, setRides] = React.useState<definitions['Rides'][]>();
-
+  console.log('selected::::', selected);
   useEffect(() => {
     const fetchRides = async () => {
       const { data: Rides, error } = await supabase
@@ -41,14 +43,13 @@ function RideOptionsCard() {
   }, [origin, destination]);
   return (
     <View
-      style={
-        {
-          backgroundColor: theme.colors.background,
-        }
-        // tw` flex-1 border-t border-gray-200 flex-shrink`)
-      }
+      style={{
+        backgroundColor: theme.colors.background,
+      }}
     >
-      <Text style={tw`text-center py-2 text-xl`}>{Greeter()}</Text>
+      <Text style={tw`py-2 text-xl text-center`}>
+        {Greeter()},{authData?.first_name}{' '}
+      </Text>
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
@@ -89,7 +90,6 @@ function RideOptionsCard() {
       />
       {/* TODO: Write logic for Db */}
       {/* <NavFavourites /> */}
-
       <FlatList
         data={rides}
         keyExtractor={(item) => item.id}
@@ -110,7 +110,7 @@ function RideOptionsCard() {
               setSelected(item);
             }}
           >
-            <View style={tw`flex-row  border-b border-gray-200 p-3`}>
+            <View style={tw`flex-row p-3 border-b border-gray-200`}>
               <View style={tw`flex-1`}>
                 <Text style={tw`text-xl`}>{title}</Text>
                 <Image
@@ -127,22 +127,14 @@ function RideOptionsCard() {
                 <Text style={tw`text-sm text-right`}>{carNumber}</Text>
                 <Text style={tw`text-sm font-semibold text-right`}>{availableSeats} seats</Text>
               </View>
+              <Icon name="chevron-right" size={24} color={theme.colors.primary} />
             </View>
           </TouchableOpacity>
         )}
       />
-      <View>
-        <TouchableOpacity
-          // @ts-ignore
-          style={tw` py-3 m-3 ${!selected && 'bg-gray-300'}`}
-          disabled={!selected}
-          onPress={() => {}}
-        >
-          <Text style={tw`text-center text-white text-xl`}>
-            {!selected ? 'Select a Ride' : selected?.id && `You selected ${selected.title}`}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <Button onPress={() => {}}>
+        <Text>Book Ride</Text>
+      </Button>
     </View>
   );
 }
