@@ -7,9 +7,18 @@ declare module 'react-native-dotenv' {
 type AuthContextData = {
   authData?: AuthData;
   loading: boolean;
-  signIn(): Promise<void>;
-  signOut(): void;
+  signIn(email: string, password: string): Promise<boolean>;
+  signOut(): Promise<void>;
+  signUp(
+    email: string,
+    password: string,
+    first_name: string,
+    last_name: string,
+    dob: string,
+    phone: string
+  ): Promise<boolean>;
 };
+
 type SignInProps = {
   email: string;
   password: string;

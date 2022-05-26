@@ -7,7 +7,7 @@ import supabase from '../lib/supabase';
  * @returns {object} - returns the user data
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const signIn = (email, password) =>
+const signIn = (email: string, password: string) =>
   supabase.auth.signIn({
     email,
     password,
@@ -19,7 +19,7 @@ const signIn = (email, password) =>
  * @returns {object} - returns the user data
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const signUp = (email, password) =>
+const signUp = (email: string, password: string) =>
   supabase.auth.signUp({
     email,
     password,
@@ -36,7 +36,7 @@ const signOut = () => supabase.auth.signOut();
  * @author - Piyush Mehta <me@piyushmehta.com>
  * @param {string} email
  */
-const forgotPassword = (email) => supabase.auth.api.resetPasswordForEmail(email);
+const forgotPassword = (email: string) => supabase.auth.api.resetPasswordForEmail(email);
 
 /**
  * @description - This function is used to get user details from the database

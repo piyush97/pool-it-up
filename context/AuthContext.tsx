@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import propTypes from 'prop-types';
+import { User } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import authService from '../service/authService';
@@ -15,7 +15,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
 const AuthProvider: React.FC = ({ children }) => {
-  const [authData, setAuthData] = useState();
+  const [authData, setAuthData] = useState<User | null>();
   const [loading, setLoading] = useState(true);
 
   async function loadStorageData(): Promise<void> {
@@ -43,7 +43,7 @@ const AuthProvider: React.FC = ({ children }) => {
    * @author - Piyush Mehta <me@piyushmehta.com>
    * @return {boolean} - The promise of the request
    */
-  const signIn = async ({ email, password }: SignInProps) => {
+  const signIn = async (email: string, password: string) => {
     try {
       const { user: signInData = null, error } = await authService.signIn(email, password);
       if (error) {
@@ -54,7 +54,7 @@ const AuthProvider: React.FC = ({ children }) => {
       await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
       return true;
     } catch (error) {
-      Alert.alert(error);
+      console.error(error);
       return false;
     }
   };
@@ -70,7 +70,14 @@ const AuthProvider: React.FC = ({ children }) => {
    * @param {string} phone
    * @return {Promise} - The promise of the request
    */
-  const signUp = async (email, password, first_name, last_name, dob, phone) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    first_name: string,
+    last_name: string,
+    dob: string,
+    phone: string
+  ) => {
     try {
       const { user: signInData = null, error } = await authService.signUp(email, password);
 
@@ -85,7 +92,7 @@ const AuthProvider: React.FC = ({ children }) => {
       await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
       return true;
     } catch (error) {
-      Alert.alert(error);
+      console.error(error);
       return false;
     }
   };
@@ -118,9 +125,5 @@ function useAuth() {
   }
   return context;
 }
-
-AuthProvider.propTypes = {
-  children: propTypes.node.isRequired,
-};
 
 export { AuthContext, AuthProvider, useAuth };
