@@ -1,7 +1,9 @@
 import supabase from '../lib/supabase';
 import { SIGN_IN, SIGN_UP } from './routesConstants';
-
-const fetchDetails = ({ flowType }) => {
+type flowTypeProps = {
+  flowType: 0 | 1;
+};
+const fetchDetails = ({ flowType }: flowTypeProps) => {
   if (flowType === 0) {
     return {
       title: 'Login',
@@ -22,16 +24,13 @@ export const profileDetails = [
   {
     id: 1,
     title: 'Personal Data',
-    function: async (id) => {
+    function: async (id: string) => {
       await supabase
         .from('Users')
         .select('*')
         .eq('id', id)
         .then((res) => {
           console.log('data', res);
-        })
-        .catch((err) => {
-          console.log('err', err);
         });
     },
   },

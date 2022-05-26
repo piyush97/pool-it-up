@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import validator from 'validator';
 
-export const checkOnboardingForm = ({ firstName, lastName, phone, dob }) => {
+export const checkOnboardingForm = ({ firstName, lastName, phone, dob }: OnboardingProps) => {
   if (!firstName || !lastName || !phone || !dob) {
     Alert.alert('Please fill out all fields');
     return false;
@@ -27,7 +27,7 @@ export const checkOnboardingForm = ({ firstName, lastName, phone, dob }) => {
   return true;
 };
 
-export const checkSignUpForm = ({ email, password }) => {
+export const checkSignUpForm = ({ email, password }: SignInProps) => {
   if (!email || !password) {
     Alert.alert('Please fill out all fields');
     return false;

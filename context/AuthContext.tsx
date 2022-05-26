@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import propTypes from 'prop-types';
+import { User } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import authService from '../service/authService';
 import submitUserData from '../service/DbService';
 
-const AuthContext = createContext({});
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 /**
  * Auth approach by using the AsyncStorage to store the user data
  *
@@ -14,11 +14,11 @@ const AuthContext = createContext({});
  * @return {React.ReactElement} - Authentication context.
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-function AuthProvider({ children }) {
-  const [authData, setAuthData] = useState();
+const AuthProvider: React.FC = ({ children }) => {
+  const [authData, setAuthData] = useState<User | null>();
   const [loading, setLoading] = useState(true);
 
-  async function loadStorageData() {
+  async function loadStorageData(): Promise<void> {
     try {
       const authDataSerialized = await AsyncStorage.getItem('@AuthData');
       if (authDataSerialized) {
@@ -43,7 +43,7 @@ function AuthProvider({ children }) {
    * @author - Piyush Mehta <me@piyushmehta.com>
    * @return {boolean} - The promise of the request
    */
-  const signIn = async (email, password) => {
+  const signIn = async (email: string, password: string) => {
     try {
       const { user: signInData = null, error } = await authService.signIn(email, password);
       if (error) {
@@ -54,7 +54,7 @@ function AuthProvider({ children }) {
       await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
       return true;
     } catch (error) {
-      Alert.alert(error);
+      console.error(error);
       return false;
     }
   };
@@ -70,7 +70,14 @@ function AuthProvider({ children }) {
    * @param {string} phone
    * @return {Promise} - The promise of the request
    */
-  const signUp = async (email, password, first_name, last_name, dob, phone) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    first_name: string,
+    last_name: string,
+    dob: string,
+    phone: string
+  ) => {
     try {
       const { user: signInData = null, error } = await authService.signUp(email, password);
 
@@ -85,7 +92,7 @@ function AuthProvider({ children }) {
       await AsyncStorage.setItem('@AuthData', JSON.stringify(signInData));
       return true;
     } catch (error) {
-      Alert.alert(error);
+      console.error(error);
       return false;
     }
   };
@@ -104,7 +111,7 @@ function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
 /**
  * @description - This function is used to get the auth context
@@ -118,9 +125,5 @@ function useAuth() {
   }
   return context;
 }
-
-AuthProvider.propTypes = {
-  children: propTypes.node.isRequired,
-};
 
 export { AuthContext, AuthProvider, useAuth };

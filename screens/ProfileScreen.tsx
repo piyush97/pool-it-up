@@ -1,16 +1,15 @@
 import { Card, Text, useTheme } from '@rneui/themed';
 import React from 'react';
-import { Alert, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 import { profileDetails } from '../constants/fetchDetails';
 import { useAuth } from '../context/AuthContext';
 
 function ProfileScreen() {
-  const { id: userId } = {};
   const { theme } = useTheme();
   const auth = useAuth();
-  const signOut = () => {
-    auth.signOut();
+  const signOut = async () => {
+    await auth.signOut();
   };
   return (
     <View
@@ -29,24 +28,7 @@ function ProfileScreen() {
       >
         {profileDetails.map((item) => (
           <React.Fragment key={item.id}>
-            <TouchableOpacity
-              onPress={() => {
-                item
-                  .function(userId)
-                  .then(() => {
-                    if (item.id === 5) {
-                      signOut();
-                      // dispatch(setIsLoggedIn(false));
-                      // await AsyncStorage.setItem('@isLoggedIn', 'false');
-                      // await navigation.navigate(SIGN_IN);
-                    }
-                  })
-                  .catch((err) => {
-                    Alert.alert('Error', err);
-                  });
-              }}
-              style={{ paddingVertical: 12 }}
-            >
+            <TouchableOpacity onPress={signOut} style={{ paddingVertical: 12 }}>
               <Text
                 style={{
                   fontWeight: 'normal',

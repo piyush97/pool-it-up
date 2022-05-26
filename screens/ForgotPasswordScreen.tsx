@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Input, Text, useTheme, useThemeMode } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { Alert, SafeAreaView } from 'react-native';
@@ -10,12 +10,9 @@ import supabase from '../lib/supabase';
 
 function ForgotPasswordScreen() {
   const { theme } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<any>>();
   const [email, setEmail] = useState('');
-  const { bottomNavigationLink } = fetchDetails({
-    email,
-    // password, //TODO: Use Context
-  });
+  const { bottomNavigationLink } = fetchDetails({ flowType: 1 });
 
   const { setMode } = useThemeMode();
   useEffect(() => {

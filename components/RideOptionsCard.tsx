@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
-import { GOOGLE_MAPS_APIKEY } from '@env';
 import { Input, Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
 import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
@@ -10,6 +10,7 @@ import SEDAN from '../assets/SEDAN.webp';
 import SUV from '../assets/SUV.webp';
 import supabase from '../lib/supabase';
 import { selectDestination, selectOrigin, setDestination } from '../slices/navSlice';
+import { definitions } from '../types/supabase';
 import Greeter from '../utils/greeting';
 
 function RideOptionsCard() {
@@ -17,22 +18,24 @@ function RideOptionsCard() {
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
   const { theme } = useTheme();
-  const [selected, setSelected] = React.useState(null);
+  const [selected, setSelected] = React.useState<any>(null);
 
-  const [rides, setRides] = React.useState([]);
+  const [rides, setRides] = React.useState<definitions['Rides'][]>();
+
   useEffect(() => {
     const fetchRides = async () => {
       const { data: Rides, error } = await supabase
-        .from('Rides')
+        .from<definitions['Rides']>('Rides')
         .select('*')
         .eq('from', JSON.stringify(origin))
         .eq('to', JSON.stringify(destination));
 
-      setRides(Rides);
       if (error) {
         // eslint-disable-next-line no-console
         console.log(error);
       }
+      // @ts-ignore - TODO: fix this
+      setRides(Rides);
     };
     fetchRides();
   }, [origin, destination]);
@@ -64,7 +67,7 @@ function RideOptionsCard() {
         onPress={(data, details = null) => {
           dispatch(
             setDestination({
-              location: details.geometry.location,
+              location: details?.geometry.location,
               description: data.description,
             })
           );
@@ -111,7 +114,7 @@ function RideOptionsCard() {
               <View style={tw`flex-1`}>
                 <Text style={tw`text-xl`}>{title}</Text>
                 <Image
-                  source={carType.toLowerCase() === 'sedan' ? SEDAN : SUV}
+                  source={carType?.toLowerCase() === 'sedan' ? SEDAN : SUV}
                   style={tw`h-22 w-25`}
                 />
               </View>
@@ -130,6 +133,7 @@ function RideOptionsCard() {
       />
       <View>
         <TouchableOpacity
+          // @ts-ignore
           style={tw` py-3 m-3 ${!selected && 'bg-gray-300'}`}
           disabled={!selected}
           onPress={() => {}}

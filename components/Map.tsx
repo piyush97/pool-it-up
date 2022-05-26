@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
-import { GOOGLE_MAPS_APIKEY } from '@env';
 import { useEffect, useRef } from 'react';
+import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ function Map() {
     latitude: destination?.location.lat,
     longitude: destination?.location.lng,
   };
-  const mapRef = useRef(null);
+  const mapRef = useRef<any>(null);
 
   useEffect(() => {
     if (!origin || !destination) return;

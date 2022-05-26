@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-unresolved
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Text, useTheme } from '@rneui/themed';
 import React from 'react';
 import { Alert, SafeAreaView } from 'react-native';
@@ -20,11 +20,11 @@ function PoolScreen() {
   const [carName, setCarName] = React.useState('');
   const [carNumber, setCarNumber] = React.useState('');
   const [passengers, setPassengers] = React.useState('');
-  const [startDateTime, setStartDateTime] = React.useState(new Date());
-  const [endDateTime, setEndDateTime] = React.useState(new Date());
+  const [startDateTime, setStartDateTime] = React.useState<any>(new Date());
+  const [endDateTime, setEndDateTime] = React.useState<any>(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<any>>();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
 
@@ -42,8 +42,8 @@ function PoolScreen() {
           host_id: '', // TODO: get from context
           title: `Ride with ${carName}`,
           host_email: '', // TODO: get from context
-          datetime_start: startDateTime.toISOString(),
-          todatetime_end: endDateTime.toISOString(),
+          datetime_start: new Date(startDateTime).toISOString(),
+          todatetime_end: new Date(endDateTime).toISOString(),
           cost_passenger: costPerPassenger,
           cost_bag: costPerBag,
         },
@@ -56,14 +56,11 @@ function PoolScreen() {
           console.log(res);
           Alert.alert(res.error.message);
         }
-      })
-      .catch((err) => {
-        Alert.alert(err.message);
       });
   };
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      <Text style={tw`text-10 p-4 pb-8 pt-5`}>Ride Details</Text>
+      <Text style={tw`p-4 pt-5 pb-8 text-10`}>Ride Details</Text>
       <Input
         placeholder="Car Number"
         value={carNumber}
@@ -84,76 +81,6 @@ function PoolScreen() {
         keyboardType="number-pad"
       />
 
-      {/* <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          InputComp: Input,
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          setFrom({
-            location: details.geometry.location,
-            description: data.description,
-          });
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            fontSize: 18,
-            backgroundColor: 'transparent',
-          },
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-        }}
-        placeholder="Where from?"
-      />
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          InputComp: Input,
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          setTo({
-            location: details.geometry.location,
-            description: data.description,
-          });
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            fontSize: 18,
-            backgroundColor: 'transparent',
-          },
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-        }}
-        placeholder="Where to?"
-      /> */}
       <Picker
         selectedValue={carType}
         itemStyle={{
@@ -177,13 +104,12 @@ function PoolScreen() {
         testID="dateTime"
         value={startDateTime}
         mode="datetime"
-        is24Hour={false}
         themeVariant="dark"
         textColor={theme.colors.black}
         display="default"
         style={tw`p-2 mt-2 mr-4 `}
         onChange={(e) => {
-          setStartDateTime(new Date(e.nativeEvent.timestamp));
+          setStartDateTime(e.nativeEvent.timestamp);
         }}
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1, color: theme.colors.grey1 }}>
@@ -196,11 +122,10 @@ function PoolScreen() {
         mode="datetime"
         textColor={theme.colors.black}
         themeVariant="dark"
-        is24Hour={false}
         display="default"
         style={tw`p-2 mt-2 mr-4`}
         onChange={(e) => {
-          setEndDateTime(new Date(e.nativeEvent.timestamp));
+          setEndDateTime(e.nativeEvent.timestamp);
         }}
       />
       <Input
@@ -219,7 +144,7 @@ function PoolScreen() {
         onChangeText={(text) => setCostPerBag(text)}
         style={tw`p-2`}
       />
-      <Button title="Submit" style={tw`px-3`} onPress={() => onHandleSubmit()} />
+      <Button title="Submit" style={tw`px-3`} onPress={onHandleSubmit} />
     </SafeAreaView>
   );
 }

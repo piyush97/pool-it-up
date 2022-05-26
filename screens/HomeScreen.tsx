@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unstable-nested-components */
 // eslint-disable-next-line import/no-unresolved
-import { GOOGLE_MAPS_APIKEY } from '@env';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
 import { useState } from 'react';
 import { Alert, Pressable, SafeAreaView, View } from 'react-native';
+import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
@@ -18,7 +18,7 @@ import { selectDestination, selectOrigin, setDestination, setOrigin } from '../s
 function HomeScreen() {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<any>>();
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
@@ -64,7 +64,7 @@ function HomeScreen() {
         onPress={(data, details = null) => {
           dispatch(
             setOrigin({
-              location: details.geometry.location,
+              location: details?.geometry.location,
               description: data.description,
             })
           );
@@ -114,7 +114,7 @@ function HomeScreen() {
         onPress={(data, details = null) => {
           dispatch(
             setDestination({
-              location: details.geometry.location,
+              location: details?.geometry.location,
               description: data.description,
             })
           );
