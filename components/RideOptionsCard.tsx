@@ -20,11 +20,16 @@ function RideOptionsCard() {
   const origin = useSelector(selectOrigin);
   const { theme } = useTheme();
   const [selected, setSelected] = React.useState<any>(null);
-  const { authData } = useAuth();
+  const { authData, userData } = useAuth();
 
   const [rides, setRides] = React.useState<definitions['Rides'][]>();
-  console.log('selected::::', selected);
+  const { email = null } = authData;
+  const [dataOfUser, setDataOfUser] = React.useState<definitions['Users']>();
   useEffect(() => {
+    const getUserData = async () => {
+      const data = await userData(email);
+      setDataOfUser(data && data);
+    };
     const fetchRides = async () => {
       const { data: Rides, error } = await supabase
         .from<definitions['Rides']>('Rides')
@@ -40,6 +45,7 @@ function RideOptionsCard() {
       setRides(Rides);
     };
     fetchRides();
+    getUserData();
   }, [origin, destination]);
   return (
     <View
@@ -48,7 +54,8 @@ function RideOptionsCard() {
       }}
     >
       <Text style={tw`py-2 text-xl text-center`}>
-        {Greeter()},{authData?.first_name}{' '}
+        {Greeter()}
+        {dataOfUser && `, ${dataOfUser?.first_name} ${dataOfUser?.last_name}`}
       </Text>
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"

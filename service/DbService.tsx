@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 
+import { PostgrestResponse } from '@supabase/supabase-js';
 import supabase from '../lib/supabase';
 
 /**
@@ -33,7 +34,7 @@ const submitUserData = async (
  * @author - Piyush Mehta <me@piyushmehta.com>
  * @returns {User} - returns the user data
  */
-export const getUserData = async (email: string) =>
+export const getUserData = async (email: string): Promise<PostgrestResponse<any>> =>
   await supabase.from('Users').select('*').eq('email', email);
 
 const dbService = {

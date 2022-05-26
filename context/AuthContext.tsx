@@ -1,10 +1,11 @@
 /* eslint-disable camelcase */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '@supabase/supabase-js';
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import authService from '../service/authService';
 import dbService from '../service/DbService';
+import { AuthContextData } from '../types/env';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 /**
@@ -105,21 +106,25 @@ const AuthProvider: React.FC = ({ children }) => {
     await AsyncStorage.removeItem('@AuthData');
   };
 
+  /**
+   * @description - This function is used to get user details according to email
+   * @param {string} email - The email of the user
+   * @author - Piyush Mehta <me@piyushmehta.com>
+   * @return {*}  {(Promise<definitions['Users'] | boolean>)}
+   */
   const userData = async (email: string) => {
-    const { data, error } = await dbService.getUserData(email);
+    const { data: Users, error } = await dbService.getUserData(email);
     if (error) {
       Alert.alert('Error', error.message);
       return false;
     }
-    console.log('GET USER DATA', data);
-    return data;
+    await AsyncStorage.setItem('@UserData', JSON.stringify(Users[0]));
+    return Users[0];
   };
-
-  userData('me@piyushmehta.coma');
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{ authData, loading, signIn, signOut, signUp }}>
+    <AuthContext.Provider value={{ authData, loading, signIn, signOut, signUp, userData }}>
       {children}
     </AuthContext.Provider>
   );

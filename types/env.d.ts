@@ -1,3 +1,4 @@
+import { definitions } from './supabase.d';
 declare module 'react-native-dotenv' {
   export const GOOGLE_MAPS_APIKEY: string;
   export const REACT_NATIVE_SUPABASE_ANON_KEY: string;
@@ -17,6 +18,7 @@ type AuthContextData = {
     dob: string,
     phone: string
   ): Promise<boolean>;
+  userData(email: string): Promise<definitions['Users']>;
 };
 
 type SignInProps = {
