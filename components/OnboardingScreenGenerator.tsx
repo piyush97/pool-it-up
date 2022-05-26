@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
 import { useEffect, useState } from 'react';
 import { FlatList, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
@@ -21,14 +21,14 @@ import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibilit
 function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { theme } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<any>>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
-  const [dob, setDob] = useState(new Date());
+  const [dob, setDob] = useState<any>();
 
   const { title, bottomNavigationLink, bottomNavigationText, buttonText } = fetchDetails({
     flowType,
@@ -45,7 +45,7 @@ function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
       await signIn(email, password);
     }
     if (flowType === 1) {
-      await signUp(email, password, firstName, lastName, dob.toLocaleDateString(), phone);
+      await signUp(email, password, firstName, lastName, new Date(dob).toLocaleDateString(), phone);
     }
   };
 
@@ -109,7 +109,7 @@ function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
             autoComplete="tel"
             autoCapitalize="none"
           />
-          <Text style={tw`text-right pr-3 pb-2`}>Date of Birth</Text>
+          <Text style={tw`pb-2 pr-3 text-right`}>Date of Birth</Text>
           <DateTimePicker
             testID="dateOfBirth"
             accessibilityLabel="dateOfBirth"
@@ -125,7 +125,7 @@ function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
             }}
             onChange={(event) => {
               if (event.type === 'set') {
-                setDob(new Date(event.nativeEvent.timestamp));
+                setDob(event.nativeEvent.timestamp);
               }
             }}
           />
@@ -213,7 +213,5 @@ function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
     </SafeAreaView>
   );
 }
-
-setDate = (event, date) => {};
 
 export default OnboardingScreenGenerator;

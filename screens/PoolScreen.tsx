@@ -20,8 +20,8 @@ function PoolScreen() {
   const [carName, setCarName] = React.useState('');
   const [carNumber, setCarNumber] = React.useState('');
   const [passengers, setPassengers] = React.useState('');
-  const [startDateTime, setStartDateTime] = React.useState(new Date());
-  const [endDateTime, setEndDateTime] = React.useState(new Date());
+  const [startDateTime, setStartDateTime] = React.useState<any>(new Date());
+  const [endDateTime, setEndDateTime] = React.useState<any>(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
   const navigation = useNavigation<NavigationProp<any>>();
@@ -42,8 +42,8 @@ function PoolScreen() {
           host_id: '', // TODO: get from context
           title: `Ride with ${carName}`,
           host_email: '', // TODO: get from context
-          datetime_start: startDateTime.toISOString(),
-          todatetime_end: endDateTime.toISOString(),
+          datetime_start: new Date(startDateTime).toISOString(),
+          todatetime_end: new Date(endDateTime).toISOString(),
           cost_passenger: costPerPassenger,
           cost_bag: costPerBag,
         },
@@ -60,7 +60,7 @@ function PoolScreen() {
   };
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      <Text style={tw`text-10 p-4 pb-8 pt-5`}>Ride Details</Text>
+      <Text style={tw`p-4 pt-5 pb-8 text-10`}>Ride Details</Text>
       <Input
         placeholder="Car Number"
         value={carNumber}
@@ -109,7 +109,7 @@ function PoolScreen() {
         display="default"
         style={tw`p-2 mt-2 mr-4 `}
         onChange={(e) => {
-          setStartDateTime(new Date(e.nativeEvent.timestamp));
+          setStartDateTime(e.nativeEvent.timestamp);
         }}
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1, color: theme.colors.grey1 }}>
@@ -125,7 +125,7 @@ function PoolScreen() {
         display="default"
         style={tw`p-2 mt-2 mr-4`}
         onChange={(e) => {
-          setEndDateTime(new Date(e.nativeEvent.timestamp));
+          setEndDateTime(e.nativeEvent.timestamp);
         }}
       />
       <Input

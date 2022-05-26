@@ -1,11 +1,18 @@
+import { SocialMediaType } from '@rneui/themed';
 import { Alert } from 'react-native';
+type socialLoginOptionsType = {
+  id: number;
+  icon: string;
+  type: SocialMediaType;
+  login: () => void;
+};
 
-const socialLoginOptions = [
+const socialLoginOptions: socialLoginOptionsType[] = [
   {
     id: 1,
     icon: 'facebook',
     type: 'facebook',
-    login: async () => {
+    login: () => {
       Alert.alert('Facebook');
     },
   },
@@ -13,7 +20,7 @@ const socialLoginOptions = [
     id: 2,
     icon: 'google',
     type: 'google',
-    login: async () => {
+    login: () => {
       Alert.alert('Google');
     },
   },
@@ -21,7 +28,7 @@ const socialLoginOptions = [
     id: 3,
     icon: 'linkedin',
     type: 'linkedin',
-    login: async () => {
+    login: () => {
       Alert.alert('LinkedIn');
     },
   },
