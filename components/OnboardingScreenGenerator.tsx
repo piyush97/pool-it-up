@@ -18,7 +18,7 @@ import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibilit
  * @param {number} flowType - Type of flow to be shown on the screen
  * @return {React.ReactElement} - Onboarding Screen for the application to onboard the user to the application
  */
-function OnboardingScreenGenerator({ flowType }: { flowType: number }) {
+function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { theme } = useTheme();
   const navigation = useNavigation();
@@ -123,8 +123,10 @@ function OnboardingScreenGenerator({ flowType }: { flowType: number }) {
               marginRight: 12,
               flex: 0,
             }}
-            onChange={(e) => {
-              setDob(new Date(e.nativeEvent.timestamp));
+            onChange={(event) => {
+              if (event.type === 'set') {
+                setDob(new Date(event.nativeEvent.timestamp));
+              }
             }}
           />
         </>
@@ -211,5 +213,7 @@ function OnboardingScreenGenerator({ flowType }: { flowType: number }) {
     </SafeAreaView>
   );
 }
+
+setDate = (event, date) => {};
 
 export default OnboardingScreenGenerator;

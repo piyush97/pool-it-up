@@ -10,6 +10,7 @@ import SEDAN from '../assets/SEDAN.webp';
 import SUV from '../assets/SUV.webp';
 import supabase from '../lib/supabase';
 import { selectDestination, selectOrigin, setDestination } from '../slices/navSlice';
+import { definitions } from '../types/supabase';
 import Greeter from '../utils/greeting';
 
 function RideOptionsCard() {
@@ -19,20 +20,21 @@ function RideOptionsCard() {
   const { theme } = useTheme();
   const [selected, setSelected] = React.useState(null);
 
-  const [rides, setRides] = React.useState([]);
+  const [rides, setRides] = React.useState<definitions['Rides'][]>();
+
   useEffect(() => {
     const fetchRides = async () => {
       const { data: Rides, error } = await supabase
-        .from('Rides')
+        .from<definitions['Rides']>('Rides')
         .select('*')
         .eq('from', JSON.stringify(origin))
         .eq('to', JSON.stringify(destination));
 
-      setRides(Rides);
       if (error) {
         // eslint-disable-next-line no-console
         console.log(error);
       }
+      setRides(Rides);
     };
     fetchRides();
   }, [origin, destination]);
@@ -64,7 +66,7 @@ function RideOptionsCard() {
         onPress={(data, details = null) => {
           dispatch(
             setDestination({
-              location: details.geometry.location,
+              location: details?.geometry.location,
               description: data.description,
             })
           );

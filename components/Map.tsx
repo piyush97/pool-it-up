@@ -18,7 +18,7 @@ function Map() {
     latitude: destination?.location.lat,
     longitude: destination?.location.lng,
   };
-  const mapRef = useRef(null);
+  const mapRef = useRef<any>(null);
 
   useEffect(() => {
     if (!origin || !destination) return;
