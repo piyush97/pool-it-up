@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Icon } from '@rneui/themed';
+import React from 'react';
 type IconProps = {
   color: string;
   size: number;

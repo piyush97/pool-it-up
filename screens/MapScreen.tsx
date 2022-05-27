@@ -1,29 +1,34 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { useTheme } from '@rneui/themed';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View } from 'react-native';
 import tw from 'twrnc';
 import Map from '../components/Map';
 import RideOptionsCard from '../components/RideOptionsCard';
-import { RootStackParamList } from '../types/env';
-
 function MapScreen() {
-  const Stack = createNativeStackNavigator<RootStackParamList>();
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['50%', '50%', '85%'], []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+  const { theme } = useTheme();
   return (
-    <View style={{ height: '100%' }}>
+    <View style={{ height: '100%', backgroundColor: theme.colors.background }}>
       <View style={tw`h-1/2`}>
         <Map />
       </View>
-      <View style={{ height: '100%' }}>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="RideOptionsCard"
-            component={RideOptionsCard}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Navigator>
-      </View>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        handleStyle={{ backgroundColor: theme.colors.grey2 }}
+        index={1}
+        handleIndicatorStyle={{ backgroundColor: theme.colors.black }}
+        detached={true}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+      >
+        <RideOptionsCard />
+      </BottomSheet>
     </View>
   );
 }

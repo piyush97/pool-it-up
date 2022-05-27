@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from '@rneui/themed';
+import React from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import 'react-native-url-polyfill/auto';
@@ -8,7 +9,6 @@ import theme from './constants/themeDetails';
 import { AuthProvider } from './context/AuthContext';
 import store from './store';
 import Router from './utils/routes/router';
-
 /**
  * @description - Root component of the application
  * @author - Piyush Mehta <me@piyushmehta.com>

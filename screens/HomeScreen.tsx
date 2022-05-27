@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-unresolved
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Pressable, SafeAreaView, View } from 'react-native';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';

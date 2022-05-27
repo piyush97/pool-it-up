@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
-import { Button, Input, Text, useTheme } from '@rneui/themed';
+import { Icon } from '@rneui/base';
+import { Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,7 +38,6 @@ function RideOptionsCard() {
         .select('*')
         .eq('from', JSON.stringify(origin))
         .eq('to', JSON.stringify(destination));
-
       if (error) {
         // eslint-disable-next-line no-console
         console.log(error);
@@ -51,6 +51,7 @@ function RideOptionsCard() {
   return (
     <View
       style={{
+        flex: 1,
         backgroundColor: theme.colors.background,
       }}
     >
@@ -70,7 +71,16 @@ function RideOptionsCard() {
         keyboardShouldPersistTaps="handled"
         enablePoweredByContainer={false}
         textInputProps={{
-          InputComp: Input,
+          style: {
+            fontSize: 18,
+            color: theme.colors.black,
+            flex: 1,
+            padding: 20,
+            borderRadius: 10,
+            marginVertical: 5,
+            backgroundColor: theme.colors.grey2,
+            marginHorizontal: 20,
+          },
           errorStyle: { color: 'red' },
         }}
         onPress={(data, details = null) => {
@@ -85,30 +95,60 @@ function RideOptionsCard() {
           container: {
             flex: 0,
           },
-          textInput: {
-            backgroundColor: 'transparent',
-          },
           placeholder: theme.colors.black,
         }}
         query={{
           key: GOOGLE_MAPS_APIKEY,
           language: 'en',
+          components: 'country:ca',
         }}
         placeholder="Where from?"
       />
+      <TouchableOpacity
+        style={{
+          right: 'auto',
+          top: 0,
+          marginRight: 'auto',
+          left: 50,
+        }}
+      >
+        <Icon
+          style={{ top: 2, right: 2 }}
+          type="font-awesome"
+          name="arrow-up"
+          size={12}
+          color={theme.colors.primary}
+        />
+        <Icon
+          style={{ bottom: 2, left: 2 }}
+          type="font-awesome"
+          name="arrow-down"
+          size={12}
+          color={theme.colors.primary}
+        />
+      </TouchableOpacity>
+
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
         minLength={2}
         // eslint-disable-next-line no-console
-        onFail={(err) => console.log(err)}
         fetchDetails
         enableHighAccuracyLocation
         currentLocationLabel="Current Location"
         keyboardShouldPersistTaps="handled"
         enablePoweredByContainer={false}
         textInputProps={{
-          InputComp: Input,
+          style: {
+            fontSize: 18,
+            color: theme.colors.black,
+            flex: 1,
+            borderRadius: 10,
+            padding: 20,
+            marginVertical: 5,
+            backgroundColor: theme.colors.grey2,
+            marginHorizontal: 20,
+          },
           errorStyle: { color: 'red' },
         }}
         onPress={(data, details = null) => {
@@ -140,7 +180,6 @@ function RideOptionsCard() {
         contentContainerStyle={{
           flexGrow: 1,
         }}
-        horizontal={true}
         onEndReachedThreshold={0.5}
         data={rides}
         keyExtractor={(item) => item.id}
@@ -153,6 +192,7 @@ function RideOptionsCard() {
             cost_bag: costPerBag,
             car_number: carNumber,
             car_name: carModel,
+            bags_available: bagsAvailable,
           },
           item,
         }) => (
@@ -170,10 +210,10 @@ function RideOptionsCard() {
             carModel={carModel}
             id={id}
             theme={theme}
+            bags_available={bagsAvailable}
           />
         )}
       />
-      <Button title="Add Ride"></Button>
     </View>
   );
 }

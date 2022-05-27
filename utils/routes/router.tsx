@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { useTheme } from '@rneui/themed';
+import React from 'react';
 import { ActivityIndicator, SafeAreaView } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import AppStack from './appStack';
