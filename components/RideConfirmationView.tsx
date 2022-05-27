@@ -1,6 +1,7 @@
 import { Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
-import { SafeAreaView } from 'react-native';
+import { Image, SafeAreaView } from 'react-native';
+import { carImageProvider } from '../constants/fetchDetails';
 import dbService from '../service/DbService';
 import { RideConfirmationViewProps } from '../types/env';
 
@@ -21,7 +22,10 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
   }, [selected]);
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      {/* <Image style={{ width: '100%', height: '100%' }} /> */}
+      <Image
+        style={{ width: '80%', height: '25%' }}
+        source={carImageProvider(rideDetails?.car_type)}
+      />
       <Text>{JSON.stringify(rideDetails, null, 4)}</Text>
     </SafeAreaView>
   );
