@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
-import { Button, Icon, Input, Text, useTheme } from '@rneui/themed';
+import { Button, Input, Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,9 +10,10 @@ import SEDAN from '../assets/SEDAN.webp';
 import SUV from '../assets/SUV.webp';
 import { useAuth } from '../context/AuthContext';
 import supabase from '../lib/supabase';
-import { selectDestination, selectOrigin, setDestination } from '../slices/navSlice';
+import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 import { definitions } from '../types/supabase';
 import Greeter from '../utils/greeting';
+import RideCard from './RideCard';
 
 function RideOptionsCard() {
   const dispatch = useDispatch();
@@ -74,6 +75,44 @@ function RideOptionsCard() {
         }}
         onPress={(data, details = null) => {
           dispatch(
+            setOrigin({
+              location: details?.geometry.location,
+              description: data.description,
+            })
+          );
+        }}
+        styles={{
+          container: {
+            flex: 0,
+          },
+          textInput: {
+            backgroundColor: 'transparent',
+          },
+          placeholder: theme.colors.black,
+        }}
+        query={{
+          key: GOOGLE_MAPS_APIKEY,
+          language: 'en',
+        }}
+        placeholder="Where from?"
+      />
+      <GooglePlacesAutocomplete
+        nearbyPlacesAPI="GooglePlacesSearch"
+        debounce={400}
+        minLength={2}
+        // eslint-disable-next-line no-console
+        onFail={(err) => console.log(err)}
+        fetchDetails
+        enableHighAccuracyLocation
+        currentLocationLabel="Current Location"
+        keyboardShouldPersistTaps="handled"
+        enablePoweredByContainer={false}
+        textInputProps={{
+          InputComp: Input,
+          errorStyle: { color: 'red' },
+        }}
+        onPress={(data, details = null) => {
+          dispatch(
             setDestination({
               location: details?.geometry.location,
               description: data.description,
@@ -98,6 +137,11 @@ function RideOptionsCard() {
       {/* TODO: Write logic for Db */}
       {/* <NavFavourites /> */}
       <FlatList
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
+        horizontal={true}
+        onEndReachedThreshold={0.5}
         data={rides}
         keyExtractor={(item) => item.id}
         renderItem={({
@@ -108,50 +152,28 @@ function RideOptionsCard() {
             seats_available: availableSeats,
             cost_bag: costPerBag,
             car_number: carNumber,
-            title,
             car_name: carModel,
           },
           item,
         }) => (
-          <TouchableOpacity
-            onPress={() => {
-              setSelected(item);
-            }}
-          >
-            <View
-              style={
-                selected && selected?.id === id
-                  ? {
-                      backgroundColor: theme.colors.primary,
-                      ...tw`flex-row p-3 border-b border-gray-200`,
-                    }
-                  : tw`flex-row p-3 border-b border-black-200`
-              }
-            >
-              <View style={tw`flex-1`}>
-                <Text style={tw`text-xl`}>{title}</Text>
-                <Image
-                  source={carType?.toLowerCase() === 'sedan' ? SEDAN : SUV}
-                  style={tw`h-22 w-25`}
-                />
-              </View>
-              <View style={tw`flex-1`}>
-                <Text style={tw`text-xl text-right`}>${price}</Text>
-
-                <Text style={tw`text-sm text-right`}>{carType}</Text>
-                <Text style={tw`text-sm text-right`}>{carModel}</Text>
-                <Text style={tw`text-sm text-right`}>{costPerBag}</Text>
-                <Text style={tw`text-sm text-right`}>{carNumber}</Text>
-                <Text style={tw`text-sm font-semibold text-right`}>{availableSeats} seats</Text>
-              </View>
-              <Icon name="chevron-right" size={24} color={theme.colors.primary} />
-            </View>
-          </TouchableOpacity>
+          <RideCard
+            setSelected={setSelected}
+            carType={carType}
+            price={price}
+            selected={selected}
+            costPerBag={costPerBag}
+            carNumber={carNumber}
+            availableSeats={availableSeats}
+            item={item}
+            SEDAN={SEDAN}
+            SUV={SUV}
+            carModel={carModel}
+            id={id}
+            theme={theme}
+          />
         )}
       />
-      <Button onPress={() => {}}>
-        <Text>Book Ride</Text>
-      </Button>
+      <Button title="Add Ride"></Button>
     </View>
   );
 }

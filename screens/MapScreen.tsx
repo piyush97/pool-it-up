@@ -10,10 +10,10 @@ function MapScreen() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
     <View style={{ height: '100%' }}>
-      <View style={tw`h-1/3`}>
+      <View style={tw`h-1/2`}>
         <Map />
       </View>
-      <View style={tw`h-full`}>
+      <View style={{ height: '100%' }}>
         <Stack.Navigator>
           <Stack.Screen
             name="RideOptionsCard"
