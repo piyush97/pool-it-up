@@ -1,4 +1,5 @@
 import supabase from '../lib/supabase';
+import { rideImages } from './ride';
 import { SIGN_IN, SIGN_UP } from './routesConstants';
 type flowTypeProps = {
   flowType: 0 | 1;
@@ -57,4 +58,7 @@ export const profileDetails = [
     },
   },
 ];
+
+export const carImageProvider = (type: string) =>
+  type?.toLowerCase() === 'sedan' ? rideImages.SEDAN : rideImages.SUV;
 export default fetchDetails;

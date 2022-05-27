@@ -4,6 +4,9 @@ declare module 'react-native-dotenv' {
   export const REACT_NATIVE_SUPABASE_ANON_KEY: string;
   export const REACT_NATIVE_SUPABASE_URL: string;
 }
+type RideConfirmationViewProps = {
+  selected: string;
+};
 
 type AuthContextData = {
   authData?: AuthData;

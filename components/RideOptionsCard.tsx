@@ -15,7 +15,11 @@ import { selectDestination, selectOrigin, setDestination, setOrigin } from '../s
 import { definitions } from '../types/supabase';
 import Greeter from '../utils/greeting';
 import RideCard from './RideCard';
-
+/**
+ * @description - Ride options card Shows list of rides available
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @return {React.ReactElement} - Ride options card
+ */
 function RideOptionsCard() {
   const dispatch = useDispatch();
   const destination = useSelector(selectDestination);
