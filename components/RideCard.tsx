@@ -98,7 +98,7 @@ const RideCard = ({
           left: 'auto',
           right: '76%',
           color: theme.colors.grey1,
-          ...tw`text-md  text-left font-light`,
+          ...tw`text-base text-left font-light`,
         }}
       >
         {carType}
