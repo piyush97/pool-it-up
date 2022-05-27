@@ -1,10 +1,18 @@
-import { Text, useTheme } from '@rneui/themed';
+import { Button, Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
 import { Image, SafeAreaView } from 'react-native';
+import tw from 'twrnc';
 import { carImageProvider } from '../constants/fetchDetails';
 import dbService from '../service/DbService';
 import { RideConfirmationViewProps } from '../types/env';
+import FromTo from './FromTo';
 
+/**
+ * @description - Ride Confirmation View
+ * @param {RideConfirmationViewProps} props - RideConfirmationViewProps
+ * @return {React.ReactElement} - The Ride Confirmation View
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ */
 const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
   const { theme } = useTheme();
   const { getRideData } = dbService;
@@ -22,11 +30,14 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
   }, [selected]);
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
+      <Text style={tw`text-xl font-bold text-center `}>{rideDetails?.title}</Text>
       <Image
         style={{ width: '80%', height: '25%' }}
         source={carImageProvider(rideDetails?.car_type)}
       />
-      <Text>{JSON.stringify(rideDetails, null, 4)}</Text>
+      <FromTo from={rideDetails?.from?.description} to={rideDetails?.to?.description} />
+      {/* <Text>{JSON.stringify(rideDetails, null, 4)}</Text> */}
+      <Button title="Confirm" style={{ ...tw`p-3 pt-5` }} onPress={() => {}} />
     </SafeAreaView>
   );
 };

@@ -175,6 +175,7 @@ function RideOptionsCard() {
         query={{
           key: GOOGLE_MAPS_APIKEY,
           language: 'en',
+          components: 'country:ca',
         }}
         placeholder="Where to?"
       />

@@ -8,6 +8,11 @@ type RideConfirmationViewProps = {
   selected: string;
 };
 
+type FromToProps = {
+  from: string;
+  to: string;
+};
+
 type AuthContextData = {
   authData?: AuthData;
   loading: boolean;
