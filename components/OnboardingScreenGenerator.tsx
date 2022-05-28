@@ -28,7 +28,7 @@ function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
-  const [dob, setDob] = useState<any>();
+  const [dob, setDob] = useState<any>(new Date());
 
   const { title, bottomNavigationLink, bottomNavigationText, buttonText } = fetchDetails({
     flowType,

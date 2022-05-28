@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FORGOT_PASSWORD, SIGN_IN, SIGN_UP } from '../../constants/routesConstants';
 import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen';
 import SignInScreen from '../../screens/SignInScreen';
+import React from 'react';
 import SignUpScreen from '../../screens/SignUpScreen';
 
 /**

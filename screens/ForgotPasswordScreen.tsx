@@ -7,6 +7,7 @@ import { Alert, SafeAreaView } from 'react-native';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
 import supabase from '../lib/supabase';
+import React from 'react';
 
 function ForgotPasswordScreen() {
   const { theme } = useTheme();
