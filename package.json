@@ -25,6 +25,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@rneui/base": "^4.0.0-rc.3",
     "@rneui/themed": "^4.0.0-rc.3",
+    "@stripe/stripe-react-native": "0.6.1",
     "@supabase/supabase-js": "^1.35.3",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-prettier": "^8.5.0",
