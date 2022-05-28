@@ -43,18 +43,57 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
         startDateTime={rideDetails?.datetime_start}
         endDateTime={rideDetails?.todatetime_end}
       />
-      <View style={{ left: '5%', top: '5%', alignSelf: 'flex-start' }}>
-        <Icon name="user" type="font-awesome" />
-        <Text style={tw`text-md`}>{rideDetails?.seats_available}</Text>
-        <Text style={tw`text-md`}>{rideDetails?.cost_passenger}</Text>
-      </View>
-      {/* <Button
-        title="Confirm"
-        style={{ ...tw`p-3 pt-2` }}
-        onPress={() => {
-          setShowModal(true);
+
+      <View
+        style={{
+          left: '2%',
+          top: '8%',
+          alignSelf: 'flex-start',
+          flex: 1,
+          flexDirection: 'row',
         }}
-      /> */}
+      >
+        <Icon name="user" type="font-awesome" />
+        <Text style={{ left: '10%', top: '1%' }}>
+          Seats Available: {rideDetails?.seats_available}
+        </Text>
+      </View>
+      <View
+        style={{
+          left: '2%',
+          top: '5%',
+          flex: 0.75,
+          alignSelf: 'flex-start',
+          flexDirection: 'row',
+        }}
+      >
+        <Icon type="font-awesome" name="suitcase" />
+        <Text style={{ ...tw`text-md `, left: '10%', top: '1%' }}>
+          Price per bag: {rideDetails?.cost_bag}
+        </Text>
+      </View>
+      <View
+        style={{
+          left: '2%',
+          top: '5%',
+          flex: 9,
+          alignSelf: 'flex-start',
+          flexDirection: 'row',
+        }}
+      >
+        <Icon type="font-awesome" name="dollar" />
+        <Text style={{ ...tw`text-md `, left: '2%', top: '1%' }}>
+          Price per seat: {rideDetails?.cost_passenger}
+        </Text>
+
+        <Button
+          title="Confirm"
+          style={{ ...tw`p-3 mt-15 ml-3` }}
+          onPress={() => {
+            setShowModal(true);
+          }}
+        />
+      </View>
       <Modal
         animationType="slide"
         transparent={false}
