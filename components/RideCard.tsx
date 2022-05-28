@@ -22,7 +22,7 @@ const RideCard = ({
   theme,
   bags_available,
 }: any) => {
-  const [modalVisible, setModalVisible] = React.useState(true); //TODO: false after testing
+  const [modalVisible, setModalVisible] = React.useState(false); //TODO: false after testing
   return (
     <>
       <TouchableOpacity
@@ -166,12 +166,10 @@ const RideCard = ({
           animationType="slide"
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
           }}
         >
           <SafeAreaView>
-            <Button title="quit" onPress={() => setModalVisible(false)}></Button>
             <RideConfirmationView selected={selected} />
           </SafeAreaView>
         </Modal>

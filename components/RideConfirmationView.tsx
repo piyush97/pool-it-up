@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 import { Image, Modal, SafeAreaView, View } from 'react-native';
 import tw from 'twrnc';
 import { carImageProvider } from '../constants/fetchDetails';
-import dbService from '../service/DbService';
+import { useAuth } from '../context/AuthContext';
+import dbService, { getUserData } from '../service/DbService';
 import { RideConfirmationViewProps } from '../types/env';
 import FromTo from './FromTo';
 import StripePaymentView from './StripePaymentView';
@@ -19,9 +20,10 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
   const { getRideData } = dbService;
   const [rideDetails, setRideDetails] = React.useState<any>();
   const [showModal, setShowModal] = React.useState(false);
+
   useEffect(() => {
     const getRideDataDetails = async () => {
-      const data = await getRideData('a1879470-dbb6-451e-941d-0065e74614ce'); //TODO: remove this hardcoded id [only for testing]
+      const data = await getRideData(selected);
       if (data.error) {
         console.log(data.error);
       }
@@ -31,7 +33,7 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
     getRideDataDetails();
   }, [selected]);
   return (
-    <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
+    <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '120%' }}>
       <Text style={tw`text-xl font-bold text-center pt-2`}>{rideDetails?.title}</Text>
       <Image
         style={{ width: '80%', height: '25%', alignSelf: 'center', left: '5%' }}
@@ -43,7 +45,6 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
         startDateTime={rideDetails?.datetime_start}
         endDateTime={rideDetails?.todatetime_end}
       />
-
       <View
         style={{
           left: '2%',
