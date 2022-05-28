@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@rneui/themed';
+import React from 'react';
 import {
   GET_A_RIDE,
   GET_A_RIDE_ICON,

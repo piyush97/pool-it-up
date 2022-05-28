@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-unresolved
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Pressable, SafeAreaView, View } from 'react-native';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -42,7 +42,7 @@ function HomeScreen() {
 
   return (
     <View style={{ height: '100%', backgroundColor: theme.colors.background }}>
-      <Text style={tw`text-10 py-4 pl-2 pb-8 pt-50`}>
+      <Text style={tw`py-4 pb-8 pl-2 text-10 pt-50`}>
         {checked ? 'Pool my Ride' : 'Book a Ride'}
       </Text>
 
@@ -81,6 +81,7 @@ function HomeScreen() {
         query={{
           key: GOOGLE_MAPS_APIKEY,
           language: 'en',
+          components: 'country:ca',
         }}
         placeholder="Where From?"
       />
@@ -131,6 +132,7 @@ function HomeScreen() {
         query={{
           key: GOOGLE_MAPS_APIKEY,
           language: 'en',
+          components: 'country:ca',
         }}
         placeholder="Where to?"
       />

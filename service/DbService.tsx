@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 
+import { PostgrestResponse } from '@supabase/supabase-js';
 import supabase from '../lib/supabase';
 
 /**
@@ -28,4 +29,24 @@ const submitUserData = async (
     },
   ]);
 
-export default submitUserData;
+/**
+ * @description - This function is used to get user data
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ * @returns {User} - returns the user data
+ */
+export const getUserData = async (email: string): Promise<PostgrestResponse<any>> =>
+  await supabase.from('Users').select('*').eq('email', email);
+
+/**
+ * @description - This function is used to get the ride details from the database
+ * @param id
+ * @returns {Ride} - returns the ride details
+ */
+export const getRideData = async (id: string) =>
+  await supabase.from('Rides').select('*').eq('id', id).single();
+const dbService = {
+  getUserData,
+  submitUserData,
+  getRideData,
+};
+export default dbService;

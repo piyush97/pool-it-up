@@ -32,4 +32,14 @@ const rideTypes = [
     type: 'Hatchback',
   },
 ];
+
+export const rideImages = {
+  SEDAN: require('../assets/SEDAN.webp'),
+  SUV: require('../assets/SUV.webp'),
+  // Van: require('../assets/images/van.png'),
+  // Truck: require('../assets/images/truck.png'),
+  // Motorcycle: require('../assets/images/motorcycle.png'),
+  // Bicycle: require('../assets/images/bicycle.png'),
+  // Hatchback: require('../assets/images/hatchback.png'),
+};
 export default rideTypes;

@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -7,6 +7,11 @@ import { useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { selectDestination, selectOrigin } from '../slices/navSlice';
 
+/**
+ *@description Map component
+ * @author Piyush Mehta <me@piyushmehta.com>
+ * @return {React.ReactElement} Map component
+ */
 function Map() {
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
