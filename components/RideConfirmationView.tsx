@@ -1,6 +1,6 @@
-import { Button, Text, useTheme } from '@rneui/themed';
+import { Button, Icon, Text, Tooltip, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
-import { Image, Modal, SafeAreaView } from 'react-native';
+import { Image, Modal, SafeAreaView, View } from 'react-native';
 import tw from 'twrnc';
 import { carImageProvider } from '../constants/fetchDetails';
 import dbService from '../service/DbService';
@@ -32,20 +32,29 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
   }, [selected]);
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      <Text style={tw`text-xl font-bold text-center `}>{rideDetails?.title}</Text>
+      <Text style={tw`text-xl font-bold text-center pt-2`}>{rideDetails?.title}</Text>
       <Image
-        style={{ width: '80%', height: '25%' }}
+        style={{ width: '80%', height: '25%', alignSelf: 'center', left: '5%' }}
         source={carImageProvider(rideDetails?.car_type)}
       />
-      <FromTo from={rideDetails?.from?.description} to={rideDetails?.to?.description} />
-      {/* <Text>{JSON.stringify(rideDetails, null, 4)}</Text> */}
-      <Button
+      <FromTo
+        from={rideDetails?.from?.description}
+        to={rideDetails?.to?.description}
+        startDateTime={rideDetails?.datetime_start}
+        endDateTime={rideDetails?.todatetime_end}
+      />
+      <View style={{ left: '5%', top: '5%', alignSelf: 'flex-start' }}>
+        <Icon name="user" type="font-awesome" />
+        <Text style={tw`text-md`}>{rideDetails?.seats_available}</Text>
+        <Text style={tw`text-md`}>{rideDetails?.cost_passenger}</Text>
+      </View>
+      {/* <Button
         title="Confirm"
-        style={{ ...tw`p-3 pt-5` }}
+        style={{ ...tw`p-3 pt-2` }}
         onPress={() => {
           setShowModal(true);
         }}
-      />
+      /> */}
       <Modal
         animationType="slide"
         transparent={false}
@@ -54,7 +63,8 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
           setShowModal(false);
         }}
       >
-        <StripePaymentView email={'me@piyushmehta.com'} />
+        {/* TODO: Remove this harcoded Text */}
+        <StripePaymentView email={'me@piyushmehta.com'} modalButton={setShowModal} />
       </Modal>
     </SafeAreaView>
   );

@@ -11,6 +11,8 @@ type RideConfirmationViewProps = {
 type FromToProps = {
   from: string;
   to: string;
+  startDateTime: string;
+  endDateTime: string;
 };
 
 type AuthContextData = {

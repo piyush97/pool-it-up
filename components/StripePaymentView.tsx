@@ -1,11 +1,12 @@
-import { Button, Text, useTheme } from '@rneui/themed';
+import { Button, Icon, Text, useTheme } from '@rneui/themed';
 import { CardField, CardFieldInput, useConfirmPayment } from '@stripe/stripe-react-native';
 import React from 'react';
 import { Alert, SafeAreaView, StyleSheet } from 'react-native';
 type StripePaymentViewProps = {
   email: string;
+  modalButton: any;
 };
-const StripePaymentView = ({ email }: StripePaymentViewProps) => {
+const StripePaymentView = ({ email, modalButton }: StripePaymentViewProps) => {
   const [cardDetails, setCardDetails] = React.useState<CardFieldInput.Details>();
   const { confirmPayment, loading } = useConfirmPayment();
   const { theme } = useTheme();
@@ -34,12 +35,11 @@ const StripePaymentView = ({ email }: StripePaymentViewProps) => {
       } else {
         const { paymentIntent, error } = await confirmPayment(clientSecret, {
           type: 'Card',
-          billingDetails: email,
         });
         if (error) {
-          alert(`Payment Confirmation Error ${error.message}`);
+          Alert.alert(`Payment Confirmation Error ${error.message}`);
         } else if (paymentIntent) {
-          alert('Payment Successful');
+          Alert.alert('Payment Successful');
           console.log('Payment successful ', paymentIntent);
         }
       }
@@ -50,6 +50,7 @@ const StripePaymentView = ({ email }: StripePaymentViewProps) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
+      <Icon type="font-awesome" name="cross" onPress={() => modalButton(false)} />
       <Text>StripePaymentView</Text>
       <CardField
         postalCodeEnabled={true}
