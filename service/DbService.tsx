@@ -77,9 +77,9 @@ export const paymentRecord = async (
         .update([
           [
             {
-              id: 'ride',
-              paymentMethod: 'cash',
-              Ride: 'test',
+              id: rideId,
+              paymentMethod: paymentMethod,
+              Ride: Ride,
             },
           ],
         ])
