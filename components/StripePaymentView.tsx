@@ -2,6 +2,7 @@ import { Button, Icon, Text, useTheme } from '@rneui/themed';
 import { CardField, CardFieldInput, useConfirmPayment } from '@stripe/stripe-react-native';
 import React from 'react';
 import { Alert, SafeAreaView, StyleSheet } from 'react-native';
+import { PaymentMethods } from '../constants/paymentMethods';
 import dbService from '../service/DbService';
 type StripePaymentViewProps = {
   selected: string;
@@ -14,9 +15,9 @@ const StripePaymentView = ({ selected, email, modalButton }: StripePaymentViewPr
   const { theme } = useTheme();
   const { paymentRecord } = dbService;
 
-  const cashPayment = async () => {
+  const cashPayment = async (paymentMethod: string) => {
     console.log('Selected', selected);
-    const data = await paymentRecord('me@piyushmehta.com', selected, 'cash');
+    const data = await paymentRecord(email, selected, paymentMethod);
     if (data.error) {
       console.log(data.error);
     }
@@ -82,7 +83,7 @@ const StripePaymentView = ({ selected, email, modalButton }: StripePaymentViewPr
         disabled={loading}
       />
       <Button
-        onPress={cashPayment}
+        onPress={() => cashPayment(PaymentMethods.CASH)}
         style={{ padding: 25 }}
         title="Cash Payment"
         disabled={loading}
