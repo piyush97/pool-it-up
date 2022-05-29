@@ -71,19 +71,20 @@ export const paymentRecord = async (
       },
     ])
     .eq('id', rideId)
-    .then(() =>
-      supabase
-        .from('User')
-        .update([
-          [
-            {
-              id: rideId,
-              paymentMethod: paymentMethod,
-              Ride: Ride,
-            },
-          ],
-        ])
-        .eq('email', email)
+    .then(
+      async () =>
+        await supabase
+          .from('User')
+          .update([
+            [
+              {
+                id: rideId,
+                paymentMethod: paymentMethod,
+                Ride: Ride,
+              },
+            ],
+          ])
+          .eq('email', email)
     );
 
 const dbService = {
