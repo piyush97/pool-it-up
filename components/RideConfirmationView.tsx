@@ -86,7 +86,6 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
         <Text style={{ ...tw`text-md `, left: '2%', top: '1%' }}>
           Price per seat: {rideDetails?.cost_passenger}
         </Text>
-
         <Button
           title="Confirm"
           style={{ ...tw`p-3 mt-15 ml-3` }}
@@ -104,7 +103,11 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
         }}
       >
         {/* TODO: Remove this harcoded Text */}
-        <StripePaymentView email={'me@piyushmehta.com'} modalButton={setShowModal} />
+        <StripePaymentView
+          email={'me@piyushmehta.com'}
+          modalButton={setShowModal}
+          selected={selected}
+        />
       </Modal>
     </SafeAreaView>
   );

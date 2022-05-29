@@ -44,9 +44,33 @@ export const getUserData = async (email: string): Promise<PostgrestResponse<any>
  */
 export const getRideData = async (id: string) =>
   await supabase.from('Rides').select('*').eq('id', id).single();
+
+/**
+ * @description - This function is used to insert the ride details to the database after Payment
+ * @param {string} email - The email of the user
+ * @param {string} rideId - The ride id of the ride
+ * @param {string} paymentMethod - The payment method of the ride
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ */
+export const paymentRecord = async (email: string, rideId: string, paymentMethod: string) =>
+  await supabase
+    .from('Rides')
+    .update([
+      {
+        passengers: [
+          {
+            payment_method: paymentMethod,
+            email: email,
+          },
+        ],
+      },
+    ])
+    .eq('id', rideId);
+
 const dbService = {
   getUserData,
   submitUserData,
   getRideData,
+  paymentRecord,
 };
 export default dbService;
