@@ -52,7 +52,12 @@ export const getRideData = async (id: string) =>
  * @param {string} paymentMethod - The payment method of the ride
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-export const paymentRecord = async (email: string, rideId: string, paymentMethod: string) =>
+export const paymentRecord = async (
+  email: string,
+  rideId: string,
+  paymentMethod: string,
+  Ride: any
+) =>
   await supabase
     .from('Rides')
     .update([
@@ -65,7 +70,21 @@ export const paymentRecord = async (email: string, rideId: string, paymentMethod
         ],
       },
     ])
-    .eq('id', rideId);
+    .eq('id', rideId)
+    .then(() =>
+      supabase
+        .from('User')
+        .update([
+          [
+            {
+              id: 'ride',
+              paymentMethod: 'cash',
+              Ride: 'test',
+            },
+          ],
+        ])
+        .eq('email', email)
+    );
 
 const dbService = {
   getUserData,

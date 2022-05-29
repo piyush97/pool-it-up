@@ -1,9 +1,11 @@
 import { Button, Icon, Text, Tooltip, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image, Modal, SafeAreaView, View } from 'react-native';
 import tw from 'twrnc';
 import { carImageProvider } from '../constants/fetchDetails';
 import { useAuth } from '../context/AuthContext';
+import supabase from '../lib/supabase';
 import dbService, { getUserData } from '../service/DbService';
 import { RideConfirmationViewProps } from '../types/env';
 import FromTo from './FromTo';
@@ -107,6 +109,7 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
           email={'me@piyushmehta.com'}
           modalButton={setShowModal}
           selected={selected}
+          Ride={rideDetails}
         />
       </Modal>
     </SafeAreaView>

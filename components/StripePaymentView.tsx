@@ -8,16 +8,16 @@ type StripePaymentViewProps = {
   selected: string;
   email: string;
   modalButton: any;
+  Ride: any;
 };
-const StripePaymentView = ({ selected, email, modalButton }: StripePaymentViewProps) => {
+const StripePaymentView = ({ selected, email, modalButton, Ride }: StripePaymentViewProps) => {
   const [cardDetails, setCardDetails] = React.useState<CardFieldInput.Details>();
   const { confirmPayment, loading } = useConfirmPayment();
   const { theme } = useTheme();
   const { paymentRecord } = dbService;
 
-  const cashPayment = async (paymentMethod: string) => {
-    console.log('Selected', selected);
-    const data = await paymentRecord(email, selected, paymentMethod);
+  const recordPayment = async (paymentMethod: string) => {
+    const data = await paymentRecord(email, selected, paymentMethod, Ride);
     if (data.error) {
       console.log(data.error);
     }
@@ -83,7 +83,7 @@ const StripePaymentView = ({ selected, email, modalButton }: StripePaymentViewPr
         disabled={loading}
       />
       <Button
-        onPress={() => cashPayment(PaymentMethods.CASH)}
+        onPress={() => recordPayment(PaymentMethods.CASH)}
         style={{ padding: 25 }}
         title="Cash Payment"
         disabled={loading}
