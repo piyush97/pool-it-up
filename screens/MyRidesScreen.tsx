@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useTheme, Text } from '@rneui/themed';
 import dbService from '../service/DbService';
 import { useAuth } from '../context/AuthContext';
+import MyRideCard from '../components/MyRideCard';
 
 const MyRidesScreen = () => {
   const { theme } = useTheme();
@@ -23,7 +24,7 @@ const MyRidesScreen = () => {
       <Text>MyRidesScreen</Text>
       <FlatList
         data={RideData}
-        renderItem={({ item }) => <Text>{JSON.stringify(item, null, 4)}</Text>}
+        renderItem={({ item }) => <MyRideCard id={item.id} car_type={item.car_type} />}
         keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
