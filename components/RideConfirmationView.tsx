@@ -33,7 +33,7 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
       setRideDetails(data.data);
     };
     getRideDataDetails();
-  }, [selected]);
+  }, []);
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '120%' }}>
       <Text style={tw`text-xl font-bold text-center pt-2`}>{rideDetails?.title}</Text>

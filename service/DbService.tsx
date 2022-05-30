@@ -53,6 +53,7 @@ export const getRideData = async (id: string) =>
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
 export const paymentRecord = async (
+  userId: string,
   email: string,
   rideId: string,
   paymentMethod: string,
@@ -68,29 +69,34 @@ export const paymentRecord = async (
             email: email,
           },
         ],
+        passenger_id: [userId],
       },
     ])
-    .eq('id', rideId)
-    .then(
-      async () =>
-        await supabase
-          .from('User')
-          .update([
-            [
-              {
-                id: rideId,
-                paymentMethod: paymentMethod,
-                Ride: Ride,
-              },
-            ],
-          ])
-          .eq('email', email)
-    );
+    .eq('id', rideId);
+// .then(
+//   async () =>
+//     await supabase
+//       .from('User')
+//       .update([
+//         [
+//           {
+//             id: rideId,
+//             paymentMethod: paymentMethod,
+//             Ride: Ride,
+//           },
+//         ],
+//       ])
+//       .eq('email', email)
+// );
+
+const getUserRides = async (id: string) =>
+  await supabase.from('Rides').select('*').contains('passenger_id', [id]);
 
 const dbService = {
   getUserData,
   submitUserData,
   getRideData,
   paymentRecord,
+  getUserRides,
 };
 export default dbService;

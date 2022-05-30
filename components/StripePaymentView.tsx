@@ -3,6 +3,7 @@ import { CardField, CardFieldInput, useConfirmPayment } from '@stripe/stripe-rea
 import React from 'react';
 import { Alert, SafeAreaView, StyleSheet } from 'react-native';
 import { PaymentMethods } from '../constants/paymentMethods';
+import { useAuth } from '../context/AuthContext';
 import dbService from '../service/DbService';
 type StripePaymentViewProps = {
   selected: string;
@@ -12,12 +13,17 @@ type StripePaymentViewProps = {
 };
 const StripePaymentView = ({ selected, email, modalButton, Ride }: StripePaymentViewProps) => {
   const [cardDetails, setCardDetails] = React.useState<CardFieldInput.Details>();
+  const { authData } = useAuth();
+  const { id = null } = authData;
+
   const { confirmPayment, loading } = useConfirmPayment();
   const { theme } = useTheme();
   const { paymentRecord } = dbService;
 
+  console.log('AUTHHHH', authData);
+
   const recordPayment = async (paymentMethod: string) => {
-    const data = await paymentRecord(email, selected, paymentMethod, Ride);
+    const data = await paymentRecord(id, email, selected, paymentMethod, Ride);
     if (data.error) {
       console.log(data.error);
     }
@@ -63,7 +69,7 @@ const StripePaymentView = ({ selected, email, modalButton, Ride }: StripePayment
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
-      <Icon type="font-awesome" name="cross" onPress={() => modalButton(false)} />
+      <Icon type="font-awesome" name="minus" onPress={() => modalButton(false)} />
       <Text>StripePaymentView</Text>
       <CardField
         postalCodeEnabled={true}
