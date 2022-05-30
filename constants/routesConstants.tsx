@@ -20,7 +20,11 @@ export function PROFILE_ICON({ color, size }: IconProps) {
 }
 export const POOL_MY_RIDE = 'PoolMyRide';
 export function POOL_MY_RIDE_ICON({ color, size }: IconProps) {
-  return <Icon name="car" color={color} size={size} type="font-awesome" />;
+  return <Icon name="taxi" color={color} size={size} type="font-awesome" />;
+}
+export const MY_RIDES = 'MyRides';
+export function MY_RIDES_ICON({ color, size }: IconProps) {
+  return <Icon name="list" color={color} size={size} type="font-awesome-5" />;
 }
 export const SIGN_IN = 'SignIn';
 export const SIGN_UP = 'SignUp';
