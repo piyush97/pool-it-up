@@ -1,10 +1,12 @@
-import { View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import React, { useEffect } from 'react';
-import { Avatar, Card, Text, useTheme } from '@rneui/themed';
+import { Avatar, Card, Button, useTheme, Image, Text } from '@rneui/themed';
 import { definitions } from '../types/supabase';
 import tw from 'twrnc';
 import dbService from '../service/DbService';
 import getGravatar from '../utils/getGravatar';
+import { rideImages } from '../constants/ride';
+import { carImageProvider } from '../constants/fetchDetails';
 
 const MyRideCard = ({
   created_at,
@@ -37,43 +39,16 @@ const MyRideCard = ({
     getData();
   }, [setData]);
   return (
-    <SafeAreaView>
-      <Card containerStyle={{ backgroundColor: theme.colors.grey2 }}>
-        <Text> {JSON.stringify(new Date(created_at).toLocaleDateString(), null, 4)}</Text>
-        <Avatar rounded source={{ uri: gravatar }} />
-        <Card.Title>
+    <Card containerStyle={{ backgroundColor: theme.colors.grey2, borderWidth: 0 }}>
+      <Card.Title>
+        <Image source={carImageProvider(car_type)} style={tw`w-12 h-10`} />
+        <Text style={{ fontSize: 24, fontWeight: '100' }}>
           {title} By {data?.first_name}
-        </Card.Title>
-        <>
-          <View style={tw`flex-row`}>
-            <View style={tw`flex-1`}>
-              <Text>Date: {new Date(datetime_start).toLocaleDateString()}</Text>
-              <Text>Time: {new Date(todatetime_end).toLocaleTimeString()}</Text>
-            </View>
-            <Text>{from}</Text>
-            <Text>{to}</Text>
-          </View>
-
-          <View style={tw`flex-row`}>
-            <View style={tw`flex-1`}>
-              <Text>{car_type}</Text>
-              <Text>{car_name}</Text>
-            </View>
-            <View style={tw`flex-1`}>
-              <View style={tw`flex-1`}>
-                <Text>{cost_bag}</Text>
-                <Text>{cost_passenger}</Text>
-              </View>
-            </View>
-          </View>
-        </>
-        <>
-          <TouchableOpacity>
-            <Text>View</Text>
-          </TouchableOpacity>
-        </>
-      </Card>
-    </SafeAreaView>
+        </Text>
+      </Card.Title>
+      <Card.Divider />
+      <Button title="View" onPress={() => {}} />
+    </Card>
   );
 };
 
