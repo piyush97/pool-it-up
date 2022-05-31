@@ -421,8 +421,11 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
-    /** Format: timestamp with time zone */
-    created_at?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
     /** Format: text */
     car_type?: string;
     /** Format: text */
