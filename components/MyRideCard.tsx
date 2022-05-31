@@ -1,9 +1,10 @@
 import { View, SafeAreaView, TouchableOpacity } from 'react-native';
 import React, { useEffect } from 'react';
-import { Card, Text, useTheme } from '@rneui/themed';
+import { Avatar, Card, Text, useTheme } from '@rneui/themed';
 import { definitions } from '../types/supabase';
 import tw from 'twrnc';
 import dbService from '../service/DbService';
+import getGravatar from '../utils/getGravatar';
 
 const MyRideCard = ({
   created_at,
@@ -20,12 +21,14 @@ const MyRideCard = ({
 }: definitions['Rides']) => {
   const { getUserData, getRideData } = dbService;
   const [data, setData] = React.useState<any>();
+  const [gravatar, setGravatar] = React.useState<string>();
   const { theme } = useTheme();
 
   useEffect(() => {
     const getData = async () => {
       const { data } = await getRideData(id);
       const { host_email } = data;
+      setGravatar(getGravatar(host_email));
       getUserData(host_email).then(({ data }) => {
         if (data) setData(data[0]);
         else setData(null);
@@ -37,6 +40,7 @@ const MyRideCard = ({
     <SafeAreaView>
       <Card containerStyle={{ backgroundColor: theme.colors.grey2 }}>
         <Text> {JSON.stringify(new Date(created_at).toLocaleDateString(), null, 4)}</Text>
+        <Avatar rounded source={{ uri: gravatar }} />
         <Card.Title>
           {title} By {data?.first_name}
         </Card.Title>
