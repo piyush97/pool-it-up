@@ -59,6 +59,6 @@ export const profileDetails = [
   },
 ];
 
-export const carImageProvider = (type: string) =>
+export const carImageProvider = (type: string | undefined) =>
   type?.toLowerCase() === 'sedan' ? rideImages.SEDAN : rideImages.SUV;
 export default fetchDetails;

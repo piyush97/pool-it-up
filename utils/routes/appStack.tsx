@@ -6,6 +6,8 @@ import {
   GET_A_RIDE_ICON,
   HOME,
   HOME_ICON,
+  MY_RIDES,
+  MY_RIDES_ICON,
   POOL_MY_RIDE,
   POOL_MY_RIDE_ICON,
   PROFILE,
@@ -13,6 +15,7 @@ import {
 } from '../../constants/routesConstants';
 import HomeScreen from '../../screens/HomeScreen';
 import MapScreen from '../../screens/MapScreen';
+import MyRidesScreen from '../../screens/MyRidesScreen';
 import PoolScreen from '../../screens/PoolScreen';
 import ProfileScreen from '../../screens/ProfileScreen';
 
@@ -60,6 +63,14 @@ function AppStack() {
         options={{
           tabBarLabel: POOL_MY_RIDE,
           tabBarIcon: POOL_MY_RIDE_ICON,
+        }}
+      />
+      <Tab.Screen
+        name={MY_RIDES}
+        component={MyRidesScreen}
+        options={{
+          tabBarLabel: MY_RIDES,
+          tabBarIcon: MY_RIDES_ICON,
         }}
       />
       <Tab.Screen

@@ -1,9 +1,11 @@
 import { Button, Icon, Text, Tooltip, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image, Modal, SafeAreaView, View } from 'react-native';
 import tw from 'twrnc';
 import { carImageProvider } from '../constants/fetchDetails';
 import { useAuth } from '../context/AuthContext';
+import supabase from '../lib/supabase';
 import dbService, { getUserData } from '../service/DbService';
 import { RideConfirmationViewProps } from '../types/env';
 import FromTo from './FromTo';
@@ -31,7 +33,7 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
       setRideDetails(data.data);
     };
     getRideDataDetails();
-  }, [selected]);
+  }, []);
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '120%' }}>
       <Text style={tw`text-xl font-bold text-center pt-2`}>{rideDetails?.title}</Text>
@@ -86,7 +88,6 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
         <Text style={{ ...tw`text-md `, left: '2%', top: '1%' }}>
           Price per seat: {rideDetails?.cost_passenger}
         </Text>
-
         <Button
           title="Confirm"
           style={{ ...tw`p-3 mt-15 ml-3` }}
@@ -104,7 +105,12 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
         }}
       >
         {/* TODO: Remove this harcoded Text */}
-        <StripePaymentView email={'me@piyushmehta.com'} modalButton={setShowModal} />
+        <StripePaymentView
+          email={'me@piyushmehta.com'}
+          modalButton={setShowModal}
+          selected={selected}
+          Ride={rideDetails}
+        />
       </Modal>
     </SafeAreaView>
   );

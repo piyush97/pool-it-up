@@ -136,6 +136,8 @@ export interface paths {
           host_id?: parameters["rowFilter.Rides.host_id"];
           title?: parameters["rowFilter.Rides.title"];
           bags_available?: parameters["rowFilter.Rides.bags_available"];
+          user_rating?: parameters["rowFilter.Rides.user_rating"];
+          passenger_id?: parameters["rowFilter.Rides.passenger_id"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -204,6 +206,8 @@ export interface paths {
           host_id?: parameters["rowFilter.Rides.host_id"];
           title?: parameters["rowFilter.Rides.title"];
           bags_available?: parameters["rowFilter.Rides.bags_available"];
+          user_rating?: parameters["rowFilter.Rides.user_rating"];
+          passenger_id?: parameters["rowFilter.Rides.passenger_id"];
         };
         header: {
           /** Preference */
@@ -236,6 +240,8 @@ export interface paths {
           host_id?: parameters["rowFilter.Rides.host_id"];
           title?: parameters["rowFilter.Rides.title"];
           bags_available?: parameters["rowFilter.Rides.bags_available"];
+          user_rating?: parameters["rowFilter.Rides.user_rating"];
+          passenger_id?: parameters["rowFilter.Rides.passenger_id"];
         };
         body: {
           /** Rides */
@@ -267,6 +273,10 @@ export interface paths {
           phone?: parameters["rowFilter.Users.phone"];
           email?: parameters["rowFilter.Users.email"];
           is_paid?: parameters["rowFilter.Users.is_paid"];
+          /** user rating */
+          rating?: parameters["rowFilter.Users.rating"];
+          /** Ride Details */
+          rides?: parameters["rowFilter.Users.rides"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -328,6 +338,10 @@ export interface paths {
           phone?: parameters["rowFilter.Users.phone"];
           email?: parameters["rowFilter.Users.email"];
           is_paid?: parameters["rowFilter.Users.is_paid"];
+          /** user rating */
+          rating?: parameters["rowFilter.Users.rating"];
+          /** Ride Details */
+          rides?: parameters["rowFilter.Users.rides"];
         };
         header: {
           /** Preference */
@@ -353,6 +367,10 @@ export interface paths {
           phone?: parameters["rowFilter.Users.phone"];
           email?: parameters["rowFilter.Users.email"];
           is_paid?: parameters["rowFilter.Users.is_paid"];
+          /** user rating */
+          rating?: parameters["rowFilter.Users.rating"];
+          /** Ride Details */
+          rides?: parameters["rowFilter.Users.rides"];
         };
         body: {
           /** Users */
@@ -403,8 +421,11 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
-    /** Format: timestamp with time zone */
-    created_at?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
     /** Format: text */
     car_type?: string;
     /** Format: text */
@@ -427,8 +448,8 @@ export interface definitions {
     additional_data?: string;
     /** Format: text */
     host_email?: string;
-    /** Format: text */
-    passengers?: string;
+    /** Format: ARRAY */
+    passengers?: unknown[];
     /** Format: text */
     car_number?: string;
     /** Format: text */
@@ -437,6 +458,10 @@ export interface definitions {
     title?: string;
     /** Format: smallint */
     bags_available?: number;
+    /** Format: smallint */
+    user_rating?: number;
+    /** Format: ARRAY */
+    passenger_id?: unknown[];
   };
   /** @description User details */
   Users: {
@@ -470,6 +495,16 @@ export interface definitions {
     email?: string;
     /** Format: boolean */
     is_paid?: boolean;
+    /**
+     * Format: smallint
+     * @description user rating
+     */
+    rating?: number;
+    /**
+     * Format: ARRAY
+     * @description Ride Details
+     */
+    rides?: unknown[];
   };
 }
 
@@ -549,7 +584,7 @@ export interface parameters {
   "rowFilter.Rides.additional_data": string;
   /** Format: text */
   "rowFilter.Rides.host_email": string;
-  /** Format: text */
+  /** Format: ARRAY */
   "rowFilter.Rides.passengers": string;
   /** Format: text */
   "rowFilter.Rides.car_number": string;
@@ -559,6 +594,10 @@ export interface parameters {
   "rowFilter.Rides.title": string;
   /** Format: smallint */
   "rowFilter.Rides.bags_available": string;
+  /** Format: smallint */
+  "rowFilter.Rides.user_rating": string;
+  /** Format: ARRAY */
+  "rowFilter.Rides.passenger_id": string;
   /** @description Users */
   "body.Users": definitions["Users"];
   /** Format: uuid */
@@ -583,6 +622,16 @@ export interface parameters {
   "rowFilter.Users.email": string;
   /** Format: boolean */
   "rowFilter.Users.is_paid": string;
+  /**
+   * Format: smallint
+   * @description user rating
+   */
+  "rowFilter.Users.rating": string;
+  /**
+   * Format: ARRAY
+   * @description Ride Details
+   */
+  "rowFilter.Users.rides": string;
 }
 
 export interface operations {}
