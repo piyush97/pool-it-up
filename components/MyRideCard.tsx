@@ -1,4 +1,4 @@
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, TouchableOpacity, TouchableOpacityBase } from 'react-native';
 import React, { useEffect } from 'react';
 import { Avatar, Card, Button, useTheme, Image, Text } from '@rneui/themed';
 import { definitions } from '../types/supabase';
@@ -39,16 +39,16 @@ const MyRideCard = ({
     getData();
   }, [setData]);
   return (
-    <Card containerStyle={{ backgroundColor: theme.colors.grey2, borderWidth: 0 }}>
-      <Card.Title>
-        <Image source={carImageProvider(car_type)} style={tw`w-12 h-10`} />
-        <Text style={{ fontSize: 24, fontWeight: '100' }}>
-          {title} By {data?.first_name}
-        </Text>
-      </Card.Title>
-      <Card.Divider />
-      <Button title="View" onPress={() => {}} />
-    </Card>
+    <TouchableOpacity>
+      <Card containerStyle={{ backgroundColor: theme.colors.grey2, borderWidth: 0 }}>
+        <Card.Title>
+          <Image source={carImageProvider(car_type)} style={tw`w-12 h-10`} />
+          <Text style={{ ...tw`text-xl font-light ` }}>
+            {title} By {data?.first_name}
+          </Text>
+        </Card.Title>
+      </Card>
+    </TouchableOpacity>
   );
 };
 

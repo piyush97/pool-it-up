@@ -15,7 +15,7 @@ const MyRidesScreen = () => {
   const [RideData, setRideData] = React.useState<any>();
   useEffect(() => {
     const dataRideFetch = async () => {
-      dbService.getUserRides(id).then(({ data }) => setRideData(data));
+      await dbService.getUserRides(id).then(({ data }) => setRideData(data));
     };
     dataRideFetch();
   }, []);
