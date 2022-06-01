@@ -83,7 +83,7 @@ Insert gif or link to demo
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<img src="https://i.ibb.co/c1d5BcS/Untitled-1.jpg" width="2000"/>
 
 
 <p align="center"> Made with 💙 by Piyush Mehta in 🇨🇦 </p>
