@@ -1,4 +1,5 @@
 /* eslint-disable import/no-unresolved */
+import { useTheme } from '@rneui/themed';
 import React, { useEffect, useRef } from 'react';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import MapView, { Marker } from 'react-native-maps';
@@ -13,6 +14,7 @@ import { selectDestination, selectOrigin } from '../slices/navSlice';
  * @return {React.ReactElement} Map component
  */
 function Map() {
+  const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
   const originDetails = {
@@ -40,12 +42,21 @@ function Map() {
     <MapView
       ref={mapRef}
       style={tw`flex-1`}
-      initialRegion={{
-        latitude: origin?.location?.lat,
-        longitude: origin?.location?.lng,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      }}
+      initialRegion={
+        origin
+          ? {
+              latitude: origin?.location?.lat,
+              longitude: origin?.location?.lng,
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
+            }
+          : {
+              latitude: 0,
+              longitude: 0,
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
+            }
+      }
       mapType="mutedStandard"
     >
       {origin && destination && (
@@ -54,7 +65,7 @@ function Map() {
           destination={destinationDetails}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={3}
-          strokeColor="black"
+          strokeColor={theme.colors.primary}
         />
       )}
       {origin?.location && (

@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
+import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/base';
-import { Text, useTheme } from '@rneui/themed';
+import { Button, Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
@@ -9,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import SEDAN from '../assets/SEDAN.webp';
 import SUV from '../assets/SUV.webp';
+import { POOL_MY_RIDE } from '../constants/routesConstants';
 import { useAuth } from '../context/AuthContext';
 import supabase from '../lib/supabase';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
@@ -21,6 +23,7 @@ import RideCard from './RideCard';
  * @return {React.ReactElement} - Ride options card
  */
 function RideOptionsCard() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
@@ -181,44 +184,55 @@ function RideOptionsCard() {
       />
       {/* TODO: Write logic for Db */}
       {/* <NavFavourites /> */}
-      <FlatList
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-        onEndReachedThreshold={0.5}
-        data={rides}
-        keyExtractor={(item) => item.id}
-        renderItem={({
-          item: {
-            id,
-            car_type: carType,
-            cost_passenger: price,
-            seats_available: availableSeats,
-            cost_bag: costPerBag,
-            car_number: carNumber,
-            car_name: carModel,
-            bags_available: bagsAvailable,
-          },
-          item,
-        }) => (
-          <RideCard
-            setSelected={setSelected}
-            carType={carType}
-            price={price}
-            selected={selected}
-            costPerBag={costPerBag}
-            carNumber={carNumber}
-            availableSeats={availableSeats}
-            item={item}
-            SEDAN={SEDAN}
-            SUV={SUV}
-            carModel={carModel}
-            id={id}
-            theme={theme}
-            bags_available={bagsAvailable}
-          />
-        )}
-      />
+      {rides?.length > 0 ? (
+        <FlatList
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          onEndReachedThreshold={0.5}
+          data={rides}
+          keyExtractor={(item) => item.id}
+          renderItem={({
+            item: {
+              id,
+              car_type: carType,
+              cost_passenger: price,
+              seats_available: availableSeats,
+              cost_bag: costPerBag,
+              car_number: carNumber,
+              car_name: carModel,
+              bags_available: bagsAvailable,
+            },
+            item,
+          }) => (
+            <RideCard
+              setSelected={setSelected}
+              carType={carType}
+              price={price}
+              selected={selected}
+              costPerBag={costPerBag}
+              carNumber={carNumber}
+              availableSeats={availableSeats}
+              item={item}
+              SEDAN={SEDAN}
+              SUV={SUV}
+              carModel={carModel}
+              id={id}
+              theme={theme}
+              bags_available={bagsAvailable}
+            />
+          )}
+        />
+      ) : (
+        <View style={{ paddingTop: 10, justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate(POOL_MY_RIDE)}>
+            <Text>
+              No Ride Available for this Route
+              <Text style={{ color: theme.colors.primary }}> Wanna Pool your ride?</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
