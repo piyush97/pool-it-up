@@ -11,8 +11,6 @@
 
 ## Badges
 
-Add badges from somewhere like: [shields.io](https://shields.io/)
-
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 ![GitHub language count](https://img.shields.io/github/languages/count/piyush97/pool-it-up)
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/piyush97/pool-it-up)
