@@ -2,13 +2,14 @@
 // eslint-disable-next-line import/no-unresolved
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, SafeAreaView, View } from 'react-native';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
+import useSwapper from '../hooks/useSwapper';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 /**
  * @description - Home Screen for the application
@@ -22,8 +23,9 @@ function HomeScreen() {
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
-  // const { data: swapData, from, to } = useSwapper();
+  const { data: swapData, from = origin, to = destination } = useSwapper();
 
+  useEffect(() => {}, [from, to, origin, destination]);
   const onHandlePress = () => {
     if (checked && destination && origin) {
       navigation?.navigate(POOL_MY_RIDE);
@@ -34,9 +36,7 @@ function HomeScreen() {
     }
   };
   const buttonTextGenerator = () => {
-    if (checked) {
-      return 'Pool My Ride';
-    }
+    if (checked) return 'Pool My Ride';
     return 'Get A Ride';
   };
 
@@ -83,7 +83,7 @@ function HomeScreen() {
           language: 'en',
           components: 'country:ca',
         }}
-        placeholder="Where From?"
+        placeholder={from.description}
       />
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
@@ -99,12 +99,7 @@ function HomeScreen() {
         textInputProps={{
           InputComp: Input,
           rightIcon: (
-            <Pressable
-              onPress={() => {
-                Alert.alert('WIP');
-              }}
-              style={{ paddingRight: 10 }}
-            >
+            <Pressable onPress={swapData} style={{ paddingRight: 10 }}>
               <Icon name="arrow-up" type="font-awesome" size={18} />
               <Icon name="arrow-down" type="font-awesome" size={18} />
             </Pressable>
@@ -134,7 +129,7 @@ function HomeScreen() {
           language: 'en',
           components: 'country:ca',
         }}
-        placeholder="Where to?"
+        placeholder={to.description}
       />
       <SafeAreaView style={{ flex: 0, flexDirection: 'row' }}>
         <Text style={{ fontSize: 18, color: theme.colors.black, marginLeft: 20 }}>

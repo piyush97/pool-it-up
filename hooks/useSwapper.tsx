@@ -6,8 +6,8 @@ const useSwapper = () => {
   const origin = useSelector(selectOrigin);
   const destination = useSelector(selectDestination);
   const dispatch = useDispatch();
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [from, setFrom] = useState(origin);
+  const [to, setTo] = useState(destination);
   const data = () => {
     setFrom(origin);
     setTo(destination);
