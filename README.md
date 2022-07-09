@@ -60,10 +60,9 @@ Start the server
 **Server:** Node, Express
 
 
-## Demo
+## Demo [WIP]👷
 
-Insert gif or link to demo
-
+![WIP Screenshot](https://i.ibb.co/jrZPP8Y/wip.gif)
 
 ## Features
 
