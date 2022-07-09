@@ -11,7 +11,13 @@ import { PlaceInputProps } from '../types/env';
  * @return {React.ReactElement} - The Place Input Component
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const PlaceInput = ({ placeholderText, ShowIcon, dispatcherFunction }: PlaceInputProps) => {
+const PlaceInput = ({
+  placeholderText,
+  ShowIcon,
+  dispatcherFunction,
+  style,
+  customInputComponent = false,
+}: PlaceInputProps) => {
   const dispatch = useDispatch();
   return (
     <GooglePlacesAutocomplete
@@ -26,7 +32,7 @@ const PlaceInput = ({ placeholderText, ShowIcon, dispatcherFunction }: PlaceInpu
       keyboardShouldPersistTaps="handled"
       enablePoweredByContainer={false}
       textInputProps={{
-        InputComp: Input,
+        InputComp: customInputComponent && Input,
         rightIcon: ShowIcon && (
           <Pressable
             onPress={() => {
@@ -38,6 +44,7 @@ const PlaceInput = ({ placeholderText, ShowIcon, dispatcherFunction }: PlaceInpu
             <Icon name="arrow-down" type="font-awesome" size={18} />
           </Pressable>
         ),
+        style,
         errorStyle: { color: 'red' },
       }}
       onPress={(data, details = null) => {

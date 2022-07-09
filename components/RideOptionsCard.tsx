@@ -1,11 +1,9 @@
 // eslint-disable-next-line import/no-unresolved
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/base';
-import { Button, Text, useTheme } from '@rneui/themed';
+import { Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
-import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
 import SEDAN from '../assets/SEDAN.webp';
@@ -16,6 +14,7 @@ import supabase from '../lib/supabase';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 import { definitions } from '../types/supabase';
 import Greeter from '../utils/greeting';
+import PlaceInput from './PlaceInput';
 import RideCard from './RideCard';
 /**
  * @description - Ride options card Shows list of rides available
@@ -55,6 +54,17 @@ function RideOptionsCard() {
     fetchRides();
     getUserData();
   }, [origin, destination]);
+  const style = {
+    fontSize: 18,
+    color: theme.colors.black,
+    flex: 1,
+    padding: 20,
+    borderRadius: 10,
+    marginVertical: 5,
+    backgroundColor: theme.colors.grey2,
+    marginHorizontal: 20,
+  };
+
   return (
     <View
       style={{
@@ -66,51 +76,13 @@ function RideOptionsCard() {
         {Greeter()}
         {dataOfUser && `, ${dataOfUser?.first_name} ${dataOfUser?.last_name}`}
       </Text>
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        // eslint-disable-next-line no-console
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          style: {
-            fontSize: 18,
-            color: theme.colors.black,
-            flex: 1,
-            padding: 20,
-            borderRadius: 10,
-            marginVertical: 5,
-            backgroundColor: theme.colors.grey2,
-            marginHorizontal: 20,
-          },
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          dispatch(
-            setOrigin({
-              location: details?.geometry.location,
-              description: data.description,
-            })
-          );
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          placeholder: theme.colors.black,
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-          components: 'country:ca',
-        }}
-        placeholder="Where from?"
+      <PlaceInput
+        placeholderText="Where From?"
+        ShowIcon={false}
+        dispatcherFunction={setOrigin}
+        style={style}
       />
+
       <TouchableOpacity
         style={{
           right: 'auto',
@@ -134,54 +106,13 @@ function RideOptionsCard() {
           color={theme.colors.primary}
         />
       </TouchableOpacity>
-
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        // eslint-disable-next-line no-console
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          style: {
-            fontSize: 18,
-            color: theme.colors.black,
-            flex: 1,
-            borderRadius: 10,
-            padding: 20,
-            marginVertical: 5,
-            backgroundColor: theme.colors.grey2,
-            marginHorizontal: 20,
-          },
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          dispatch(
-            setDestination({
-              location: details?.geometry.location,
-              description: data.description,
-            })
-          );
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            backgroundColor: 'transparent',
-          },
-          placeholder: theme.colors.black,
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-          components: 'country:ca',
-        }}
-        placeholder="Where to?"
+      <PlaceInput
+        placeholderText="Where To?"
+        ShowIcon={false}
+        dispatcherFunction={setDestination}
+        style={style}
       />
+
       {/* TODO: Write logic for Db */}
       {/* <NavFavourites /> */}
       {rides?.length > 0 ? (

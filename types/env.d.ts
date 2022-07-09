@@ -13,6 +13,8 @@ type PlaceInputProps = {
   placeholderText: string;
   ShowIcon: boolean;
   dispatcherFunction: Function;
+  style?: any;
+  customInputComponent?: boolean;
 };
 type FromToProps = {
   from: string;

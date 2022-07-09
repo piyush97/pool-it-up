@@ -21,7 +21,6 @@ function HomeScreen() {
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
-  // const { data: swapData, from, to } = useSwapper();
 
   const onHandlePress = () => {
     if (checked && destination && origin) {
@@ -32,6 +31,7 @@ function HomeScreen() {
       Alert.alert(alertsText.alertOriginOrDestinationNotEntered);
     }
   };
+
   const buttonTextGenerator = () => {
     if (checked) {
       return POOL_MODE;
@@ -41,11 +41,17 @@ function HomeScreen() {
 
   return (
     <AppWrapper theme={theme} title={checked ? 'Pool my Ride' : 'Book a Ride'}>
-      <PlaceInput placeholderText="Where From?" ShowIcon={false} dispatcherFunction={setOrigin} />
+      <PlaceInput
+        placeholderText="Where From?"
+        ShowIcon={false}
+        dispatcherFunction={setOrigin}
+        customInputComponent
+      />
       <PlaceInput
         placeholderText="Where To?"
         ShowIcon={false}
         dispatcherFunction={setDestination}
+        customInputComponent
       />
 
       <SafeAreaView style={{ flex: 0, flexDirection: 'row' }}>
