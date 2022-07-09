@@ -1,6 +1,6 @@
 import { FlatList, SafeAreaView } from 'react-native';
-import React, { useEffect } from 'react';
-import { useTheme, Text } from '@rneui/themed';
+import React, { useEffect, useState } from 'react';
+import { useTheme, Text, Switch } from '@rneui/themed';
 import dbService from '../service/DbService';
 import { useAuth } from '../context/AuthContext';
 import MyRideCard from '../components/MyRideCard';
@@ -19,9 +19,11 @@ const MyRidesScreen = () => {
     };
     dataRideFetch();
   }, []);
+  const [type, setType] = useState('bookings');
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
       <Text style={tw`text-10 p-4 pb-8 pt-50`}>My Rides</Text>
+
       <FlatList
         data={RideData}
         renderItem={({ item }) => (
