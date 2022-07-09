@@ -1,3 +1,4 @@
+import { Theme } from '@rneui/themed';
 import { definitions } from './supabase.d';
 declare module 'react-native-dotenv' {
   export const GOOGLE_MAPS_APIKEY: string;
@@ -13,6 +14,14 @@ type FromToProps = {
   to: string;
   startDateTime: string;
   endDateTime: string;
+};
+
+type HeaderComponentProps = {
+  theme: {
+    colors: Colors;
+  } & Theme;
+  children: React.ReactElement[] | React.ReactElement;
+  title: string;
 };
 
 type AuthContextData = {

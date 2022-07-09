@@ -3,11 +3,12 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
-import { Alert, Pressable, SafeAreaView, View } from 'react-native';
+import { Alert, Pressable, SafeAreaView } from 'react-native';
 import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
+import AppWrapper from '../components/AppWrapper';
 import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 /**
@@ -41,11 +42,7 @@ function HomeScreen() {
   };
 
   return (
-    <View style={{ height: '100%', backgroundColor: theme.colors.background }}>
-      <Text style={tw`py-4 pb-8 pl-2 text-10 pt-50`}>
-        {checked ? 'Pool my Ride' : 'Book a Ride'}
-      </Text>
-
+    <AppWrapper theme={theme} title={checked ? 'Pool my Ride' : 'Book a Ride'}>
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
@@ -158,7 +155,7 @@ function HomeScreen() {
       >
         <Text style={{ color: theme.colors.black }}>{buttonTextGenerator()}</Text>
       </Button>
-    </View>
+    </AppWrapper>
   );
 }
 
