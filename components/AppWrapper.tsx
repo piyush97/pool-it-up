@@ -3,7 +3,13 @@ import React from 'react';
 import { View } from 'react-native';
 import tw from 'twrnc';
 import { HeaderComponentProps } from '../types/env';
-
+/**
+ * App Wrapper Component - Header
+ *
+ * @param {HeaderComponentProps} { title, theme, children }
+ * @return {React.ReactElement} - The App Wrapper Component
+ * @author - Piyush Mehta <me@piyushmehta.com>
+ */
 const AppWrapper = ({ title, theme, children }: HeaderComponentProps) => {
   return (
     <View style={{ height: '100%', backgroundColor: theme?.colors.background }}>

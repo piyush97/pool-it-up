@@ -1,14 +1,13 @@
-/* eslint-disable react/no-unstable-nested-components */
-// eslint-disable-next-line import/no-unresolved
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
+import { Button, Switch, Text, useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
-import { Alert, Pressable, SafeAreaView } from 'react-native';
-import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { useDispatch, useSelector } from 'react-redux';
+import { Alert, SafeAreaView } from 'react-native';
+import { useSelector } from 'react-redux';
 import tw from 'twrnc';
 import AppWrapper from '../components/AppWrapper';
+import PlaceInput from '../components/PlaceInput';
+import alertsText from '../constants/alertsText';
+import { POOL_MODE, RIDE_MODE } from '../constants/placeholderConstants';
 import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 /**
@@ -17,7 +16,6 @@ import { selectDestination, selectOrigin, setDestination, setOrigin } from '../s
  * @return {React.ReactElement} - Home Screen for the application
  */
 function HomeScreen() {
-  const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation<NavigationProp<any>>();
   const { theme } = useTheme();
@@ -31,108 +29,25 @@ function HomeScreen() {
     } else if (!checked && destination && origin) {
       navigation?.navigate(GET_A_RIDE);
     } else {
-      Alert.alert('Please enter your destination and origin before proceeding');
+      Alert.alert(alertsText.alertOriginOrDestinationNotEntered);
     }
   };
   const buttonTextGenerator = () => {
     if (checked) {
-      return 'Pool My Ride';
+      return POOL_MODE;
     }
-    return 'Get A Ride';
+    return RIDE_MODE;
   };
 
   return (
     <AppWrapper theme={theme} title={checked ? 'Pool my Ride' : 'Book a Ride'}>
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        // eslint-disable-next-line no-console
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          InputComp: Input,
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          dispatch(
-            setOrigin({
-              location: details?.geometry.location,
-              description: data.description,
-            })
-          );
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            fontSize: 18,
-            backgroundColor: 'transparent',
-          },
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-          components: 'country:ca',
-        }}
-        placeholder="Where From?"
+      <PlaceInput placeholderText="Where From?" ShowIcon={false} dispatcherFunction={setOrigin} />
+      <PlaceInput
+        placeholderText="Where To?"
+        ShowIcon={false}
+        dispatcherFunction={setDestination}
       />
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        // eslint-disable-next-line no-console
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          InputComp: Input,
-          rightIcon: (
-            <Pressable
-              onPress={() => {
-                Alert.alert('WIP');
-              }}
-              style={{ paddingRight: 10 }}
-            >
-              <Icon name="arrow-up" type="font-awesome" size={18} />
-              <Icon name="arrow-down" type="font-awesome" size={18} />
-            </Pressable>
-          ),
 
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          dispatch(
-            setDestination({
-              location: details?.geometry.location,
-              description: data.description,
-            })
-          );
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            backgroundColor: 'transparent',
-            fontSize: 18,
-          },
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-          components: 'country:ca',
-        }}
-        placeholder="Where to?"
-      />
       <SafeAreaView style={{ flex: 0, flexDirection: 'row' }}>
         <Text style={{ fontSize: 18, color: theme.colors.black, marginLeft: 20 }}>
           {!checked ? 'Pool my Ride' : 'Book a Ride'}

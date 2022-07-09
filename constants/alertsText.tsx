@@ -8,6 +8,7 @@ const alertsText = {
   alertErrorMessage: 'Something went wrong',
   alertSuccess: 'Success',
   alertSuccessMessage: 'Successfully booked a ride',
+  alertOriginOrDestinationNotEntered: 'Please enter your origin and destination',
 };
 
 export default alertsText;

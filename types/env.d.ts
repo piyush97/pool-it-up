@@ -9,6 +9,11 @@ type RideConfirmationViewProps = {
   selected: string;
 };
 
+type PlaceInputProps = {
+  placeholderText: string;
+  ShowIcon: boolean;
+  dispatcherFunction: Function;
+};
 type FromToProps = {
   from: string;
   to: string;
