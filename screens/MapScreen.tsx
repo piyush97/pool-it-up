@@ -23,7 +23,6 @@ const MapScreen = () => {
       <View style={tw`h-1/2`}>
         <Map />
       </View>
-
       <BottomSheet
         ref={bottomSheetRef}
         handleStyle={{ backgroundColor: theme.colors.grey2 }}

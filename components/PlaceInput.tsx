@@ -5,6 +5,7 @@ import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch } from 'react-redux';
 import { PlaceInputProps } from '../types/env';
+
 /**
  * Place Input Component - Google Places Autocomplete
  * @param {PlaceInputProps} props - PlaceInputProps
