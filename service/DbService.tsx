@@ -29,6 +29,37 @@ const submitUserData = async (
       email,
     },
   ]);
+export const addNewRide = async ({
+  car_type,
+  car_name,
+  car_number,
+  seats_available,
+  from,
+  to,
+  host_id,
+  host_email,
+  datetime_start,
+  todatetime_end,
+  cost_passenger,
+  cost_bag,
+}: definitions['Rides'] | any) =>
+  await supabase.from('Rides').insert([
+    {
+      car_type,
+      car_name,
+      car_number,
+      seats_available,
+      from,
+      to,
+      host_id,
+      title: `Ride with ${car_name}`,
+      host_email,
+      datetime_start,
+      todatetime_end,
+      cost_passenger,
+      cost_bag,
+    },
+  ]);
 
 /**
  * @description - This function is used to get user data

@@ -10,53 +10,65 @@ import { useSelector } from 'react-redux';
 import tw from 'twrnc';
 import rideTypes from '../constants/ride';
 import { HOME } from '../constants/routesConstants';
-import supabase from '../lib/supabase';
+import { addNewRide } from '../service/DbService';
 import { selectDestination, selectOrigin } from '../slices/navSlice';
 
 function PoolScreen() {
   const { theme } = useTheme();
 
-  const [carType, setCarType] = React.useState('');
-  const [carName, setCarName] = React.useState('');
-  const [carNumber, setCarNumber] = React.useState('');
-  const [passengers, setPassengers] = React.useState('');
-  const [startDateTime, setStartDateTime] = React.useState<any>(new Date());
-  const [endDateTime, setEndDateTime] = React.useState<any>(new Date());
-  const [costPerPassenger, setCostPerPassenger] = React.useState('');
-  const [costPerBag, setCostPerBag] = React.useState('');
+  const [carType, setCarType] = React.useState<string>();
+  const [carName, setCarName] = React.useState<string>();
+  const [carNumber, setCarNumber] = React.useState<string>();
+  const [passengers, setPassengers] = React.useState<number>();
+  const [startDateTime, setStartDateTime] = React.useState<Date>(new Date());
+  const [endDateTime, setEndDateTime] = React.useState<Date>(new Date());
+  const [costPerPassenger, setCostPerPassenger] = React.useState<number>();
+  const [costPerBag, setCostPerBag] = React.useState<number>();
   const navigation = useNavigation<NavigationProp<any>>();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
 
   const onHandleSubmit = async () => {
-    await supabase
-      .from('Rides')
-      .insert([
-        {
-          car_type: carType,
-          car_name: carName,
-          car_number: carNumber,
-          seats_available: passengers,
-          from: origin,
-          to: destination,
-          host_id: '', // TODO: get from context
-          title: `Ride with ${carName}`,
-          host_email: '', // TODO: get from context
-          datetime_start: new Date(startDateTime).toISOString(),
-          todatetime_end: new Date(endDateTime).toISOString(),
-          cost_passenger: costPerPassenger,
-          cost_bag: costPerBag,
-        },
-      ])
-      .then((res) => {
-        Alert.alert('Done');
+    // await supabase.from('Rides').insert([
+    //   {
+    //     car_type: carType,
+    //     car_name: carName,
+    //     car_number: carNumber,
+    //     seats_available: passengers,
+    //     from: origin,
+    //     to: destination,
+    //     host_id: '', // TODO: get from context
+    //     title: `Ride with ${carName}`,
+    //     host_email: '', // TODO: get from context
+    //     datetime_start: new Date(startDateTime).toISOString(),
+    //     todatetime_end: new Date(endDateTime).toISOString(),
+    //     cost_passenger: costPerPassenger,
+    //     cost_bag: costPerBag,
+    //   },
+    // ]);
+    addNewRide({
+      car_type: carType,
+      car_name: carName,
+      car_number: carNumber,
+      seats_available: passengers,
+      from: origin,
+      to: destination,
+      host_id: '', // TODO: get from context
+      title: `Ride with ${carName}`,
+      host_email: '', // TODO: get from context
+      datetime_start: new Date(startDateTime).toISOString(),
+      todatetime_end: new Date(endDateTime).toISOString(),
+      cost_passenger: costPerPassenger,
+      cost_bag: costPerBag,
+    }).then((res) => {
+      Alert.alert('Done');
+      console.log(res);
+      navigation.navigate(HOME);
+      if (res.error) {
         console.log(res);
-        navigation.navigate(HOME);
-        if (res.error) {
-          console.log(res);
-          Alert.alert(res.error.message);
-        }
-      });
+        Alert.alert(res.error.message);
+      }
+    });
   };
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
