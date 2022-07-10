@@ -2,6 +2,7 @@
 
 import { PostgrestResponse } from '@supabase/supabase-js';
 import supabase from '../lib/supabase';
+import { definitions } from '../types/supabase';
 
 /**
  * @description - This function is used to submit the user details to the database
@@ -44,6 +45,18 @@ export const getUserData = async (email: string): Promise<PostgrestResponse<any>
  */
 export const getRideData = async (id: string) =>
   await supabase.from('Rides').select('*').eq('id', id).single();
+/**
+ * @description - This function is used to get the ride details from the database
+ * @param origin - The origin of the ride
+ * @param destination - The destination of the ride
+ * @returns {Ride} - returns the ride details
+ */
+export const getRidesFromTo = async (origin: string, destination: string) =>
+  supabase
+    .from<definitions['Rides']>('Rides')
+    .select('*')
+    .eq('from', JSON.stringify(origin))
+    .eq('to', JSON.stringify(destination));
 
 /**
  * @description - This function is used to insert the ride details to the database after Payment

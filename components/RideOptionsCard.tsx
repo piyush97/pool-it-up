@@ -4,13 +4,13 @@ import { Icon } from '@rneui/base';
 import { Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import tw from 'twrnc';
 import SEDAN from '../assets/SEDAN.webp';
 import SUV from '../assets/SUV.webp';
 import { POOL_MY_RIDE } from '../constants/routesConstants';
 import { useAuth } from '../context/AuthContext';
-import supabase from '../lib/supabase';
+import { getRidesFromTo } from '../service/DbService';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 import { definitions } from '../types/supabase';
 import Greeter from '../utils/greeting';
@@ -23,37 +23,32 @@ import RideCard from './RideCard';
  */
 function RideOptionsCard() {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
   const { theme } = useTheme();
   const [selected, setSelected] = React.useState<any>(null);
   const { authData, userData } = useAuth();
 
-  const [rides, setRides] = React.useState<definitions['Rides'][]>();
+  const [rides, setRides] = React.useState<definitions['Rides'][] | null>();
   const { email = null } = authData;
   const [dataOfUser, setDataOfUser] = React.useState<definitions['Users']>();
+
   useEffect(() => {
     const getUserData = async () => {
       const data = await userData(email);
       setDataOfUser(data && data);
     };
     const fetchRides = async () => {
-      const { data: Rides, error } = await supabase
-        .from<definitions['Rides']>('Rides')
-        .select('*')
-        .eq('from', JSON.stringify(origin))
-        .eq('to', JSON.stringify(destination));
+      const { data: Rides, error } = await getRidesFromTo(origin, destination);
       if (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
+        console.error(error);
       }
-      // @ts-ignore - TODO: fix this
       setRides(Rides);
     };
     fetchRides();
     getUserData();
   }, [origin, destination]);
+
   const style = {
     fontSize: 18,
     color: theme.colors.black,
