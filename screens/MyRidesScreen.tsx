@@ -1,11 +1,10 @@
-import { FlatList, SafeAreaView } from 'react-native';
+import { Text, useTheme } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
-import { useTheme, Text, Switch } from '@rneui/themed';
-import dbService from '../service/DbService';
-import { useAuth } from '../context/AuthContext';
-import MyRideCard from '../components/MyRideCard';
-import { definitions } from '../types/supabase';
+import { FlatList, SafeAreaView } from 'react-native';
 import tw from 'twrnc';
+import MyRideCard from '../components/MyRideCard';
+import { useAuth } from '../context/AuthContext';
+import dbService from '../service/DbService';
 
 const MyRidesScreen = () => {
   const { theme } = useTheme();
@@ -19,7 +18,7 @@ const MyRidesScreen = () => {
     };
     dataRideFetch();
   }, []);
-  const [type, setType] = useState('bookings');
+  const [type, setType] = useState('bookings'); // TODO: change to 'rides'
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
       <Text style={tw`text-10 p-4 pb-8 pt-50`}>My Rides</Text>

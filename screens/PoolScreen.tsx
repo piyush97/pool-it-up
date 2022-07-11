@@ -11,14 +11,21 @@ import tw from 'twrnc';
 import PlaceInput from '../components/PlaceInput';
 import rideTypes from '../constants/ride';
 import { HOME } from '../constants/routesConstants';
+import { useAuth } from '../context/AuthContext';
 import { addNewRide } from '../service/DbService';
 import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 
-function PoolScreen() {
+/**
+ * Pool Screen
+ * @author Piyush Mehta <me@piyushmehta.com>
+ *
+ * @return {React.ReactElement} - Pool Screen
+ */
+const PoolScreen = () => {
   const { theme } = useTheme();
-  const originFromContext = useSelector(selectOrigin);
-  const destinationFromContext = useSelector(selectDestination);
-
+  const {
+    authData: { email, id },
+  } = useAuth();
   const [carType, setCarType] = React.useState<string>();
   const [carName, setCarName] = React.useState<string>();
   const [carNumber, setCarNumber] = React.useState<string>();
@@ -32,16 +39,16 @@ function PoolScreen() {
   const origin = useSelector(selectOrigin);
 
   const onHandleSubmit = async () => {
-    addNewRide({
+    await addNewRide({
       car_type: carType,
       car_name: carName,
       car_number: carNumber,
       seats_available: passengers,
       from: origin,
       to: destination,
-      host_id: '', // TODO: get from context
+      host_id: id,
       title: `Ride with ${carName}`,
-      host_email: '', // TODO: get from context
+      host_email: email,
       datetime_start: new Date(startDateTime).toISOString(),
       todatetime_end: new Date(endDateTime).toISOString(),
       cost_passenger: costPerPassenger,
@@ -60,12 +67,12 @@ function PoolScreen() {
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
       <Text style={tw`p-4 pt-5 pb-8 text-10`}>Ride Details</Text>
       <PlaceInput
-        placeholderText={originFromContext?.description || 'From'}
+        placeholderText={origin?.description || 'From'}
         dispatcherFunction={setOrigin}
         customInputComponent
       />
       <PlaceInput
-        placeholderText={destinationFromContext?.description || 'To'}
+        placeholderText={destination?.description || 'To'}
         dispatcherFunction={setDestination}
         customInputComponent
       />
@@ -156,6 +163,6 @@ function PoolScreen() {
       <Button title="Submit" style={tw`px-3`} onPress={onHandleSubmit} />
     </SafeAreaView>
   );
-}
+};
 
 export default PoolScreen;
