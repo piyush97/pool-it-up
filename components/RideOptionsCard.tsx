@@ -72,7 +72,7 @@ function RideOptionsCard() {
         {dataOfUser && `, ${dataOfUser?.first_name} ${dataOfUser?.last_name}`}
       </Text>
       <PlaceInput
-        placeholderText="Where From?"
+        placeholderText={origin?.description || 'Where From?'}
         ShowIcon={false}
         dispatcherFunction={setOrigin}
         style={style}
@@ -102,7 +102,7 @@ function RideOptionsCard() {
         />
       </TouchableOpacity>
       <PlaceInput
-        placeholderText="Where To?"
+        placeholderText={destination?.description || 'Where To?'}
         ShowIcon={false}
         dispatcherFunction={setDestination}
         style={style}

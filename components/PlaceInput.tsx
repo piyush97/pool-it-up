@@ -14,7 +14,7 @@ import { PlaceInputProps } from '../types/env';
  */
 const PlaceInput = ({
   placeholderText,
-  ShowIcon,
+  ShowIcon = false,
   dispatcherFunction,
   style,
   customInputComponent = false,

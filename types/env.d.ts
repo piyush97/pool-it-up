@@ -11,7 +11,7 @@ type RideConfirmationViewProps = {
 
 type PlaceInputProps = {
   placeholderText: string;
-  ShowIcon: boolean;
+  ShowIcon?: boolean;
   dispatcherFunction: Function;
   style?: any;
   customInputComponent?: boolean;

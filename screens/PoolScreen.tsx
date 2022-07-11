@@ -8,44 +8,30 @@ import React from 'react';
 import { Alert, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import tw from 'twrnc';
+import PlaceInput from '../components/PlaceInput';
 import rideTypes from '../constants/ride';
 import { HOME } from '../constants/routesConstants';
 import { addNewRide } from '../service/DbService';
-import { selectDestination, selectOrigin } from '../slices/navSlice';
+import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 
 function PoolScreen() {
   const { theme } = useTheme();
+  const originFromContext = useSelector(selectOrigin);
+  const destinationFromContext = useSelector(selectDestination);
 
   const [carType, setCarType] = React.useState<string>();
   const [carName, setCarName] = React.useState<string>();
   const [carNumber, setCarNumber] = React.useState<string>();
-  const [passengers, setPassengers] = React.useState<number>();
+  const [passengers, setPassengers] = React.useState('');
   const [startDateTime, setStartDateTime] = React.useState<Date>(new Date());
   const [endDateTime, setEndDateTime] = React.useState<Date>(new Date());
-  const [costPerPassenger, setCostPerPassenger] = React.useState<number>();
-  const [costPerBag, setCostPerBag] = React.useState<number>();
+  const [costPerPassenger, setCostPerPassenger] = React.useState('');
+  const [costPerBag, setCostPerBag] = React.useState('');
   const navigation = useNavigation<NavigationProp<any>>();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
 
   const onHandleSubmit = async () => {
-    // await supabase.from('Rides').insert([
-    //   {
-    //     car_type: carType,
-    //     car_name: carName,
-    //     car_number: carNumber,
-    //     seats_available: passengers,
-    //     from: origin,
-    //     to: destination,
-    //     host_id: '', // TODO: get from context
-    //     title: `Ride with ${carName}`,
-    //     host_email: '', // TODO: get from context
-    //     datetime_start: new Date(startDateTime).toISOString(),
-    //     todatetime_end: new Date(endDateTime).toISOString(),
-    //     cost_passenger: costPerPassenger,
-    //     cost_bag: costPerBag,
-    //   },
-    // ]);
     addNewRide({
       car_type: carType,
       car_name: carName,
@@ -73,6 +59,17 @@ function PoolScreen() {
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
       <Text style={tw`p-4 pt-5 pb-8 text-10`}>Ride Details</Text>
+      <PlaceInput
+        placeholderText={originFromContext?.description || 'From'}
+        dispatcherFunction={setOrigin}
+        customInputComponent
+      />
+      <PlaceInput
+        placeholderText={destinationFromContext?.description || 'To'}
+        dispatcherFunction={setDestination}
+        customInputComponent
+      />
+
       <Input
         placeholder="Car Number"
         value={carNumber}

@@ -42,14 +42,12 @@ function HomeScreen() {
   return (
     <AppWrapper theme={theme} title={checked ? 'Pool my Ride' : 'Book a Ride'}>
       <PlaceInput
-        placeholderText="Where From?"
-        ShowIcon={false}
+        placeholderText={origin?.description || 'Where From?'}
         dispatcherFunction={setOrigin}
         customInputComponent
       />
       <PlaceInput
-        placeholderText="Where To?"
-        ShowIcon={false}
+        placeholderText={destination?.description || 'Where To?'}
         dispatcherFunction={setDestination}
         customInputComponent
       />
