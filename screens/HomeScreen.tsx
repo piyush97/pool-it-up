@@ -67,6 +67,7 @@ function HomeScreen() {
         </Text>
         <DateTimePicker
           value={startDateTime}
+          minimumDate={new Date()}
           mode="date"
           themeVariant="dark"
           textColor={theme.colors.black}
