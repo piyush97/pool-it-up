@@ -34,34 +34,51 @@ const PoolScreen = () => {
   const [endDateTime, setEndDateTime] = React.useState<Date>(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
+  const [disabled, setDisabled] = React.useState(true);
+
   const navigation = useNavigation<NavigationProp<any>>();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
 
   const onHandleSubmit = async () => {
-    await addNewRide({
-      car_type: carType,
-      car_name: carName,
-      car_number: carNumber,
-      seats_available: passengers,
-      from: origin,
-      to: destination,
-      host_id: id,
-      title: `Ride with ${carName}`,
-      host_email: email,
-      datetime_start: new Date(startDateTime).toISOString(),
-      todatetime_end: new Date(endDateTime).toISOString(),
-      cost_passenger: costPerPassenger,
-      cost_bag: costPerBag,
-    }).then((res) => {
-      Alert.alert('Done');
-      console.log(res);
-      navigation.navigate(HOME);
-      if (res.error) {
-        console.log(res);
-        Alert.alert(res.error.message);
-      }
-    });
+    if (
+      !carType ||
+      !carName ||
+      !carNumber ||
+      !passengers ||
+      !endDateTime ||
+      !costPerPassenger ||
+      !costPerBag
+    ) {
+      Alert.alert('Please fill all the fields');
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+      !disabled &&
+        (await addNewRide({
+          car_type: carType,
+          car_name: carName,
+          car_number: carNumber,
+          seats_available: passengers,
+          from: origin,
+          to: destination,
+          host_id: id.toString(),
+          title: `Ride with ${carName}`,
+          host_email: email.toString(),
+          datetime_start: new Date(startDateTime).toISOString(),
+          todatetime_end: new Date(endDateTime).toISOString(),
+          cost_passenger: costPerPassenger,
+          cost_bag: costPerBag,
+        }).then((res) => {
+          Alert.alert('Done');
+          console.log(res);
+          navigation.navigate(HOME);
+          if (res.error) {
+            console.log(res);
+            Alert.alert(res.error.message);
+          }
+        }));
+    }
   };
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
@@ -125,7 +142,7 @@ const PoolScreen = () => {
         display="default"
         style={tw`p-2 mt-2 mr-4 `}
         onChange={(e) => {
-          setStartDateTime(e.nativeEvent.timestamp);
+          setStartDateTime(new Date(e.nativeEvent.timestamp));
         }}
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1, color: theme.colors.grey1 }}>
@@ -141,7 +158,7 @@ const PoolScreen = () => {
         display="default"
         style={tw`p-2 mt-2 mr-4`}
         onChange={(e) => {
-          setEndDateTime(e.nativeEvent.timestamp);
+          setEndDateTime(new Date(e.nativeEvent.timestamp));
         }}
       />
       <Input
