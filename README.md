@@ -13,7 +13,6 @@
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 ![GitHub language count](https://img.shields.io/github/languages/count/piyush97/pool-it-up)
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/piyush97/pool-it-up)
 ![GitHub Sponsors](https://img.shields.io/github/sponsors/piyush97)
 ![GitHub followers](https://img.shields.io/github/followers/piyush97)
 
@@ -21,9 +20,9 @@
 
 | Color             | Hex                                                                |
 | ----------------- | ------------------------------------------------------------------ |
-| Primary Color | ![#0A84FF](https://via.placeholder.com/10/0A84FF?text=+) #0A84FF |
-| Background Color | ![#1F2229](https://via.placeholder.com/10/1F2229?text=+) #1F2229 |
-| Grey Color | ![#2E323B](https://via.placeholder.com/10/2E323B?text=+) #2E323B |
+| Primary Color | ![#0A84FF](https://via.placeholder.com/10/0A84FF/0A84FF.png) #0A84FF |
+| Background Color | ![#1F2229](https://via.placeholder.com/10/1F2229/1F2229.png) #1F2229 |
+| Grey Color | ![#2E323B](https://via.placeholder.com/10/2E323B/2E323B.png) #2E323B |
 
 
 ## Run Locally
