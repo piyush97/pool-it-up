@@ -8,59 +8,92 @@ import React from 'react';
 import { Alert, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import tw from 'twrnc';
+import PlaceInput from '../components/PlaceInput';
 import rideTypes from '../constants/ride';
 import { HOME } from '../constants/routesConstants';
-import supabase from '../lib/supabase';
-import { selectDestination, selectOrigin } from '../slices/navSlice';
+import { useAuth } from '../context/AuthContext';
+import { addNewRide } from '../service/DbService';
+import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
 
-function PoolScreen() {
+/**
+ * Pool Screen
+ * @author Piyush Mehta <me@piyushmehta.com>
+ *
+ * @return {React.ReactElement} - Pool Screen
+ */
+const PoolScreen = () => {
   const { theme } = useTheme();
-
-  const [carType, setCarType] = React.useState('');
-  const [carName, setCarName] = React.useState('');
-  const [carNumber, setCarNumber] = React.useState('');
+  const {
+    authData: { email, id },
+  } = useAuth();
+  const [carType, setCarType] = React.useState<string>();
+  const [carName, setCarName] = React.useState<string>();
+  const [carNumber, setCarNumber] = React.useState<string>();
   const [passengers, setPassengers] = React.useState('');
-  const [startDateTime, setStartDateTime] = React.useState<any>(new Date());
-  const [endDateTime, setEndDateTime] = React.useState<any>(new Date());
+  const [startDateTime, setStartDateTime] = React.useState<Date>(new Date());
+  const [endDateTime, setEndDateTime] = React.useState<Date>(new Date());
   const [costPerPassenger, setCostPerPassenger] = React.useState('');
   const [costPerBag, setCostPerBag] = React.useState('');
+  const [disabled, setDisabled] = React.useState(true);
+
   const navigation = useNavigation<NavigationProp<any>>();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
 
   const onHandleSubmit = async () => {
-    await supabase
-      .from('Rides')
-      .insert([
-        {
+    if (
+      !carType ||
+      !carName ||
+      !carNumber ||
+      !passengers ||
+      !endDateTime ||
+      !costPerPassenger ||
+      !costPerBag
+    ) {
+      Alert.alert('Please fill all the fields');
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+      !disabled &&
+        (await addNewRide({
           car_type: carType,
           car_name: carName,
           car_number: carNumber,
           seats_available: passengers,
           from: origin,
           to: destination,
-          host_id: '', // TODO: get from context
+          host_id: id.toString(),
           title: `Ride with ${carName}`,
-          host_email: '', // TODO: get from context
+          host_email: email.toString(),
           datetime_start: new Date(startDateTime).toISOString(),
           todatetime_end: new Date(endDateTime).toISOString(),
           cost_passenger: costPerPassenger,
           cost_bag: costPerBag,
-        },
-      ])
-      .then((res) => {
-        Alert.alert('Done');
-        console.log(res);
-        navigation.navigate(HOME);
-        if (res.error) {
+        }).then((res) => {
+          Alert.alert('Done');
           console.log(res);
-          Alert.alert(res.error.message);
-        }
-      });
+          navigation.navigate(HOME);
+          if (res.error) {
+            console.log(res);
+            Alert.alert(res.error.message);
+          }
+        }));
+    }
   };
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
       <Text style={tw`p-4 pt-5 pb-8 text-10`}>Ride Details</Text>
+      <PlaceInput
+        placeholderText={origin?.description || 'From'}
+        dispatcherFunction={setOrigin}
+        customInputComponent
+      />
+      <PlaceInput
+        placeholderText={destination?.description || 'To'}
+        dispatcherFunction={setDestination}
+        customInputComponent
+      />
+
       <Input
         placeholder="Car Number"
         value={carNumber}
@@ -109,7 +142,7 @@ function PoolScreen() {
         display="default"
         style={tw`p-2 mt-2 mr-4 `}
         onChange={(e) => {
-          setStartDateTime(e.nativeEvent.timestamp);
+          setStartDateTime(new Date(e.nativeEvent.timestamp));
         }}
       />
       <Text style={{ height: 18, marginLeft: 12, padding: 1, color: theme.colors.grey1 }}>
@@ -125,7 +158,7 @@ function PoolScreen() {
         display="default"
         style={tw`p-2 mt-2 mr-4`}
         onChange={(e) => {
-          setEndDateTime(e.nativeEvent.timestamp);
+          setEndDateTime(new Date(e.nativeEvent.timestamp));
         }}
       />
       <Input
@@ -147,6 +180,6 @@ function PoolScreen() {
       <Button title="Submit" style={tw`px-3`} onPress={onHandleSubmit} />
     </SafeAreaView>
   );
-}
+};
 
 export default PoolScreen;

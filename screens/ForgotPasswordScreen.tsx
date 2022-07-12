@@ -2,14 +2,18 @@
 /* eslint-disable no-console */
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Input, Text, useTheme, useThemeMode } from '@rneui/themed';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, SafeAreaView } from 'react-native';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
 import supabase from '../lib/supabase';
-import React from 'react';
-
-function ForgotPasswordScreen() {
+/**
+ * Forgot Password Screen
+ * @author Piyush Mehta <me@piyushmehta.com>
+ *
+ * @return {React.ReactElement} - Forgot Password Screen
+ */
+const ForgotPasswordScreen = () => {
   const { theme } = useTheme();
   const navigation = useNavigation<NavigationProp<any>>();
   const [email, setEmail] = useState('');
@@ -43,7 +47,6 @@ function ForgotPasswordScreen() {
       <Text
         style={{
           fontWeight: '500',
-
           textAlign: 'center',
           color: theme.colors.grey1,
         }}
@@ -63,6 +66,6 @@ function ForgotPasswordScreen() {
       </Text>
     </SafeAreaView>
   );
-}
+};
 
 export default ForgotPasswordScreen;

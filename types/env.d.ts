@@ -1,3 +1,4 @@
+import { Theme } from '@rneui/themed';
 import { definitions } from './supabase.d';
 declare module 'react-native-dotenv' {
   export const GOOGLE_MAPS_APIKEY: string;
@@ -8,11 +9,26 @@ type RideConfirmationViewProps = {
   selected: string;
 };
 
+type PlaceInputProps = {
+  placeholderText: string;
+  ShowIcon?: boolean;
+  dispatcherFunction: Function;
+  style?: any;
+  customInputComponent?: boolean;
+};
 type FromToProps = {
   from: string;
   to: string;
   startDateTime: string;
   endDateTime: string;
+};
+
+type HeaderComponentProps = {
+  theme: {
+    colors: Colors;
+  } & Theme;
+  children: React.ReactElement[] | React.ReactElement;
+  title: string;
 };
 
 type AuthContextData = {

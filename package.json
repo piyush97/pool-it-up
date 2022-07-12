@@ -54,6 +54,7 @@
     "react-native-web": "0.17.7",
     "react-redux": "^8.0.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "redux-logger": "^3.0.6",
     "ts-md5": "^1.2.11",
     "twrnc": "^3.3.1",
     "validator": "^13.7.0"
@@ -72,6 +73,7 @@
     "@types/react-native-dotenv": "^0.2.0",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-test-renderer": "^18.0.0",
+    "@types/redux-logger": "^3.0.9",
     "@types/validator": "^13.7.2",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.25.3",

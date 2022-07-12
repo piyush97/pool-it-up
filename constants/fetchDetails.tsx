@@ -20,7 +20,7 @@ const fetchDetails = ({ flowType }: flowTypeProps) => {
     buttonText: 'Login',
   };
 };
-
+// TODO: Write logic
 export const profileDetails = [
   {
     id: 1,

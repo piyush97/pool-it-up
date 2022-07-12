@@ -1,15 +1,23 @@
-/* eslint-disable react/no-unstable-nested-components */
-// eslint-disable-next-line import/no-unresolved
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { Button, Icon, Input, Switch, Text, useTheme } from '@rneui/themed';
+import { Button, Text, useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
-import { Alert, Pressable, SafeAreaView, View } from 'react-native';
-import { GOOGLE_MAPS_APIKEY } from 'react-native-dotenv';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Alert, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import tw from 'twrnc';
+import AppWrapper from '../components/AppWrapper';
+import PlaceInput from '../components/PlaceInput';
+import alertsText from '../constants/alertsText';
+import { POOL_MODE, RIDE_MODE } from '../constants/placeholderConstants';
 import { GET_A_RIDE, POOL_MY_RIDE } from '../constants/routesConstants';
-import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
+import {
+  selectDestination,
+  selectOrigin,
+  setDate,
+  setDestination,
+  setOrigin,
+} from '../slices/navSlice';
+
 /**
  * @description - Home Screen for the application
  * @author - Piyush Mehta <me@piyushmehta.com>
@@ -18,11 +26,11 @@ import { selectDestination, selectOrigin, setDestination, setOrigin } from '../s
 function HomeScreen() {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
+  const [startDateTime, setStartDateTime] = useState<Date>(new Date());
   const navigation = useNavigation<NavigationProp<any>>();
   const { theme } = useTheme();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
-  // const { data: swapData, from, to } = useSwapper();
 
   const onHandlePress = () => {
     if (checked && destination && origin) {
@@ -30,113 +38,48 @@ function HomeScreen() {
     } else if (!checked && destination && origin) {
       navigation?.navigate(GET_A_RIDE);
     } else {
-      Alert.alert('Please enter your destination and origin before proceeding');
+      Alert.alert(alertsText.alertOriginOrDestinationNotEntered);
     }
   };
+
   const buttonTextGenerator = () => {
     if (checked) {
-      return 'Pool My Ride';
+      return POOL_MODE;
     }
-    return 'Get A Ride';
+    return RIDE_MODE;
   };
 
   return (
-    <View style={{ height: '100%', backgroundColor: theme.colors.background }}>
-      <Text style={tw`py-4 pb-8 pl-2 text-10 pt-50`}>
-        {checked ? 'Pool my Ride' : 'Book a Ride'}
-      </Text>
-
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        // eslint-disable-next-line no-console
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          InputComp: Input,
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          dispatch(
-            setOrigin({
-              location: details?.geometry.location,
-              description: data.description,
-            })
-          );
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            fontSize: 18,
-            backgroundColor: 'transparent',
-          },
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-          components: 'country:ca',
-        }}
-        placeholder="Where From?"
+    <AppWrapper theme={theme} title={checked ? 'Pool my Ride' : 'Book a Ride'}>
+      <PlaceInput
+        placeholderText={origin?.description || 'Where From?'}
+        dispatcherFunction={setOrigin}
+        customInputComponent
       />
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlacesSearch"
-        debounce={400}
-        minLength={2}
-        // eslint-disable-next-line no-console
-        onFail={(err) => console.log(err)}
-        fetchDetails
-        enableHighAccuracyLocation
-        currentLocationLabel="Current Location"
-        keyboardShouldPersistTaps="handled"
-        enablePoweredByContainer={false}
-        textInputProps={{
-          InputComp: Input,
-          rightIcon: (
-            <Pressable
-              onPress={() => {
-                Alert.alert('WIP');
-              }}
-              style={{ paddingRight: 10 }}
-            >
-              <Icon name="arrow-up" type="font-awesome" size={18} />
-              <Icon name="arrow-down" type="font-awesome" size={18} />
-            </Pressable>
-          ),
-
-          errorStyle: { color: 'red' },
-        }}
-        onPress={(data, details = null) => {
-          dispatch(
-            setDestination({
-              location: details?.geometry.location,
-              description: data.description,
-            })
-          );
-        }}
-        styles={{
-          container: {
-            flex: 0,
-          },
-          textInput: {
-            backgroundColor: 'transparent',
-            fontSize: 18,
-          },
-        }}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-          components: 'country:ca',
-        }}
-        placeholder="Where to?"
+      <PlaceInput
+        placeholderText={destination?.description || 'Where To?'}
+        dispatcherFunction={setDestination}
+        customInputComponent
       />
-      <SafeAreaView style={{ flex: 0, flexDirection: 'row' }}>
+      <View style={tw`mb-5`}>
+        <Text style={tw`text-left ml-3  mb-2`}>
+          {checked ? 'When do you want to pool?' : 'When do you want to ride?'}
+        </Text>
+        <DateTimePicker
+          value={startDateTime}
+          minimumDate={new Date()}
+          mode="date"
+          themeVariant="dark"
+          textColor={theme.colors.black}
+          display="default"
+          style={tw`p-2 mt-2 mr-4`}
+          onChange={(e) => {
+            dispatch(setDate(new Date(e.nativeEvent.timestamp)));
+          }}
+        />
+      </View>
+      {/* Not Required currently */}
+      {/* <SafeAreaView style={{ flex: 0, flexDirection: 'row' }}>
         <Text style={{ fontSize: 18, color: theme.colors.black, marginLeft: 20 }}>
           {!checked ? 'Pool my Ride' : 'Book a Ride'}
         </Text>
@@ -149,16 +92,16 @@ function HomeScreen() {
           value={checked}
           onValueChange={(value) => setChecked(value)}
         />
-      </SafeAreaView>
+      </SafeAreaView> */}
 
       <Button
-        style={tw`p-2 pt-12`}
+        style={tw`p-2 pt-4`}
         onPress={() => onHandlePress()}
         disabledStyle={{ backgroundColor: theme.colors.grey5, opacity: 0.5 }}
       >
         <Text style={{ color: theme.colors.black }}>{buttonTextGenerator()}</Text>
       </Button>
-    </View>
+    </AppWrapper>
   );
 }
 
