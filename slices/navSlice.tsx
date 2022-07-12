@@ -5,7 +5,7 @@ const initialState = {
   origin: null,
   destination: null,
   travelTimeInformation: null,
-  date: null,
+  date: new Date(),
   time: null,
   passengers: 1,
 };
@@ -23,10 +23,13 @@ export const navSlice = createSlice({
     setTravelTimeInformation: (state, action) => {
       state.travelTimeInformation = action.payload;
     },
+    setDate: (state, action) => {
+      state.date = action.payload;
+    },
   },
 });
 
-export const { setOrigin, setDestination, setTravelTimeInformation } = navSlice.actions;
+export const { setOrigin, setDestination, setTravelTimeInformation, setDate } = navSlice.actions;
 
 //   Selectors
 export const selectOrigin = (state: { nav: { origin: any } }) => state.nav.origin;

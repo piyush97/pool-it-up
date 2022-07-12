@@ -11,7 +11,13 @@ import SUV from '../assets/SUV.webp';
 import { POOL_MY_RIDE } from '../constants/routesConstants';
 import { useAuth } from '../context/AuthContext';
 import { getRidesFromTo } from '../service/DbService';
-import { selectDestination, selectOrigin, setDestination, setOrigin } from '../slices/navSlice';
+import {
+  selectDate,
+  selectDestination,
+  selectOrigin,
+  setDestination,
+  setOrigin,
+} from '../slices/navSlice';
 import { definitions } from '../types/supabase';
 import Greeter from '../utils/greeting';
 import PlaceInput from './PlaceInput';
@@ -25,6 +31,7 @@ function RideOptionsCard() {
   const navigation = useNavigation();
   const destination = useSelector(selectDestination);
   const origin = useSelector(selectOrigin);
+  const date = useSelector(selectDate);
   const { theme } = useTheme();
   const [selected, setSelected] = React.useState<any>(null);
   const { authData, userData } = useAuth();
@@ -39,7 +46,7 @@ function RideOptionsCard() {
       setDataOfUser(data && data);
     };
     const fetchRides = async () => {
-      const { data: Rides, error } = await getRidesFromTo(origin, destination);
+      const { data: Rides, error } = await getRidesFromTo(origin, destination, date);
       if (error) {
         console.error(error);
       }
@@ -47,7 +54,7 @@ function RideOptionsCard() {
     };
     fetchRides();
     getUserData();
-  }, [origin, destination]);
+  }, [origin, destination, date]);
 
   const style = {
     fontSize: 18,

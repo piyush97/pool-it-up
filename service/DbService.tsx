@@ -82,12 +82,13 @@ export const getRideData = async (id: string) =>
  * @param destination - The destination of the ride
  * @returns {Ride} - returns the ride details
  */
-export const getRidesFromTo = async (origin: string, destination: string) =>
+export const getRidesFromTo = async (origin: string, destination: string, datetimestart: string) =>
   supabase
     .from<definitions['Rides']>('Rides')
     .select('*')
     .eq('from', JSON.stringify(origin))
-    .eq('to', JSON.stringify(destination));
+    .eq('to', JSON.stringify(destination))
+    .gte('datetime_start', JSON.stringify(datetimestart));
 
 /**
  * @description - This function is used to insert the ride details to the database after Payment
