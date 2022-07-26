@@ -1,10 +1,15 @@
 import { Button, Icon, Text, useTheme } from '@rneui/themed';
 import { useConfirmPayment } from '@stripe/stripe-react-native';
+import axios from 'axios';
 import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
+import { NOTIF_APP_ID, NOTIF_APP_TOKEN } from 'react-native-dotenv';
+import { notificationTexts } from '../constants/alertsText';
 import { PaymentMethods } from '../constants/paymentMethods';
+import { NOTIFICATION_INDIE_API } from '../constants/routesConstants';
 import { useAuth } from '../context/AuthContext';
 import dbService, { getRideData } from '../service/DbService';
+
 type StripePaymentViewProps = {
   selected: string;
   email: string;
@@ -21,6 +26,7 @@ const StripePaymentView = ({ selected, email, modalButton, Ride }: StripePayment
   const { paymentRecord } = dbService;
 
   console.log('AUTHHHH', authData);
+  console.log('RIDE DETAILS', Ride);
 
   useEffect(() => {
     const getRideDataDetails = async () => {
@@ -38,6 +44,18 @@ const StripePaymentView = ({ selected, email, modalButton, Ride }: StripePayment
     if (data.error) {
       console.log(data.error);
     }
+
+    await axios
+      .post(NOTIFICATION_INDIE_API, {
+        subID: Ride.host_id,
+        appId: NOTIF_APP_ID,
+        appToken: NOTIF_APP_TOKEN,
+        title: notificationTexts.notificationTitle,
+        message: notificationTexts.notificationMessage,
+      })
+      .then((res) => {
+        console.log(res);
+      });
     console.log(data);
   };
 
