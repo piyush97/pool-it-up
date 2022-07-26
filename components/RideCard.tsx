@@ -1,6 +1,6 @@
-import { AirbnbRating, Button, Icon, Image, Text } from '@rneui/themed';
+import { AirbnbRating, Icon, Image, Text } from '@rneui/themed';
 import React from 'react';
-import { Alert, Modal, SafeAreaView } from 'react-native';
+import { Modal, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import tw from 'twrnc';
 import { carImageProvider } from '../constants/fetchDetails';
@@ -19,6 +19,7 @@ const RideCard = ({
   SEDAN,
   SUV,
   id,
+  time,
   theme,
   bags_available,
 }: any) => {
@@ -69,6 +70,7 @@ const RideCard = ({
         >
           {carModel}
         </Text>
+
         <SafeAreaView
           style={{
             position: 'absolute',
@@ -102,12 +104,14 @@ const RideCard = ({
             position: 'absolute',
             top: '10%',
             left: 'auto',
-            right: '76%',
+            right: '30%',
             color: theme.colors.grey1,
             ...tw`text-base font-light text-left`,
           }}
         >
           {carType}
+          {'    '}
+          {new Date(time).toLocaleTimeString() + ' - ' + new Date(time).toLocaleDateString()}
         </Text>
         <SafeAreaView
           style={{
@@ -129,7 +133,7 @@ const RideCard = ({
               ...tw`text-sm font-semibold`,
             }}
           >
-            {bags_available}
+            ${costPerBag}
           </Text>
           <Icon
             type="font-awesome"
@@ -146,7 +150,7 @@ const RideCard = ({
                   right: '5%',
                   top: '50%',
                   color: theme.colors.primary,
-                  ...tw`text-xl font-bold text-right`,
+                  ...tw`text-4xl font-bold text-right`,
                 }
               : {
                   position: 'absolute',

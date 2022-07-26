@@ -11,4 +11,10 @@ const alertsText = {
   alertOriginOrDestinationNotEntered: 'Please enter your origin and destination',
 };
 
+export const notificationTexts = {
+  // Notifications
+  notificationTitle: 'Your ride got a rider 🔥',
+  notificationMessage: 'Check your ride details',
+};
+
 export default alertsText;
