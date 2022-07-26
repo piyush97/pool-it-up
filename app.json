@@ -5,7 +5,11 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "plugins": [["expo-notifications"]],
+    "plugins": [
+      [
+        "expo-notifications"
+      ]
+    ],
     "userInterfaceStyle": "dark",
     "scheme": "pool-it-up",
     "splash": {
@@ -16,15 +20,19 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.piyushmehta.poolitup"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.piyushmehta.poolitup"
     },
     "web": {
       "favicon": "./assets/favicon.png"
