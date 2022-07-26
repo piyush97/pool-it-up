@@ -26,7 +26,7 @@ function ProfileScreen() {
       >
         {profileDetails.map((item) => (
           <React.Fragment key={item.id}>
-            <TouchableOpacity onPress={async () => signOut()} style={{ paddingVertical: 12 }}>
+            <TouchableOpacity onPress={item.function} style={{ paddingVertical: 12 }}>
               <Text
                 style={{
                   fontWeight: 'normal',

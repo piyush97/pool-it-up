@@ -1,6 +1,6 @@
-import { Text, useTheme } from '@rneui/themed';
+import { Switch, Text, useTheme } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
+import { FlatList, SafeAreaView, View } from 'react-native';
 import tw from 'twrnc';
 import MyRideCard from '../components/MyRideCard';
 import { useAuth } from '../context/AuthContext';
@@ -18,11 +18,19 @@ const MyRidesScreen = () => {
     };
     dataRideFetch();
   }, []);
-  const [type, setType] = useState('bookings'); // TODO: change to 'rides'
+  const [type, setType] = useState(true); // TODO: change to 'rides'
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
       <Text style={tw`text-10 p-4 pb-8 pt-50`}>My Rides</Text>
-
+      <View>
+        <Text>{type ? 'Rides' : 'Requests'}</Text>
+        <Switch
+          // float it on right side of the screen below the above element
+          style={tw` ml-auto mr-10`}
+          value={type}
+          onValueChange={(value) => setType(value)}
+        />
+      </View>
       <FlatList
         data={RideData}
         renderItem={({ item }) => (

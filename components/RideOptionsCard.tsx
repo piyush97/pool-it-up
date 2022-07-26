@@ -74,7 +74,7 @@ function RideOptionsCard() {
         backgroundColor: theme.colors.background,
       }}
     >
-      <Text style={tw`py-2 text-xl text-center`}>
+      <Text style={tw`py-2 text-2xl text-center`}>
         {Greeter()}
         {dataOfUser && `, ${dataOfUser?.first_name} ${dataOfUser?.last_name}`}
       </Text>
@@ -133,6 +133,7 @@ function RideOptionsCard() {
               seats_available: availableSeats,
               cost_bag: costPerBag,
               car_number: carNumber,
+              datetime_start: startTime,
               car_name: carModel,
               bags_available: bagsAvailable,
             },
@@ -141,6 +142,7 @@ function RideOptionsCard() {
             <RideCard
               setSelected={setSelected}
               carType={carType}
+              time={startTime}
               price={price}
               selected={selected}
               costPerBag={costPerBag}

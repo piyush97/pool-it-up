@@ -35,7 +35,6 @@ export const profileDetails = [
         });
     },
   },
-
   {
     id: 2,
     title: 'Payment',
