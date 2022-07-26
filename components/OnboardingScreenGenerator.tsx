@@ -3,14 +3,18 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Icon, Input, SocialIcon, Text, useTheme, useThemeMode } from '@rneui/themed';
+import { registerIndieID } from 'native-notify';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Modal, Pressable, SafeAreaView, TouchableOpacity } from 'react-native';
+import { NOTIF_APP_ID, NOTIF_APP_TOKEN } from 'react-native-dotenv';
 import tw from 'twrnc';
 import fetchDetails from '../constants/fetchDetails';
 import socialLoginOptions from '../constants/socialLoginOptions';
 import { useAuth } from '../context/AuthContext';
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import { getUserData } from '../service/DbService';
+
 /**
  * @description - Onboarding Screen for the application to onboard the user to the application
  * @author - Piyush Mehta <me@piyushmehta.com>
@@ -42,10 +46,27 @@ function OnboardingScreenGenerator({ flowType }: { flowType: 1 | 0 }) {
   const { signIn, signUp } = useAuth();
   const onBoardingFlow = async () => {
     if (flowType === 0) {
-      await signIn(email, password);
+      (await signIn(email, password)) &&
+        (await registerIndieID(
+          await getUserData(email).then((res) => res?.body[0]?.id),
+          NOTIF_APP_ID,
+          NOTIF_APP_TOKEN
+        ));
     }
     if (flowType === 1) {
-      await signUp(email, password, firstName, lastName, new Date(dob).toLocaleDateString(), phone);
+      (await signUp(
+        email,
+        password,
+        firstName,
+        lastName,
+        new Date(dob).toLocaleDateString(),
+        phone
+      )) &&
+        (await registerIndieID(
+          await getUserData(email).then((res) => res?.body[0]?.id),
+          NOTIF_APP_ID,
+          NOTIF_APP_TOKEN
+        ));
     }
   };
 

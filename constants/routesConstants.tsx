@@ -30,3 +30,6 @@ export const SIGN_IN = 'SignIn';
 export const SIGN_UP = 'SignUp';
 export const FORGOT_PASSWORD = 'ForgotPassword';
 export const ONBOARDING = 'Onboarding';
+
+// API Constants
+export const NOTIFICATION_INDIE_API = 'https://app.nativenotify.com/api/indie/notification';
