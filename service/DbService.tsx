@@ -137,11 +137,20 @@ export const paymentRecord = async (
 const getUserRides = async (id: string) =>
   await supabase.from('Rides').select('*').contains('passenger_id', [id]);
 
+/**
+ * @description - This function is used to get the ride details from the database
+ *
+ * @param {string} id - The id of the user
+ */
+const getUserPostedRides = async (id: string) =>
+  await supabase.from('Rides').select('*').eq('host_id', id);
+
 const dbService = {
   getUserData,
   submitUserData,
   getRideData,
   paymentRecord,
   getUserRides,
+  getUserPostedRides,
 };
 export default dbService;
