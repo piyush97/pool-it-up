@@ -16,13 +16,14 @@ import StripePaymentView from './StripePaymentView';
  */
 const RideConfirmationView = ({ selected, modalClose, modal }: RideConfirmationViewProps) => {
   const { theme } = useTheme();
-  const { getRideData } = dbService;
+  const { getRideData, getUserDataById } = dbService;
   const [rideDetails, setRideDetails] = React.useState<any>();
   const [showModal, setShowModal] = React.useState(false);
-
+  const [riderNames, setRiderNames] = React.useState<any>([]);
   useEffect(() => {
     const getRideDataDetails = async () => {
       const data = await getRideData(selected);
+
       if (data.error) {
         console.log(data.error);
       }
@@ -92,6 +93,7 @@ const RideConfirmationView = ({ selected, modalClose, modal }: RideConfirmationV
         <Text style={{ ...tw`text-md `, left: '2%', top: '1%' }}>
           Price per seat: {rideDetails?.cost_passenger}
         </Text>
+
         {!modal && (
           <Button
             title="Confirm"
@@ -101,6 +103,21 @@ const RideConfirmationView = ({ selected, modalClose, modal }: RideConfirmationV
             }}
           />
         )}
+      </View>
+      <View
+        style={{
+          left: '4%',
+          bottom: '44%',
+          flex: 0.75,
+          alignSelf: 'flex-start',
+          position: 'absolute',
+          flexDirection: 'row',
+        }}
+      >
+        <Icon name="user" type="font-awesome" />
+        <Text style={{ ...tw`text-md `, left: '150%', top: '20%', position: 'absolute' }}>
+          Booked by {JSON.stringify(riderNames, null, 4)} //TODO: get the rider names
+        </Text>
       </View>
       <Modal
         animationType="slide"

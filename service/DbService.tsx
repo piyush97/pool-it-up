@@ -145,6 +145,9 @@ const getUserRides = async (id: string) =>
 const getUserPostedRides = async (id: string) =>
   await supabase.from('Rides').select('*').eq('host_id', id);
 
+export const getUserDataById = async (id: string): Promise<PostgrestResponse<any>> =>
+  await supabase.from('Users').select('*').eq('id', id);
+
 const dbService = {
   getUserData,
   submitUserData,
@@ -152,5 +155,6 @@ const dbService = {
   paymentRecord,
   getUserRides,
   getUserPostedRides,
+  getUserDataById,
 };
 export default dbService;

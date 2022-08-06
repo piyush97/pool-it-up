@@ -23,7 +23,7 @@ const MyRidesScreen = () => {
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '100%' }}>
       <Text style={tw`text-10 p-4 pb-8 pt-50`}>
-        {!type ? 'Rides booked by you' : 'Ride created by you'}
+        {!type ? 'Rides booked by you' : 'Rides created by you'}
       </Text>
       <View>
         <Switch
