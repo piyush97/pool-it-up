@@ -174,7 +174,7 @@ const RideCard = ({
           }}
         >
           <SafeAreaView>
-            <RideConfirmationView selected={selected} />
+            <RideConfirmationView selected={selected} modal={false} />
           </SafeAreaView>
         </Modal>
       )}

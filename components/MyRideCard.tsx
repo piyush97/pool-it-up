@@ -1,12 +1,12 @@
-import { SafeAreaView, TouchableOpacity, TouchableOpacityBase } from 'react-native';
+import { Card, Image, Text, useTheme } from '@rneui/themed';
 import React, { useEffect } from 'react';
-import { Avatar, Card, Button, useTheme, Image, Text } from '@rneui/themed';
-import { definitions } from '../types/supabase';
+import { Modal, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
-import dbService from '../service/DbService';
-import getGravatar from '../utils/getGravatar';
-import { rideImages } from '../constants/ride';
 import { carImageProvider } from '../constants/fetchDetails';
+import dbService from '../service/DbService';
+import { definitions } from '../types/supabase';
+import getGravatar from '../utils/getGravatar';
+import RideConfirmationView from './RideConfirmationView';
 
 const MyRideCard = ({
   created_at,
@@ -24,6 +24,8 @@ const MyRideCard = ({
   const { getUserData, getRideData } = dbService;
   const [data, setData] = React.useState<any>();
   const [gravatar, setGravatar] = React.useState<string>();
+  const [showModal, setShowModal] = React.useState(false);
+
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -39,16 +41,28 @@ const MyRideCard = ({
     getData();
   }, [setData]);
   return (
-    <TouchableOpacity>
-      <Card containerStyle={{ backgroundColor: theme.colors.grey2, borderWidth: 0 }}>
-        <Card.Title>
-          <Image source={carImageProvider(car_type)} style={tw`w-12 h-10`} />
-          <Text style={{ ...tw`text-xl font-light ` }}>
-            {title} By {data?.first_name}
-          </Text>
-        </Card.Title>
-      </Card>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity onPress={() => setShowModal(true)}>
+        <Card containerStyle={{ backgroundColor: theme.colors.grey2, borderWidth: 0 }}>
+          <Card.Title>
+            <Image source={carImageProvider(car_type)} style={tw`w-12 h-10`} />
+            <Text style={{ ...tw`text-xl font-light ` }}>
+              {title} By {data?.first_name}
+            </Text>
+          </Card.Title>
+        </Card>
+      </TouchableOpacity>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={showModal}
+        onRequestClose={() => {
+          setShowModal(false);
+        }}
+      >
+        <RideConfirmationView selected={id} modalClose={setShowModal} modal={true} />
+      </Modal>
+    </>
   );
 };
 

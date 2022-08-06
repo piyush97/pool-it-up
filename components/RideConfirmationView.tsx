@@ -14,7 +14,7 @@ import StripePaymentView from './StripePaymentView';
  * @return {React.ReactElement} - The Ride Confirmation View
  * @author - Piyush Mehta <me@piyushmehta.com>
  */
-const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
+const RideConfirmationView = ({ selected, modalClose, modal }: RideConfirmationViewProps) => {
   const { theme } = useTheme();
   const { getRideData } = dbService;
   const [rideDetails, setRideDetails] = React.useState<any>();
@@ -34,6 +34,12 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background, height: '120%' }}>
+      <Icon
+        type="font-awesome"
+        name="times"
+        style={tw`left-40`}
+        onPress={() => modalClose(false)}
+      />
       <Text style={tw`text-xl font-bold text-center pt-2`}>{rideDetails?.title}</Text>
       <Image
         style={{ width: '80%', height: '25%', alignSelf: 'center', left: '5%' }}
@@ -86,13 +92,15 @@ const RideConfirmationView = ({ selected }: RideConfirmationViewProps) => {
         <Text style={{ ...tw`text-md `, left: '2%', top: '1%' }}>
           Price per seat: {rideDetails?.cost_passenger}
         </Text>
-        <Button
-          title="Confirm"
-          style={{ ...tw`p-3 mt-15 ml-3` }}
-          onPress={() => {
-            setShowModal(true);
-          }}
-        />
+        {!modal && (
+          <Button
+            title="Confirm"
+            style={{ ...tw`p-3 mt-15 ml-3` }}
+            onPress={() => {
+              setShowModal(true);
+            }}
+          />
+        )}
       </View>
       <Modal
         animationType="slide"

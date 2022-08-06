@@ -9,6 +9,8 @@ declare module 'react-native-dotenv' {
 }
 type RideConfirmationViewProps = {
   selected: string;
+  modalClose?: function;
+  modal?: boolean;
 };
 
 type PlaceInputProps = {
